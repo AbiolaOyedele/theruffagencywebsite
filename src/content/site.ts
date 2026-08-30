@@ -360,6 +360,29 @@ export const blogPosts: readonly BlogPost[] = [
     author: { name: 'The Ruff Agency', role: 'Studio' },
     accent: color.accentPink,
     draft: true,
+    video: '/card-alpa.mp4',
+    gallery: [
+      {
+        src: '/placeholder/writing-1.svg',
+        caption: 'Placeholder — the positioning line, before and after.',
+      },
+      {
+        src: '/placeholder/writing-2.svg',
+        caption: 'Placeholder — the same business, said three different ways.',
+      },
+    ],
+    pullQuotes: [
+      {
+        title: 'A logo is a signature',
+        request:
+          'It is the mark you sign work with once you already know what the work says. Signing before you know what you are saying is how a business ends up with a beautiful mark it quietly stops using.',
+      },
+      {
+        title: 'Positioning in a design costume',
+        request:
+          'If customers cannot tell you apart from three competitors, a new typeface will not fix it — the confusion is not visual.',
+      },
+    ],
     sections: [
       {
         heading: 'The request that is never the problem',
@@ -389,6 +412,29 @@ export const blogPosts: readonly BlogPost[] = [
     author: { name: 'The Ruff Agency', role: 'Studio' },
     accent: color.accentLime,
     draft: true,
+    video: '/card-alpin.mp4',
+    gallery: [
+      {
+        src: '/placeholder/writing-3.svg',
+        caption: 'Placeholder — a one-page brief, annotated.',
+      },
+      {
+        src: '/placeholder/writing-4.svg',
+        caption: 'Placeholder — the same brief rewritten around the problem.',
+      },
+    ],
+    pullQuotes: [
+      {
+        title: 'Describe, do not prescribe',
+        request:
+          'A brief that opens with a list of deliverables has already made every interesting decision before anyone with craft has looked at it — and you are paying for that craft.',
+      },
+      {
+        title: 'Constraints are not an insult',
+        request:
+          'Budget, deadline, the three colours the parent company will never approve. Knowing that on day one is what lets a studio design something that actually ships.',
+      },
+    ],
     sections: [
       {
         heading: 'Long is not the same as clear',
@@ -422,6 +468,29 @@ export const blogPosts: readonly BlogPost[] = [
     author: { name: 'The Ruff Agency', role: 'Studio' },
     accent: color.accentYellow,
     draft: true,
+    video: '/card2.mp4',
+    gallery: [
+      {
+        src: '/placeholder/writing-5.svg',
+        caption: 'Placeholder — a request raised where the team already works.',
+      },
+      {
+        src: '/placeholder/writing-6.svg',
+        caption: 'Placeholder — work in progress, visible without asking.',
+      },
+    ],
+    pullQuotes: [
+      {
+        title: 'It rarely goes wrong. It goes quiet.',
+        request:
+          'Feedback sat in an email thread. A file was the wrong version. Someone was waiting on someone who was waiting on them. None of that is a creative failure.',
+      },
+      {
+        title: 'The project stops needing a translator',
+        request:
+          'Requests come in where your team already raises them. Feedback lands on the file rather than in a thread about the file.',
+      },
+    ],
     sections: [
       {
         heading: 'The gap where projects die',

@@ -250,7 +250,8 @@ column.
 
 ### The three posts ✏️
 
-All three carry a **Draft — not signed off yet** pill until Ruff has read them.
+Nothing on the page marks them as drafts — the `draft` flag is a note to the
+studio, not a badge on the post.
 
 | Slug | Title | Category |
 |---|---|---|
@@ -556,6 +557,8 @@ version already reviewed, so it is summarised rather than repeated here.
 | 5 | Confirm Nigeria governing law | Ruff / legal |
 | 6 | Update both legal dates on publication | Ruff |
 | 7 | Send a test enquiry and a test application, to confirm both land | Ruff |
+| 8 | Read and approve the three posts before they go out | Ruff |
+| 9 | Cloudinary cloud name, so images can move off `public/` | Ruff |
 
 ### Flagged for a decision
 

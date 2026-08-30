@@ -130,6 +130,11 @@ export interface BlogPost {
   readonly video?: string;
   readonly sections: readonly CaseStudySection[];
   readonly gallery?: readonly CaseStudyGalleryItem[];
+  /**
+   * Lines lifted out of the writing, pinned to the gallery on cards — the
+   * same furniture a client story hangs its briefs on.
+   */
+  readonly pullQuotes?: readonly CaseStudyTicket[];
   /** Marks the writing as a draft the studio has not signed off yet. */
   readonly draft?: boolean;
 }
@@ -164,20 +169,17 @@ export interface Story {
   readonly title: string;
   readonly ariaLabel: string;
   readonly video?: string;
-  /** Shown as a pill under the title when the copy is not final. */
-  readonly note?: string;
   /** Heading above the people listed in the rail. */
   readonly bylineHeading: string;
   readonly credits: readonly CaseStudyCredit[];
   readonly sections: readonly CaseStudySection[];
   readonly tickets: readonly CaseStudyTicket[];
+  /** Heading above the pinned cards, where they are listed rather than pinned. */
+  readonly ticketsHeading: string;
   readonly gallery: readonly CaseStudyGalleryItem[];
   /** Where the gallery breaks the reading up, counted in sections. */
   readonly galleryAfterSection: number;
 }
-
-const PLACEHOLDER_NOTE = 'Placeholder copy — awaiting the real write-up';
-const DRAFT_NOTE = 'Draft — not signed off yet';
 
 /** Maps a client engagement onto the reading panel. */
 export function storyFromCaseStudy(study: CaseStudy): Story {
@@ -187,11 +189,11 @@ export function storyFromCaseStudy(study: CaseStudy): Story {
     title: study.title ?? study.client,
     ariaLabel: `${study.client} story`,
     ...(study.video ? { video: study.video } : {}),
-    ...(study.placeholder ? { note: PLACEHOLDER_NOTE } : {}),
     bylineHeading: 'Team',
     credits: study.credits ?? [],
     sections: study.sections ?? [],
     tickets: study.tickets ?? [],
+    ticketsHeading: 'Selected briefs',
     gallery: study.gallery ?? [],
     galleryAfterSection: 2,
   };
@@ -210,11 +212,11 @@ export function storyFromPost(post: BlogPost): Story {
     title: post.title,
     ariaLabel: post.title,
     ...(post.video ? { video: post.video } : {}),
-    ...(post.draft ? { note: DRAFT_NOTE } : {}),
     bylineHeading: 'Written by',
     credits: [{ name: post.author.name, role: post.author.role }],
     sections: post.sections,
-    tickets: [],
+    tickets: post.pullQuotes ?? [],
+    ticketsHeading: 'From the piece',
     gallery: post.gallery ?? [],
     galleryAfterSection: 1,
   };

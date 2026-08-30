@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750" role="img" aria-label="Writing illustration 03">
+  <rect width="1200" height="750" fill="#f0e9e5"/>
+  <rect x="56" y="56" width="1088" height="638" rx="28" fill="#ffffff" stroke="#250200" stroke-width="4"/>
+  <rect x="96" y="140" width="464" height="330" rx="20" fill="#ffd741" stroke="#250200" stroke-width="4"/>
+  <circle cx="328" cy="305" r="88" fill="#ffffff" stroke="#250200" stroke-width="4"/>
+  <rect x="272" y="289" width="112" height="14" rx="7" fill="#250200"/>
+  <rect x="272" y="319" width="72" height="14" rx="7" fill="#250200"/>
+  <rect x="640" y="140" width="330" height="30" rx="15" fill="#250200" opacity="0.85"/>
+  <rect x="640" y="196" width="230" height="18" rx="9" fill="#d3c2bb"/>
+  <rect x="640" y="300" width="464" height="18" rx="9" fill="#d3c2bb"/><rect x="640" y="346" width="464" height="18" rx="9" fill="#d3c2bb"/><rect x="640" y="392" width="330" height="18" rx="9" fill="#d3c2bb"/><rect x="640" y="438" width="464" height="18" rx="9" fill="#d3c2bb"/><rect x="640" y="484" width="464" height="18" rx="9" fill="#d3c2bb"/><rect x="640" y="530" width="330" height="18" rx="9" fill="#d3c2bb"/>
+  <rect x="640" y="540" width="180" height="52" rx="26" fill="#ffd741" stroke="#250200" stroke-width="4"/>
+  <rect x="96" y="510" width="464" height="120" rx="20" fill="#efe6e0" stroke="#250200" stroke-width="3"/>
+  <text x="600" y="668" text-anchor="middle" font-family="Helvetica,Arial,sans-serif"
+        font-size="24" font-weight="700" fill="#250200" opacity="0.45">Writing illustration 03</text>
+</svg>

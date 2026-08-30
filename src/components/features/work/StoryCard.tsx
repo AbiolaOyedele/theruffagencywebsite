@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { AutoplayVideo } from '@/components/ui/AutoplayVideo';
+import { imageUrl, videoUrl } from '@/lib/images';
 import { color, font, primaryButton, shape, weight } from '@/config/tokens';
 import { work } from '@/content/site';
 import type { CaseStudy } from '@/types/content';
@@ -44,11 +45,19 @@ export function StoryCard({ study, layout, progress, stackIndex, onOpen }: Story
   const rotation = 25 + (layout.rotation - 25) * eased;
   const opacity = Math.min(1, dealt * 3);
 
+  // A study still waiting on its write-up shows nothing under the client's
+  // name. The placeholder headline reads as a real claim on a card, and the
+  // card is in the HTML a crawler indexes.
+  const cardLine = study.placeholder ? undefined : study.title;
+
   const stats: readonly { label: string; value: string }[] = (
     [
       { label: work.statLabels.duration, value: study.duration },
       { label: work.statLabels.deliverables, value: study.deliverables },
-      { label: work.statLabels.impact, value: study.impact },
+      // The placeholder impact line reads as a real claim on a card, and the
+      // card is in the HTML a crawler reads. It stays inside the panel, which
+      // carries the banner saying the write-up is not final.
+      { label: work.statLabels.impact, value: study.placeholder ? undefined : study.impact },
     ] as { label: string; value?: string }[]
   ).flatMap((stat) => (stat.value ? [{ label: stat.label, value: stat.value }] : []));
 
@@ -101,7 +110,7 @@ export function StoryCard({ study, layout, progress, stackIndex, onOpen }: Story
         >
           {study.video ? (
             <AutoplayVideo
-              src={study.video}
+              src={videoUrl(study.video)}
               preload="metadata"
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
@@ -125,7 +134,7 @@ export function StoryCard({ study, layout, progress, stackIndex, onOpen }: Story
               {study.logo ? (
                 /* eslint-disable-next-line @next/next/no-img-element -- client mark, optically sized */
                 <img
-                  src={study.logo}
+                  src={imageUrl(study.logo, 240)}
                   alt=""
                   style={{
                     height: study.logoHeight ?? 24,
@@ -149,7 +158,7 @@ export function StoryCard({ study, layout, progress, stackIndex, onOpen }: Story
               >
                 {study.client}
               </p>
-              {study.title ? (
+              {cardLine ? (
                 <p
                   style={{
                     fontFamily: font.body,
@@ -160,7 +169,7 @@ export function StoryCard({ study, layout, progress, stackIndex, onOpen }: Story
                     margin: '10px 0 0',
                   }}
                 >
-                  {study.title}
+                  {cardLine}
                 </p>
               ) : null}
             </div>

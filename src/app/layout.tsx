@@ -1,10 +1,22 @@
 import type { Metadata, Viewport } from 'next';
+import { faq } from '@/content/site';
 import '@/styles/globals.css';
 
 const SITE_URL = 'https://theruff.agency';
 const TITLE = 'The Ruff Agency | Brand Strategy & Creative Studio, Lagos';
 const DESCRIPTION =
   'A remote creative studio in Lagos building brand strategy, identity, motion, and social content for startups and growing brands worldwide.';
+
+/**
+ * The link-preview card. 1200×630, the size every platform crops to.
+ * Regenerate from `scripts/og-image.mjs` if the wordmark or the line changes.
+ */
+const SHARE_IMAGE = {
+  url: '/og.png',
+  width: 1200,
+  height: 630,
+  alt: 'The Ruff Agency — brand strategy and creative direction',
+} as const;
 
 /** Shorter, punchier variant for link previews. */
 const SHARE_DESCRIPTION =
@@ -34,11 +46,13 @@ export const metadata: Metadata = {
     description: SHARE_DESCRIPTION,
     siteName: 'The Ruff Agency',
     locale: 'en_US',
+    images: [SHARE_IMAGE],
   },
   twitter: {
     card: 'summary_large_image',
     title: TITLE,
     description: SHARE_DESCRIPTION,
+    images: [SHARE_IMAGE.url],
   },
   icons: {
     icon: [
@@ -65,6 +79,21 @@ const STRUCTURED_DATA = {
   areaServed: 'Worldwide',
   address: { '@type': 'PostalAddress', addressLocality: 'Lagos', addressCountry: 'NG' },
   priceRange: 'From ₦150,000',
+};
+
+/**
+ * The FAQ, marked up so a search engine can answer the question in the result
+ * rather than only linking to it. The answers are already on the page — this
+ * says which text answers which question.
+ */
+const FAQ_STRUCTURED_DATA = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.items.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.answer },
+  })),
 };
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
@@ -102,6 +131,10 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
           type="application/ld+json"
           // Static, author-controlled JSON-LD — no user input reaches this string.
           dangerouslySetInnerHTML={{ __html: JSON.stringify(STRUCTURED_DATA) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_STRUCTURED_DATA) }}
         />
       </head>
       <body>{children}</body>

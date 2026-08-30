@@ -1,12 +1,22 @@
 'use client';
 
+import Link from 'next/link';
 import { BlogCard } from '@/components/features/blog/BlogCard';
 import { AccentWord } from '@/components/ui/AccentWord';
-import { color, font, weight } from '@/config/tokens';
+import { color, font, shape, weight } from '@/config/tokens';
 import { blogPosts, blogSection } from '@/content/site';
 import { useIsCompact } from '@/hooks/useIsCompact';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { postHash } from '@/types/content';
+
+/**
+ * How many posts the home page carries.
+ *
+ * The section is a shelf, not an archive: three keeps it to one row on a
+ * desktop and stops the writing swallowing the page as the list grows. The
+ * rest live at /blog, which is the archive.
+ */
+const FEATURED = 3;
 
 interface BlogProps {
   /** Opens a post in the reading panel, growing out of the card pressed. */
@@ -23,6 +33,11 @@ interface BlogProps {
 export function Blog({ onOpenPost }: BlogProps) {
   const isMobile = useIsMobile();
   const isCompact = useIsCompact();
+
+  const featured = blogPosts.slice(0, FEATURED);
+  const rest = blogPosts.length - featured.length;
+
+  if (featured.length === 0) return null;
 
   return (
     <section
@@ -102,7 +117,7 @@ export function Blog({ onOpenPost }: BlogProps) {
             alignItems: 'stretch',
           }}
         >
-          {blogPosts.map((post) => (
+          {featured.map((post) => (
             <BlogCard
               key={post.slug}
               post={post}
@@ -110,6 +125,32 @@ export function Blog({ onOpenPost }: BlogProps) {
             />
           ))}
         </div>
+
+        {/* Only worth showing once there is something the shelf is not showing. */}
+        {rest > 0 ? (
+          <Link
+            href="/blog"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: isMobile ? 28 : 40,
+              minHeight: 44,
+              padding: '16px 28px',
+              background: color.white,
+              border: shape.keyline,
+              borderRadius: 999,
+              boxShadow: shape.hardShadowSmall,
+              fontFamily: font.sans,
+              fontWeight: weight.bold,
+              fontSize: 15,
+              color: color.ink,
+              textDecoration: 'none',
+            }}
+          >
+            {blogSection.allCta} ({blogPosts.length}) →
+          </Link>
+        ) : null}
       </div>
     </section>
   );

@@ -1,11 +1,15 @@
 import Link from 'next/link';
 import { color, font, primaryButton, shape, weight } from '@/config/tokens';
+import { imageUrl } from '@/lib/images';
 import { brand, blogSection } from '@/content/site';
 import { formatPostDate, readingMinutes, postHash, type BlogPost } from '@/types/content';
 
 interface ArticleReaderProps {
   readonly post: BlogPost;
 }
+
+/** Kept in step with `storyFromPost`, so both readings break in the same place. */
+const GALLERY_AFTER_SECTION = 1;
 
 /**
  * A post as a page of its own, at `/blog/<slug>`.
@@ -87,26 +91,6 @@ export function ArticleReader({ post }: ArticleReaderProps) {
             {post.excerpt}
           </p>
 
-          {post.draft ? (
-            <p
-              style={{
-                display: 'inline-block',
-                fontFamily: font.sans,
-                fontWeight: weight.bold,
-                fontSize: 11,
-                letterSpacing: '0.06em',
-                textTransform: 'uppercase',
-                color: color.ink,
-                background: color.white,
-                border: shape.keyline,
-                borderRadius: 999,
-                padding: '7px 14px',
-                margin: '24px 0 0',
-              }}
-            >
-              Draft — not signed off yet
-            </p>
-          ) : null}
         </div>
       </header>
 
@@ -120,7 +104,7 @@ export function ArticleReader({ post }: ArticleReaderProps) {
           gap: 48,
         }}
       >
-        {post.sections.map((section) => (
+        {post.sections.map((section, index) => (
           <section key={section.heading}>
             <h2
               style={{
@@ -146,8 +130,99 @@ export function ArticleReader({ post }: ArticleReaderProps) {
             >
               {section.body}
             </p>
+
+            {/* The gallery breaks the reading up after the first beat, the
+                same place the panel breaks it. */}
+            {index === GALLERY_AFTER_SECTION && post.gallery?.length ? (
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 32,
+                  margin: '40px 0 0',
+                }}
+              >
+                {post.gallery.map((item) => (
+                  <figure key={item.src} style={{ margin: 0 }}>
+                    <div
+                      style={{
+                        borderRadius: 18,
+                        overflow: 'hidden',
+                        border: shape.keyline,
+                        boxShadow: shape.hardShadow,
+                        background: color.paper,
+                      }}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element -- artwork of unknown intrinsic size */}
+                      <img
+                        src={imageUrl(item.src, 1200)}
+                        alt={item.caption}
+                        loading="lazy"
+                        style={{ width: '100%', height: 'auto', display: 'block' }}
+                      />
+                    </div>
+                    <figcaption
+                      style={{
+                        fontFamily: font.body,
+                        fontWeight: weight.light,
+                        fontSize: 14,
+                        lineHeight: 1.6,
+                        color: color.muted,
+                        margin: '12px 0 0',
+                      }}
+                    >
+                      {item.caption}
+                    </figcaption>
+                  </figure>
+                ))}
+              </div>
+            ) : null}
           </section>
         ))}
+
+        {post.pullQuotes?.length ? (
+          <section style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            {post.pullQuotes.map((quote) => (
+              <blockquote
+                key={quote.title}
+                style={{
+                  background: color.ink,
+                  borderRadius: 20,
+                  padding: 28,
+                  margin: 0,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 12,
+                }}
+              >
+                <p
+                  style={{
+                    fontFamily: font.sans,
+                    fontWeight: weight.bold,
+                    fontSize: 20,
+                    lineHeight: 1.2,
+                    color: color.white,
+                    margin: 0,
+                  }}
+                >
+                  {quote.title}
+                </p>
+                <p
+                  style={{
+                    fontFamily: font.body,
+                    fontWeight: weight.light,
+                    fontSize: 15,
+                    lineHeight: 1.65,
+                    color: 'rgba(255,255,255,0.7)',
+                    margin: 0,
+                  }}
+                >
+                  {quote.request}
+                </p>
+              </blockquote>
+            ))}
+          </section>
+        ) : null}
 
         <footer
           style={{

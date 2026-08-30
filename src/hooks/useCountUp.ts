@@ -10,6 +10,11 @@ interface CountUpResult<T extends HTMLElement> {
 /**
  * Counts from `from` up to `target` the first time the element scrolls into
  * view, easing out over `durationMs`.
+ *
+ * Starts at `target`, not at `from`: the server has no scroll and no observer,
+ * so anything reading the HTML — a crawler, an AI, a browser with JavaScript
+ * off — would otherwise be told the studio has run zero campaigns. The count
+ * drops to `from` at the moment it actually begins.
  */
 export function useCountUp<T extends HTMLElement = HTMLElement>(
   target: number,
@@ -18,7 +23,7 @@ export function useCountUp<T extends HTMLElement = HTMLElement>(
 ): CountUpResult<T> {
   const ref = useRef<T | null>(null);
   const hasRun = useRef(false);
-  const [value, setValue] = useState(from);
+  const [value, setValue] = useState(target);
 
   useEffect(() => {
     const element = ref.current;
@@ -30,6 +35,7 @@ export function useCountUp<T extends HTMLElement = HTMLElement>(
       ([entry]) => {
         if (!entry?.isIntersecting || hasRun.current) return;
         hasRun.current = true;
+        setValue(from);
 
         const start = performance.now();
         const step = (now: number): void => {

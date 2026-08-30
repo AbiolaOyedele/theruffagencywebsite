@@ -13,10 +13,19 @@ import { z } from 'zod';
 
 const publicSchema = z.object({
   NEXT_PUBLIC_SITE_URL: z.string().url().default('https://theruff.agency'),
+  /**
+   * Cloudinary's cloud name. Optional: until it is set, image sources are
+   * served from `public/` exactly as they are written. It is in every delivery
+   * URL Cloudinary produces, so it is public by definition and carries the
+   * NEXT_PUBLIC_ prefix — the key and secret never reach the browser.
+   */
+  NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: z.string().min(1).optional(),
 });
 
 const publicParsed = publicSchema.safeParse({
   NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
+  // An empty variable is an unset one.
+  NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || undefined,
 });
 
 if (!publicParsed.success) {

@@ -5,7 +5,9 @@ import { createPortal } from 'react-dom';
 import { AutoplayVideo } from '@/components/ui/AutoplayVideo';
 import { color, font, primaryButton, shape, weight } from '@/config/tokens';
 import { brand, caseStudyChrome } from '@/content/site';
+import { useIsCompact } from '@/hooks/useIsCompact';
 import { useIsMobile } from '@/hooks/useIsMobile';
+import { imageUrl, videoUrl } from '@/lib/images';
 import { clamp, setScrollLocked } from '@/utils/scroll';
 import type { Story } from '@/types/content';
 
@@ -43,6 +45,10 @@ interface StoryPanelProps {
  */
 export function StoryPanel({ story, fromRect, onClose }: StoryPanelProps) {
   const isMobile = useIsMobile();
+  // The pinned cards hang off the gallery art, so they need the narrative
+  // column to be wider than they are. Below this the column is around 340px
+  // and a 280px card at 260px tall simply covers the picture it belongs to.
+  const isCompact = useIsCompact();
   const [phase, setPhase] = useState<Phase>(fromRect ? 'enter' : 'fadein');
   const [scrollTop, setScrollTop] = useState(0);
   const scrollerRef = useRef<HTMLDivElement | null>(null);
@@ -212,7 +218,7 @@ export function StoryPanel({ story, fromRect, onClose }: StoryPanelProps) {
           >
             {story.video ? (
               <AutoplayVideo
-                src={story.video}
+                src={videoUrl(story.video)}
                 style={{
                   position: 'absolute',
                   inset: '-20% 0',
@@ -276,24 +282,6 @@ export function StoryPanel({ story, fromRect, onClose }: StoryPanelProps) {
               >
                 {story.title}
               </h1>
-              {story.note ? (
-                <span
-                  style={{
-                    alignSelf: 'flex-start',
-                    fontFamily: font.sans,
-                    fontWeight: weight.bold,
-                    fontSize: 11,
-                    letterSpacing: '0.06em',
-                    textTransform: 'uppercase',
-                    color: color.ink,
-                    background: color.accentPink,
-                    borderRadius: 999,
-                    padding: '7px 14px',
-                  }}
-                >
-                  {story.note}
-                </span>
-              ) : null}
             </div>
           </div>
 
@@ -500,7 +488,7 @@ export function StoryPanel({ story, fromRect, onClose }: StoryPanelProps) {
                               >
                                 {/* eslint-disable-next-line @next/next/no-img-element -- gallery art of unknown intrinsic size */}
                                 <img
-                                  src={item.src}
+                                  src={imageUrl(item.src, 1200)}
                                   alt={item.caption}
                                   loading="lazy"
                                   data-parallax-gallery
@@ -513,7 +501,7 @@ export function StoryPanel({ story, fromRect, onClose }: StoryPanelProps) {
                                 />
                               </div>
 
-                              {ticket && !isMobile ? (
+                              {ticket && !isCompact ? (
                                 <div
                                   data-parallax-card
                                   data-card-rotation={rotation}
@@ -577,7 +565,7 @@ export function StoryPanel({ story, fromRect, onClose }: StoryPanelProps) {
                   </div>
                 ))}
 
-                {tickets.length && (isMobile || !gallery.length) ? (
+                {tickets.length && (isCompact || !gallery.length) ? (
                   <section>
                     <h2
                       style={{
@@ -589,7 +577,7 @@ export function StoryPanel({ story, fromRect, onClose }: StoryPanelProps) {
                         margin: '0 0 20px',
                       }}
                     >
-                      {caseStudyChrome.ticketsHeading}
+                      {story.ticketsHeading}
                     </h2>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
                       {tickets.map((ticket) => (
