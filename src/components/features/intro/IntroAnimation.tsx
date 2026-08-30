@@ -39,6 +39,14 @@ const SUBHEAD_AT = 4500;
 const LOOSE_CARD_SCALE = 2.2;
 const LOOSE_CARD_SCALE_MOBILE = 1.5;
 
+/**
+ * The third card is a fixed box inside the phone while the loose pair sizes to
+ * its own text, and the same string measures proportionally wider at the small
+ * type size the phone lays out at. This trims the difference so all three read
+ * as one card rather than the last one arriving larger.
+ */
+const THIRD_CARD_TRIM = 0.94;
+
 /** Where each loose card sits, as a share of the viewport. */
 const LOOSE_CARDS = [
   { top: '25%', left: '13%', mobileTop: '17%', mobileLeft: '5%' },
@@ -115,10 +123,11 @@ export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps)
   const cardExpanded = stage >= 3;
   const headlineUp = stage >= 3;
   const looseCardScale = isMobile ? LOOSE_CARD_SCALE_MOBILE : LOOSE_CARD_SCALE;
-  // The third notification arrives at exactly the size of the two before it.
-  // The phone is already scaled by HERO_PHONE_SCALE on the way out, so that
-  // has to be backed out of the zoom or the card lands larger than its pair.
-  const zoomScale = looseCardScale / (isMobile ? 1 : HERO_PHONE_SCALE);
+  // The third notification arrives at the size of the two before it. The phone
+  // is already scaled by HERO_PHONE_SCALE on the way out, so that has to be
+  // backed out of the zoom or the card lands larger than its pair.
+  const zoomScale =
+    (looseCardScale * THIRD_CARD_TRIM) / (isMobile ? 1 : HERO_PHONE_SCALE);
 
   /** Splits a line into words that slide up from a clipped mask. */
   const renderLine = (words: readonly string[], delays: readonly number[]) => (
@@ -222,6 +231,7 @@ export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps)
             </span>
           </strong>
           {hero.subheadAfter}
+          <span style={{ whiteSpace: 'nowrap' }}>{hero.subheadTail}</span>
         </p>
       </div>
 

@@ -87,6 +87,7 @@ export function Hero() {
           {hero.subheadBefore}
           <RotatingWord words={hero.rotatingWords} />
           {hero.subheadAfter}
+          <span style={{ whiteSpace: 'nowrap' }}>{hero.subheadTail}</span>
         </p>
       </div>
 

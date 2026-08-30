@@ -28,12 +28,19 @@ const BOARD_OVERHANG_BOTTOM = 42;
  * one lands a different size from the pair before it.
  */
 export const NOTIFICATION_CARD = {
-  width: 211,
+  /**
+   * Wide enough that the title sits on one line, as it does on the two loose
+   * cards — a wrap here is what made the third read as a different size.
+   * Still inside the phone's 321–570 screen once centred.
+   */
+  width: 222,
   collapsedHeight: 62,
   expandedHeight: 442,
   padding: 6,
   borderWidth: 1.5,
   radius: 17,
+  /** Horizontal centre of the phone's screen, in art-board pixels. */
+  screenCentreX: 445.5,
 } as const;
 
 /** How much larger than its art board the phone renders. */

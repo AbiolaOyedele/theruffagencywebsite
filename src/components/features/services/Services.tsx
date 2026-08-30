@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { CloudScene } from '@/components/features/services/CloudScene';
+import { LaunchMark } from '@/components/features/services/LaunchMark';
 import { DotGrid } from '@/components/features/services/DotGrid';
 import { FeatureCard } from '@/components/features/services/FeatureCard';
 import { ToolStack } from '@/components/features/services/ToolStack';
@@ -199,7 +199,7 @@ export function Services() {
 
       const mark = finalMarkRef.current;
       if (mark) {
-        // Width only — CloudScene derives height and the supersample scale from
+        // Width only — LaunchMark derives height and the supersample scale from
         // it, so the wordmark's aspect ratio stays in one place.
         mark.style.setProperty('--mark-width', `${Math.min(cardWidth, desktopMediaHeight) * 0.45}px`);
         // Fade the wordmark out as the section scrolls past the pin.
@@ -271,13 +271,7 @@ export function Services() {
     }
     if (index === 4) {
       return (
-        <CloudScene
-          width={cardWidth}
-          height={mediaHeight}
-          zoomProgressRef={zoomProgress}
-          velocityRef={scrollVelocity}
-          markRef={finalMarkRef}
-        />
+        <LaunchMark width={cardWidth} height={mediaHeight} markRef={finalMarkRef} />
       );
     }
     return null;

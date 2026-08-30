@@ -107,7 +107,7 @@ export function PhoneMockup({
       <div
         style={{
           position: 'absolute',
-          left: 340,
+          left: NOTIFICATION_CARD.screenCentreX - NOTIFICATION_CARD.width / 2,
           top: 115,
           width: NOTIFICATION_CARD.width,
           height: cardHeight,

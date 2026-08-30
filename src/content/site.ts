@@ -62,7 +62,12 @@ export const hero = {
    * characters.
    */
   subheadBefore: 'We turn your ',
-  subheadAfter: ' into a brand people remember.',
+  subheadAfter: ' into a brand ',
+  /**
+   * Held on one line. Where the subhead has to wrap — narrow screens — the
+   * break lands before this rather than stranding "remember." on its own.
+   */
+  subheadTail: 'people remember.',
   notification: {
     eyebrow: 'Consider it handled',
     title: 'Your next campaign, delivered.',
@@ -85,6 +90,20 @@ export const logoStrip = {
     { name: 'Teemplot' },
     { name: 'IPC Africa' },
     { name: 'Zero to 16' },
+    { name: 'FoodCourt' },
+    { name: 'Daash' },
+    { name: 'WingsBistro' },
+    { name: 'Citysubs' },
+    { name: 'GoSource' },
+    { name: 'Anikela' },
+    { name: 'Doux' },
+    { name: 'Renda Africa' },
+    { name: 'Ajebo Chops' },
+    { name: 'Spicy Corner' },
+    { name: 'Sisi Eko' },
+    { name: "Papa's Grill" },
+    { name: 'GetZing' },
+    { name: 'Shiip' },
   ] as readonly ClientLogo[],
 };
 
