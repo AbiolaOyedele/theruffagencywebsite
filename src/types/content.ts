@@ -108,6 +108,13 @@ export interface LegalSection {
   readonly body: string;
 }
 
+/** One of the studio's social accounts. An empty `url` means "not live yet". */
+export interface SocialLink {
+  readonly platform: 'linkedin' | 'instagram' | 'tiktok' | 'threads' | 'x';
+  readonly label: string;
+  readonly url: string;
+}
+
 /** Which overlay panel is open, if any. */
 export type OverlayKey = 'contact' | 'privacy' | 'terms';
 

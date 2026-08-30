@@ -8,6 +8,7 @@ import type {
   LegalSection,
   NavLink,
   PricingPlan,
+  SocialLink,
 } from '@/types/content';
 
 /* ------------------------------------------------------------------ */
@@ -30,9 +31,6 @@ export const brand = {
   /** Label and destination shared by every call to action on the site. */
   ctaLabel: 'Work with us',
   ctaHref: '/#contact',
-  /** TODO: confirm which platform this should point at. */
-  socialUrl: '',
-  socialLabel: 'LinkedIn',
   basedIn: ['Lagos, Nigeria', 'Working remotely with clients worldwide'],
 } as const;
 
@@ -399,6 +397,22 @@ export const faq = {
 /* ------------------------------------------------------------------ */
 /* Footer                                                              */
 /* ------------------------------------------------------------------ */
+
+/**
+ * The studio's accounts.
+ *
+ * An entry with no `url` is not rendered — no dead links ship. Fill the URL in
+ * and the icon appears; there is nothing else to change.
+ */
+export const socialLinks = [
+  // Threads is deliberately blank — the account is not live yet, and an entry
+  // with no URL simply does not render.
+  { platform: 'linkedin', label: 'LinkedIn', url: 'https://www.linkedin.com/company/the-ruff-agency' },
+  { platform: 'instagram', label: 'Instagram', url: 'https://www.instagram.com/theruff.agency/' },
+  { platform: 'tiktok', label: 'TikTok', url: 'https://www.tiktok.com/@ruff.agency' },
+  { platform: 'threads', label: 'Threads', url: '' },
+  { platform: 'x', label: 'X', url: 'https://x.com/RuffAgency' },
+] as const satisfies readonly SocialLink[];
 
 export const footerLinks = {
   links: [

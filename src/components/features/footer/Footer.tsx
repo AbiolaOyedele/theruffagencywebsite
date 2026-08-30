@@ -3,11 +3,108 @@
 import { useState, type Ref } from 'react';
 import { LOGO_ASPECT, RuffLogo } from '@/components/ui/RuffLogo';
 import { CopyEmailWatermark } from '@/components/features/footer/CopyEmailWatermark';
+import {
+  InstagramMark,
+  LinkedInMark,
+  ThreadsMark,
+  TikTokMark,
+  XMark,
+} from '@/components/ui/SocialMarks';
 import { color, font, primaryButton, shape } from '@/config/tokens';
-import { brand, footerLinks } from '@/content/site';
+import { brand, footerLinks, socialLinks } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { scrollToSection } from '@/utils/scroll';
 import type { OverlayKey } from '@/types/content';
+
+/** Heading above each footer column. */
+const columnHeadingStyle = {
+  fontFamily: font.sans,
+  fontWeight: 500,
+  fontSize: 13,
+  color: color.muted,
+  letterSpacing: '0.5px',
+  textTransform: 'uppercase',
+  margin: '0 0 16px',
+} as const;
+
+/**
+ * The studio's accounts, as icons.
+ *
+ * Only accounts with a URL are rendered, so the column simply does not appear
+ * until there is something to link to — no dead icons in the meantime.
+ */
+function SocialColumn() {
+  const live = socialLinks.filter((link) => link.url.length > 0);
+  if (live.length === 0) return null;
+
+  return (
+    <div>
+      <p style={columnHeadingStyle}>Follow</p>
+      <ul
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: 8,
+          margin: 0,
+          padding: 0,
+          listStyle: 'none',
+        }}
+      >
+        {live.map((link) => (
+          <li key={link.platform} style={{ margin: 0 }}>
+            <SocialIcon platform={link.platform} label={link.label} url={link.url} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+const SOCIAL_MARKS = {
+  linkedin: LinkedInMark,
+  instagram: InstagramMark,
+  tiktok: TikTokMark,
+  threads: ThreadsMark,
+  x: XMark,
+} as const;
+
+interface SocialIconProps {
+  readonly platform: keyof typeof SOCIAL_MARKS;
+  readonly label: string;
+  readonly url: string;
+}
+
+function SocialIcon({ platform, label, url }: SocialIconProps) {
+  const [hovered, setHovered] = useState(false);
+  const Mark = SOCIAL_MARKS[platform];
+
+  return (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={label}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onFocus={() => setHovered(true)}
+      onBlur={() => setHovered(false)}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 44,
+        height: 44,
+        borderRadius: 12,
+        color: hovered ? color.white : color.ink,
+        background: hovered ? color.ink : 'transparent',
+        border: `2px solid ${hovered ? color.ink : color.border}`,
+        transition: 'background 0.18s ease, color 0.18s ease, border-color 0.18s ease',
+      }}
+    >
+      <Mark size={18} />
+    </a>
+  );
+}
 
 interface FooterLinkProps {
   readonly label: string;
@@ -60,16 +157,6 @@ interface FooterProps {
  */
 export function Footer({ onOpenOverlay, ref }: FooterProps) {
   const isMobile = useIsMobile();
-
-  const columnHeadingStyle = {
-    fontFamily: font.sans,
-    fontWeight: 500,
-    fontSize: 13,
-    color: color.muted,
-    letterSpacing: '0.5px',
-    textTransform: 'uppercase' as const,
-    margin: '0 0 16px',
-  };
 
   return (
     <footer
@@ -207,6 +294,8 @@ export function Footer({ onOpenOverlay, ref }: FooterProps) {
                 ))}
               </div>
             </div>
+
+            <SocialColumn />
           </div>
 
           <div
