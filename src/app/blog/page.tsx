@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 export default function BlogIndexPage() {
   return (
     <main style={{ background: color.paperAlt, minHeight: '100vh' }}>
-      <div style={{ maxWidth: 900, margin: '0 auto', padding: '48px 20px 96px' }}>
+      <div style={{ maxWidth: 1000, margin: '0 auto', padding: '48px 20px 96px' }}>
         <Link
           href="/"
           style={{
@@ -85,84 +85,98 @@ export default function BlogIndexPage() {
             {blogSection.empty}
           </p>
         ) : (
+          /* Auto-fill rather than a fixed column count: this is a server
+             component with no viewport to read, and the grid does not need
+             one — it is one column on a phone and two from about 700px up.
+             The newest post spans the row, so the archive opens on something
+             rather than on a wall of equal cards. */
           <div
             style={{
-              display: 'flex',
-              flexDirection: 'column',
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
               gap: 20,
               margin: '56px 0 0',
+              alignItems: 'stretch',
             }}
           >
-            {blogPosts.map((post) => (
-              <Link
-                key={post.slug}
-                href={`/blog/${post.slug}`}
-                style={{
-                  background: post.accent,
-                  border: shape.keyline,
-                  borderRadius: 24,
-                  boxShadow: shape.hardShadow,
-                  padding: 28,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 12,
-                  textDecoration: 'none',
-                }}
-              >
-                <span
-                  style={{
-                    fontFamily: font.sans,
-                    fontWeight: weight.bold,
-                    fontSize: 11,
-                    letterSpacing: '0.1em',
-                    textTransform: 'uppercase',
-                    color: color.ink,
-                    opacity: 0.7,
-                  }}
-                >
-                  {post.category} · {formatPostDate(post.publishedAt)} · {readingMinutes(post)} min
-                </span>
+            {blogPosts.map((post, index) => {
+              const feature = index === 0;
 
-                <h2
+              return (
+                <Link
+                  key={post.slug}
+                  href={`/blog/${post.slug}`}
                   style={{
-                    fontFamily: font.display,
-                    fontWeight: weight.extrabold,
-                    fontSize: 'clamp(22px, 3vw, 28px)',
-                    lineHeight: 1.15,
-                    letterSpacing: '-0.02em',
-                    color: color.ink,
-                    margin: 0,
+                    gridColumn: feature ? '1 / -1' : 'auto',
+                    background: post.accent,
+                    border: shape.keyline,
+                    borderRadius: 24,
+                    boxShadow: shape.hardShadow,
+                    padding: feature ? 32 : 26,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 10,
+                    textDecoration: 'none',
                   }}
                 >
-                  {post.title}
-                </h2>
+                  <span
+                    style={{
+                      fontFamily: font.sans,
+                      fontWeight: weight.bold,
+                      fontSize: 11,
+                      letterSpacing: '0.1em',
+                      textTransform: 'uppercase',
+                      color: color.ink,
+                      opacity: 0.7,
+                    }}
+                  >
+                    {post.category} · {formatPostDate(post.publishedAt)} · {readingMinutes(post)} min
+                  </span>
 
-                <p
-                  style={{
-                    fontFamily: font.body,
-                    fontWeight: weight.light,
-                    fontSize: 16,
-                    lineHeight: 1.6,
-                    color: color.ink,
-                    opacity: 0.75,
-                    margin: 0,
-                  }}
-                >
-                  {post.excerpt}
-                </p>
+                  <h2
+                    style={{
+                      fontFamily: font.display,
+                      fontWeight: weight.extrabold,
+                      fontSize: feature ? 'clamp(26px, 4vw, 38px)' : 'clamp(20px, 3vw, 24px)',
+                      lineHeight: 1.12,
+                      letterSpacing: '-0.02em',
+                      color: color.ink,
+                      margin: 0,
+                    }}
+                  >
+                    {post.title}
+                  </h2>
 
-                <span
-                  style={{
-                    fontFamily: font.sans,
-                    fontWeight: weight.bold,
-                    fontSize: 14,
-                    color: color.ink,
-                  }}
-                >
-                  {blogSection.cardCta} →
-                </span>
-              </Link>
-            ))}
+                  <p
+                    style={{
+                      fontFamily: font.body,
+                      fontWeight: weight.light,
+                      fontSize: feature ? 17 : 15,
+                      lineHeight: 1.6,
+                      color: color.ink,
+                      opacity: 0.75,
+                      margin: 0,
+                      maxWidth: feature ? 620 : undefined,
+                    }}
+                  >
+                    {post.excerpt}
+                  </p>
+
+                  <span
+                    style={{
+                      marginTop: 'auto',
+                      paddingTop: 12,
+                      fontFamily: font.sans,
+                      fontWeight: weight.bold,
+                      fontSize: 14,
+                      color: color.ink,
+                    }}
+                  >
+                    {blogSection.cardCta} →
+                  </span>
+                </Link>
+              );
+            })}
           </div>
         )}
       </div>

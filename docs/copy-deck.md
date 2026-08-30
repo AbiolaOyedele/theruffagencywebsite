@@ -248,25 +248,36 @@ column.
 | Card button | Read → |
 | `/blog` intro | …No newsletter, no gate — just the thinking. |
 
-### The three posts ✏️
+### The ten posts ✏️
 
-Nothing on the page marks them as drafts — the `draft` flag is a note to the
-studio, not a badge on the post.
+The home page carries the three newest; `/blog` is the archive, which opens on
+the newest as a wide feature and grids the rest two-up.
 
 | Slug | Title | Category |
 |---|---|---|
 | `a-logo-is-not-a-brand` | A logo is not a brand, and the difference costs money | Brand strategy |
 | `brief-that-gets-good-work` | How to write a brief that gets you good work | Working together |
 | `why-we-work-inside-your-tools` | Why we work inside your tools, not around them | How we work |
+| `your-feed-looks-fine` | Your feed looks fine. That is the problem. | Social |
+| `three-questions-before-a-quote` | The three questions we ask before quoting | Working together |
+| `premium-does-not-mean-western` | Premium does not mean Western | Brand strategy |
+| `motion-is-not-decoration` | Motion is not decoration | Creative direction |
+| `what-a-retainer-buys` | What a retainer actually buys you | Working together |
+| `brief-the-designer-first` | Stop briefing your designer last | Working together |
+| `the-market-stall-test` | The market stall test | Brand strategy |
 
-Each runs 250–350 words across four or five sections. Full text is in
-`src/content/site.ts` under `blogPosts`.
+Each runs three or four sections. Full text is in `src/content/site.ts` under
+`blogPosts`. Nothing on the page marks them as drafts — the `draft` flag is a
+note to the studio, not a badge on the post.
 
 ❓ These are written in the studio's voice but nobody at Ruff has approved
 them. Read them before the `draft` flag comes off.
 
 ❓ At 250–350 words they are short for anything meant to rank on search. If a
 post is meant to bring people in, 800–1,200 words is the working figure.
+
+❓ Ten is more than the studio needs on day one. Cut the ones whose angle is
+wrong rather than keeping them because they exist.
 
 ---
 

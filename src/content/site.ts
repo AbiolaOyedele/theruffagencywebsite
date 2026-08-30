@@ -510,6 +510,181 @@ export const blogPosts: readonly BlogPost[] = [
       },
     ],
   },
+  {
+    slug: 'your-feed-looks-fine',
+    title: 'Your feed looks fine. That is the problem.',
+    excerpt:
+      'Competent is the most expensive place a brand can sit — good enough to publish, forgettable enough to scroll past.',
+    category: 'Social',
+    publishedAt: '2026-06-24',
+    author: { name: 'The Ruff Agency', role: 'Studio' },
+    accent: color.accentPurple,
+    draft: true,
+    sections: [
+      {
+        heading: 'Nothing is wrong, and nothing is working',
+        body: 'The grid is consistent. The type is clean. The colours match the guidelines. And the numbers have not moved in five months. This is the most common brief we get, and it is the hardest one to hear, because there is nothing obviously broken to point at. The work is competent. Competent is the problem.',
+      },
+      {
+        heading: 'Consistency is a floor, not a strategy',
+        body: 'A consistent feed stops you looking amateur. It does not make anyone care. Somewhere along the way consistency became the goal rather than the baseline, and brands started measuring themselves on whether the grid looked tidy instead of whether anyone remembered a single post from it.',
+      },
+      {
+        heading: 'What we look for instead',
+        body: 'One idea that only your brand could have posted. Not a format anyone could run, not a trend with your logo on it. Something that carries a point of view, so that a person who saw it last week can tell you what it said. Most feeds cannot pass that test, and every feed worth copying can.',
+      },
+    ],
+  },
+  {
+    slug: 'three-questions-before-a-quote',
+    title: 'The three questions we ask before quoting',
+    excerpt:
+      'A number without these answers is a guess. Here is what we need to know before we give you one.',
+    category: 'Working together',
+    publishedAt: '2026-06-10',
+    author: { name: 'The Ruff Agency', role: 'Studio' },
+    accent: color.accentOrange,
+    draft: true,
+    sections: [
+      {
+        heading: 'What has to be true when this is finished?',
+        body: 'Not what you want made — what has to have changed. A deck that closes a specific round. A brand a distributor takes seriously. A feed that gives the sales team something to send. The answer decides the scope, and the scope decides the number. Skip it and you get a quote for a list of files.',
+      },
+      {
+        heading: 'Who has to say yes?',
+        body: 'One founder, or a founder and two investors, or a committee. This is the single biggest difference between a project that takes six weeks and the same project taking sixteen. It changes nothing about the craft and everything about the timeline, so it belongs in the quote rather than in a difficult conversation later.',
+      },
+      {
+        heading: 'What already exists?',
+        body: 'Half-finished guidelines, a logo somebody likes, photography with rights attached, a name that is not registered yet. Every one of those is either time saved or time spent, and we would rather find out at the quoting stage than in week three.',
+      },
+    ],
+  },
+  {
+    slug: 'premium-does-not-mean-western',
+    title: 'Premium does not mean Western',
+    excerpt:
+      'The reflex to look international is usually a reflex to look like everyone else. It costs brands the only thing they had.',
+    category: 'Brand strategy',
+    publishedAt: '2026-05-27',
+    author: { name: 'The Ruff Agency', role: 'Studio' },
+    accent: color.accentGreen,
+    draft: true,
+    sections: [
+      {
+        heading: 'The reference deck problem',
+        body: 'Almost every brand brief we receive arrives with references, and almost all of those references are American or European. That is not a criticism — it is what is easiest to find. But a deck full of the same references produces a brand that looks like the deck, and there are only so many ways to look like a San Francisco startup before you are indistinguishable from one.',
+      },
+      {
+        heading: 'What premium actually signals',
+        body: 'Restraint, confidence, and evidence of care. None of those have a nationality. A brand reads as premium when every decision looks deliberate — the spacing, the paper, the photography, the way the name is said out loud. Copying a look gets you the surface of that without the substance underneath, which is why the copies never quite work.',
+      },
+      {
+        heading: 'The advantage nobody uses',
+        body: 'A brand built here has access to a visual and verbal world that the reference decks do not contain. Using it is not a limitation to overcome; it is the only durable way to be unmistakable in a market where everyone else is looking at the same twelve websites.',
+      },
+    ],
+  },
+  {
+    slug: 'motion-is-not-decoration',
+    title: 'Motion is not decoration',
+    excerpt:
+      'If the animation could be removed without anyone noticing, it was never doing a job.',
+    category: 'Creative direction',
+    publishedAt: '2026-05-13',
+    author: { name: 'The Ruff Agency', role: 'Studio' },
+    accent: color.accentPink,
+    draft: true,
+    sections: [
+      {
+        heading: 'The test',
+        body: 'Take the motion out. If the piece communicates exactly as well without it, the motion was decoration — and decoration is the first thing an audience learns to ignore. Good motion carries meaning that the static frame cannot: sequence, emphasis, cause and effect, the difference between two things that look the same standing still.',
+      },
+      {
+        heading: 'What it is for',
+        body: 'Motion tells you what to look at, and in what order. It shows one thing turning into another, which no still image can. It gives a brand a tempo — brisk, considered, playful — that people read long before they read any words. Those are jobs, not effects.',
+      },
+      {
+        heading: 'Where it goes wrong',
+        body: 'Almost always in the same place: motion added at the end, to something already finished, because the piece felt flat. Flat is a composition problem, and animation cannot fix composition. It can only make a flat thing move.',
+      },
+    ],
+  },
+  {
+    slug: 'what-a-retainer-buys',
+    title: 'What a retainer actually buys you',
+    excerpt:
+      'Not a discount on volume. The thing worth paying for is that nobody has to explain the brand again.',
+    category: 'Working together',
+    publishedAt: '2026-04-29',
+    author: { name: 'The Ruff Agency', role: 'Studio' },
+    accent: color.accentLime,
+    draft: true,
+    sections: [
+      {
+        heading: 'The version people expect',
+        body: 'Most people read a retainer as bulk pricing — a set number of deliverables a month, cheaper per unit than buying them one at a time. That is real, and it is the least interesting part of the arrangement. If volume is all you need, a retainer is an expensive way to buy it.',
+      },
+      {
+        heading: 'What it is really for',
+        body: 'Context. On a project, a studio spends the first two weeks learning your market, your constraints, and the three things your founder will never approve — then hands the work over and forgets it. On a retainer that learning compounds. By month four the studio is making judgement calls you would have made yourself, which is the point at which the work starts getting genuinely faster.',
+      },
+      {
+        heading: 'When not to',
+        body: 'If the work is genuinely one-off — a launch, a raise, a single campaign with an end date — a project is the honest structure and we will say so. A retainer that exists to hit a monthly quota produces work nobody needed, and both sides can feel it.',
+      },
+    ],
+  },
+  {
+    slug: 'brief-the-designer-first',
+    title: 'Stop briefing your designer last',
+    excerpt:
+      'By the time the decisions are made, all that is left is decoration — and you are paying for judgement.',
+    category: 'Working together',
+    publishedAt: '2026-04-15',
+    author: { name: 'The Ruff Agency', role: 'Studio' },
+    accent: color.accentYellow,
+    draft: true,
+    sections: [
+      {
+        heading: 'The usual order',
+        body: 'The strategy is agreed, the copy is signed off, the launch date is set, and then design is asked to make it look good. Everything that shapes whether the work lands has already been decided in a room design was not in. What is left is arrangement.',
+      },
+      {
+        heading: 'What gets lost',
+        body: 'Designers see structural problems early — a proposition that cannot be said in one line, a hierarchy that fights itself, a claim that will not survive being put next to a photograph. Every one of those is cheap to fix at the thinking stage and expensive at the artwork stage, and the only reason they surface late is that nobody was in the room to raise them.',
+      },
+      {
+        heading: 'The change',
+        body: 'One meeting, at the start, with whoever will make the work in it. Not a briefing — a conversation. It costs an hour and it routinely saves a fortnight, which is a return no amount of craft further down the line can match.',
+      },
+    ],
+  },
+  {
+    slug: 'the-market-stall-test',
+    title: 'The market stall test',
+    excerpt:
+      'Your packaging looked immaculate in the mockup. Now put it on a crowded shelf under bad light.',
+    category: 'Brand strategy',
+    publishedAt: '2026-04-01',
+    author: { name: 'The Ruff Agency', role: 'Studio' },
+    accent: color.accentOrange,
+    draft: true,
+    sections: [
+      {
+        heading: 'The mockup lies',
+        body: 'Every packaging design looks good centred on a neutral background in a rendered studio shot. That is not where it will be seen. It will be seen at an angle, half-obscured, under fluorescent light, beside eleven competitors shouting the same thing, being scanned by someone in a hurry. The mockup tests none of that.',
+      },
+      {
+        heading: 'What the shelf punishes',
+        body: 'Low contrast. Type set too small to read from a metre away. Colour that disappears against a neighbour. A name that needs the back of the pack to make sense. All of these survive a mockup review and none of them survive a real shelf, which is where the money is either made or not.',
+      },
+      {
+        heading: 'How to test it early',
+        body: 'Print it, badly, at actual size. Put it among the real competitors, in a real shop, and photograph it on a phone. It takes an afternoon, it costs almost nothing, and it will change the design more than any round of feedback in a meeting room ever will.',
+      },
+    ],
+  },
 ];
 
 /* ------------------------------------------------------------------ */
