@@ -3,7 +3,7 @@
 import { useState, type ReactNode } from 'react';
 import { AccentWord } from '@/components/ui/AccentWord';
 import { PhoneMockup } from '@/components/ui/PhoneMockup';
-import { color, font, shape } from '@/config/tokens';
+import { color, font, primaryButton, primaryButtonPressed, shape } from '@/config/tokens';
 import { brand, pricing } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { useRevealOnScroll } from '@/hooks/useRevealOnScroll';
@@ -126,17 +126,12 @@ function PricingCard({ plan, visual }: PricingCardProps) {
 
         <span
           style={{
+            ...primaryButton,
+            ...(hovered ? primaryButtonPressed : {}),
             width: '100%',
-            background: hovered ? color.brand : color.ink,
-            borderRadius: 999,
             padding: '16px 24px',
-            fontFamily: font.body,
-            fontWeight: 700,
             fontSize: 16,
-            color: color.white,
-            textAlign: 'center',
             marginTop: 'auto',
-            transition: 'background 0.4s ease',
           }}
         >
           Book a call

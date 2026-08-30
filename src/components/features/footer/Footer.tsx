@@ -3,7 +3,7 @@
 import { useState, type Ref } from 'react';
 import { LOGO_ASPECT, RuffLogo } from '@/components/ui/RuffLogo';
 import { CopyEmailWatermark } from '@/components/features/footer/CopyEmailWatermark';
-import { color, font, shape } from '@/config/tokens';
+import { color, font, primaryButton, shape } from '@/config/tokens';
 import { brand, footerLinks } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { scrollToSection } from '@/utils/scroll';
@@ -231,19 +231,7 @@ export function Footer({ onOpenOverlay, ref }: FooterProps) {
               href={brand.bookACallUrl}
               target="_blank"
               rel="noopener noreferrer"
-              style={{
-                background: color.ink,
-                borderRadius: 999,
-                padding: '14px 28px',
-                border: shape.keyline,
-                boxShadow: shape.hardShadowSmall,
-                fontFamily: font.body,
-                fontWeight: 700,
-                fontSize: 14,
-                color: color.white,
-                textDecoration: 'none',
-                display: 'inline-block',
-              }}
+              style={{ ...primaryButton, padding: '14px 28px', fontSize: 14 }}
             >
               Book a call
             </a>

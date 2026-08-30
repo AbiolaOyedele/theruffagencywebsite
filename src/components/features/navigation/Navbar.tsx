@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Logo } from '@/components/ui/Logo';
 import { MobileMenu } from '@/components/features/navigation/MobileMenu';
 import { StepIndicator } from '@/components/features/navigation/StepIndicator';
-import { color, font, radius, shape, weight } from '@/config/tokens';
+import { color, font, primaryButton, radius, shape, weight } from '@/config/tokens';
 import { brand, sectionLinks } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { clamp, scrollToSection } from '@/utils/scroll';
@@ -277,15 +277,9 @@ export function Navbar({ revealed, aboveOverlay }: NavbarProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
-                  fontFamily: font.body,
-                  fontWeight: 700,
+                  ...primaryButton,
                   fontSize: 16,
-                  background: isScrolled ? color.brand : color.ink,
-                  color: color.white,
-                  border: shape.keyline,
-                  borderRadius: radius.cta,
                   padding: '12px 20px',
-                  cursor: 'pointer',
                   flexShrink: 0,
                   marginLeft: 4,
                   textDecoration: 'none',

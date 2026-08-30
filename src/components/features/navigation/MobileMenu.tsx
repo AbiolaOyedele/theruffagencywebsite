@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { color, font } from '@/config/tokens';
+import { color, font, primaryButton } from '@/config/tokens';
 import { brand, sectionLinks } from '@/content/site';
 import { scrollToSection, setScrollLocked } from '@/utils/scroll';
 
@@ -105,19 +105,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
           target="_blank"
           rel="noopener noreferrer"
           onClick={onClose}
-          style={{
-            display: 'block',
-            width: '100%',
-            background: color.brand,
-            borderRadius: 14,
-            padding: '18px 24px',
-            fontFamily: font.body,
-            fontWeight: 700,
-            fontSize: 18,
-            color: color.white,
-            textAlign: 'center',
-            textDecoration: 'none',
-          }}
+          style={{ ...primaryButton, display: 'flex', width: '100%', padding: '18px 24px', fontSize: 18 }}
         >
           Book a call
         </a>

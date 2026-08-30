@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { AutoplayVideo } from '@/components/ui/AutoplayVideo';
-import { color, font, shape, weight } from '@/config/tokens';
+import { color, font, primaryButton, shape, weight } from '@/config/tokens';
 import { work } from '@/content/site';
 import type { CaseStudy } from '@/types/content';
 import { clamp, easeOutCubic } from '@/utils/scroll';
@@ -167,22 +167,13 @@ export function StoryCard({ study, layout, progress, stackIndex, onOpen }: Story
 
           <span
             style={{
+              ...primaryButton,
               position: 'absolute',
               bottom: 16,
               left: 16,
               right: 16,
-              background: color.brand,
-              borderRadius: 999,
               padding: '12px 0',
-              fontFamily: font.sans,
-              fontWeight: weight.bold,
               fontSize: 13,
-              color: color.white,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 6,
-              border: shape.keyline,
               pointerEvents: 'none',
             }}
           >

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Logo } from '@/components/ui/Logo';
-import { color, font, shape } from '@/config/tokens';
+import { color, font, primaryButton, shape } from '@/config/tokens';
 import { brand, caseStudyChrome } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import type { CaseStudy } from '@/types/content';
@@ -444,17 +444,7 @@ export function CaseStudyView({ study, onBack }: CaseStudyViewProps) {
             href={brand.bookACallUrl}
             target="_blank"
             rel="noopener noreferrer"
-            style={{
-              background: color.brand,
-              borderRadius: 100,
-              padding: '16px 32px',
-              fontFamily: font.body,
-              fontWeight: 700,
-              fontSize: 16,
-              color: color.white,
-              textDecoration: 'none',
-              whiteSpace: 'nowrap',
-            }}
+            style={{ ...primaryButton, padding: '16px 32px', fontSize: 16, whiteSpace: 'nowrap' }}
           >
             {caseStudyChrome.ctaButton}
           </a>

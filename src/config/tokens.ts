@@ -105,3 +105,34 @@ export const MOBILE_MAX_WIDTH = 768;
 
 /** Number of cards in the pinned Services section. */
 export const SERVICE_STEPS = 5;
+
+/**
+ * The one primary-button treatment.
+ *
+ * Red ground, ink keyline, hard offset shadow, full pill. Every call to action
+ * on the site spreads this and overrides only its padding and font size, so the
+ * buttons cannot drift apart again.
+ */
+export const primaryButton = {
+  background: color.brand,
+  color: color.white,
+  border: shape.keyline,
+  borderRadius: radius.pill,
+  boxShadow: shape.hardShadowSmall,
+  fontFamily: font.sans,
+  fontWeight: weight.bold,
+  textDecoration: 'none',
+  cursor: 'pointer',
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: 6,
+  transition: 'background 0.2s ease, box-shadow 0.18s ease, transform 0.18s ease',
+} as const;
+
+/** Pressed state: the shadow collapses under the button. */
+export const primaryButtonPressed = {
+  background: color.brandDeep,
+  boxShadow: shape.hardShadowPressed,
+  transform: 'translate(2px, 2px)',
+} as const;
