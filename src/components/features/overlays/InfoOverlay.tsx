@@ -66,14 +66,20 @@ function ContactBody() {
         </a>
       ),
     },
-    {
-      label: 'Social',
-      content: (
-        <a href={brand.linkedInUrl} target="_blank" rel="noopener noreferrer">
-          LinkedIn
-        </a>
-      ),
-    },
+    // TODO: awaiting the social handle. The row stays hidden until then
+    // rather than shipping a dead link.
+    ...(brand.socialUrl
+      ? [
+          {
+            label: 'Social',
+            content: (
+              <a href={brand.socialUrl} target="_blank" rel="noopener noreferrer">
+                {brand.socialLabel}
+              </a>
+            ),
+          },
+        ]
+      : []),
   ];
 
   return (

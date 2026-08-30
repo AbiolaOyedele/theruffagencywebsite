@@ -2,26 +2,27 @@ import type { Metadata, Viewport } from 'next';
 import '@/styles/globals.css';
 
 const SITE_URL = 'https://theruff.agency';
-const TITLE = 'The Ruff Agency | Your Dedicated Senior Product Designer';
+const TITLE = 'The Ruff Agency | Brand Strategy & Creative Studio, Lagos';
 const DESCRIPTION =
-  'A dedicated senior product designer embedded in your team. Unlimited design requests, 4-day delivery, flexible subscription. Mobile apps, SaaS, websites and design systems for startups and scale-ups.';
+  'A remote creative studio in Lagos building brand strategy, identity, motion, and social content for startups and growing brands worldwide.';
+
+/** Shorter, punchier variant for link previews. */
+const SHARE_DESCRIPTION =
+  'Brand strategy, creative direction, motion, and social content, built remotely from Lagos for startups and growing brands worldwide.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: TITLE,
   description: DESCRIPTION,
   keywords: [
-    'product designer',
-    'freelance designer',
-    'design subscription',
-    'UX design',
-    'UI design',
-    'mobile app design',
-    'SaaS design',
-    'website design',
-    'design systems',
-    'startup design',
-    'scale-up design',
+    'brand strategy agency Lagos',
+    'creative director Lagos',
+    'brand identity Nigeria',
+    'remote creative studio',
+    'brand strategist for startups',
+    'creative studio for startups',
+    'motion design studio',
+    'social media content strategy',
   ],
   authors: [{ name: 'The Ruff Agency' }],
   alternates: { canonical: '/' },
@@ -30,16 +31,14 @@ export const metadata: Metadata = {
     type: 'website',
     url: SITE_URL,
     title: TITLE,
-    description:
-      'A dedicated senior product designer embedded in your team. Unlimited design requests, 4-day delivery, flexible subscription. Pause or cancel anytime.',
+    description: SHARE_DESCRIPTION,
     siteName: 'The Ruff Agency',
     locale: 'en_US',
   },
   twitter: {
     card: 'summary_large_image',
     title: TITLE,
-    description:
-      'A dedicated senior product designer embedded in your team. Unlimited design requests, 4-day delivery, flexible subscription. Pause or cancel anytime.',
+    description: SHARE_DESCRIPTION,
   },
   icons: { icon: '/favicon.png', apple: '/favicon.png' },
 };
@@ -56,9 +55,10 @@ const STRUCTURED_DATA = {
   name: 'The Ruff Agency',
   url: SITE_URL,
   description: DESCRIPTION,
-  serviceType: 'Product Design',
+  serviceType: 'Brand Strategy and Creative Direction',
   areaServed: 'Worldwide',
-  priceRange: 'From 260€/day',
+  address: { '@type': 'PostalAddress', addressLocality: 'Lagos', addressCountry: 'NG' },
+  priceRange: 'From ₦150,000',
 };
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {

@@ -157,7 +157,7 @@ export function Pricing() {
       id="pricing"
       data-section="pricing"
       style={{
-        background: color.accentYellow,
+        background: color.accentPink,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -188,7 +188,7 @@ export function Pricing() {
             textAlign: 'center',
           }}
         >
-          Simple and <AccentWord>transparent</AccentWord> pricing.
+          Simple, <AccentWord>honest</AccentWord> pricing.
         </h2>
 
         <div

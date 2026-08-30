@@ -46,7 +46,7 @@ export const weight = {
 } as const;
 
 export const color = {
-  /* Core pairing */
+  /* Brand red — reserved for buttons and interactive states, never a ground. */
   brand: '#e92038',
   brandDeep: '#c81a2f',
   ink: '#250200',
@@ -75,15 +75,15 @@ export const color = {
 } as const;
 
 /**
- * The deck rotates through saturated grounds rather than settling on one, so
- * each "How it works" card takes the next accent in turn.
+ * Pink is the single accent ground. The other hues stay in the palette for
+ * future use but nothing on the site reaches for them.
  */
 export const cardAccents = [
-  color.accentYellow,
-  color.accentLime,
   color.accentPink,
-  color.accentPurple,
-  color.accentGreen,
+  color.accentPink,
+  color.accentPink,
+  color.accentPink,
+  color.accentPink,
 ] as const;
 
 /**
@@ -114,5 +114,5 @@ export const radius = {
 /** Single source of truth for the mobile breakpoint (matches Tailwind `md`). */
 export const MOBILE_MAX_WIDTH = 768;
 
-/** Number of cards in the pinned "How it works" section. */
-export const HOW_IT_WORKS_STEPS = 5;
+/** Number of cards in the pinned Services section. */
+export const SERVICE_STEPS = 5;

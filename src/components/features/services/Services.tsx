@@ -1,12 +1,12 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { CloudScene } from '@/components/features/how-it-works/CloudScene';
-import { DotGrid } from '@/components/features/how-it-works/DotGrid';
-import { FeatureCard } from '@/components/features/how-it-works/FeatureCard';
-import { ToolStack } from '@/components/features/how-it-works/ToolStack';
+import { CloudScene } from '@/components/features/services/CloudScene';
+import { DotGrid } from '@/components/features/services/DotGrid';
+import { FeatureCard } from '@/components/features/services/FeatureCard';
+import { ToolStack } from '@/components/features/services/ToolStack';
 import { cardAccents, color } from '@/config/tokens';
-import { features } from '@/content/site';
+import { services } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { clamp } from '@/utils/scroll';
 
@@ -43,7 +43,7 @@ function useViewport(): { width: number; height: number } {
 }
 
 /**
- * The pinned "How it works" section.
+ * The pinned Services section.
  *
  * A 500vh track pins one viewport while five cards translate horizontally.
  * The first four fifths of the scroll drive that travel; the last fifth zooms
@@ -53,7 +53,7 @@ function useViewport(): { width: number; height: number } {
  * On mobile the pin is replaced by a plain vertical stack, and horizontal
  * swipes inside the pinned area are translated into scroll.
  */
-export function HowItWorks() {
+export function Services() {
   const isMobile = useIsMobile();
   const viewport = useViewport();
 
@@ -63,7 +63,7 @@ export function HowItWorks() {
   const cardShellRefs = useRef<(HTMLDivElement | null)[]>([]);
   const cardRevealRefs = useRef<(HTMLDivElement | null)[]>([]);
   const cardVideoRefs = useRef<(HTMLVideoElement | null)[]>([]);
-  const revealed = useRef<boolean[]>(features.map(() => false));
+  const revealed = useRef<boolean[]>(services.items.map(() => false));
   const lastRevealAt = useRef(0);
   const finalMediaRef = useRef<HTMLDivElement | null>(null);
   const finalMarkRef = useRef<SVGSVGElement | null>(null);
@@ -118,7 +118,7 @@ export function HowItWorks() {
       // Translate the rail so the first card starts centred and the last ends centred.
       const firstCentre = railPadding + cardWidth / 2;
       const lastCentre =
-        railPadding + (features.length - 1) * (cardWidth + CARD_GAP) + cardWidth / 2;
+        railPadding + (services.items.length - 1) * (cardWidth + CARD_GAP) + cardWidth / 2;
       const startOffset = viewportWidth / 2 - firstCentre;
       const endOffset = viewportWidth / 2 - lastCentre;
       const railOffset =
@@ -191,7 +191,7 @@ export function HowItWorks() {
       // on the same near-black the client-stories section starts from.
       if (media) {
         const darkness = 1 - (1 - clamp((zoom - 0.4) / 0.6)) ** 3;
-        const from = cardAccents[features.length - 1] ?? color.cream;
+        const from = cardAccents[services.items.length - 1] ?? color.cream;
         media.style.background = `color-mix(in srgb, ${color.ink} ${Math.round(darkness * 100)}%, ${from})`;
       }
 
@@ -248,7 +248,7 @@ export function HowItWorks() {
       if (event.cancelable) event.preventDefault();
 
       const pinLength = (track.offsetHeight - window.innerHeight) * TRAVEL_RATIO;
-      const pixelsPerCard = pinLength / Math.max(1, features.length - 1);
+      const pixelsPerCard = pinLength / Math.max(1, services.items.length - 1);
       const ratio = pixelsPerCard / (window.innerWidth * 0.7);
       window.scrollTo({ top: startScroll - dx * ratio });
     };
@@ -285,8 +285,8 @@ export function HowItWorks() {
   if (isMobile) {
     return (
       <section
-        id="how-it-works"
-        data-section="how-it-works"
+        id="services"
+        data-section="services"
         style={{ background: color.white, padding: '64px 16px 80px' }}
       >
         <div
@@ -297,7 +297,7 @@ export function HowItWorks() {
             alignItems: 'center',
           }}
         >
-          {features.map((feature, index) => (
+          {services.items.map((feature, index) => (
             <FeatureCard
               key={feature.title}
               title={feature.title}
@@ -320,8 +320,8 @@ export function HowItWorks() {
 
   return (
     <div
-      id="how-it-works"
-      data-section="how-it-works"
+      id="services"
+      data-section="services"
       ref={trackRef}
       style={{ position: 'relative', height: '500vh', background: color.paper }}
     >
@@ -358,8 +358,8 @@ export function HowItWorks() {
                 willChange: 'transform',
               }}
             >
-              {features.map((feature, index) => {
-                const isFinal = index === features.length - 1;
+              {services.items.map((feature, index) => {
+                const isFinal = index === services.items.length - 1;
 
                 return (
                   <div

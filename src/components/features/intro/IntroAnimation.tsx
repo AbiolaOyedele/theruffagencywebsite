@@ -98,7 +98,7 @@ export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps)
   const renderLine = (words: readonly string[], delays: readonly number[]) => (
     <span style={{ display: 'block' }}>
       {words.map((word, index) => (
-        <span key={word}>
+        <span key={`${word}-${index}`}>
           {index > 0 ? ' ' : null}
           <span
             style={{
@@ -137,7 +137,7 @@ export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps)
         alignItems: 'center',
         paddingTop: 120,
         paddingBottom: isMobile ? 0 : 42,
-        background: pulledBack ? color.brand : color.paper,
+        background: pulledBack ? color.white : color.paper,
         transition: pulledBack ? 'background 1.3s ease' : 'none',
         overflow: 'hidden',
       }}
@@ -162,8 +162,12 @@ export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps)
             fontFeatureSettings: '"calt" 0, "liga" 0, "dlig" 0, "clig" 0',
           }}
         >
-          {renderLine(['Pause', 'hiring,'], [0, 100])}
-          {renderLine(['Start', 'designing.'], [220, 320])}
+          {/* Split from the shared headline so the intro can never drift out of
+              sync with the hero it hands over to. */}
+          {(hero.headline[0] ?? '').split(' ').length
+            ? renderLine((hero.headline[0] ?? '').split(' '), [0, 100, 200])
+            : null}
+          {renderLine((hero.headline[1] ?? '').split(' '), [220, 320, 420])}
         </h1>
 
         <p
@@ -181,13 +185,13 @@ export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps)
             transition: 'opacity 0.6s ease, transform 0.6s ease',
           }}
         >
-          We design your{' '}
+          {hero.subheadBefore}
           <strong style={{ fontFamily: font.sans, fontWeight: 700 }}>
             <span style={{ opacity: wordVisible ? 1 : 0, transition: 'opacity 0.25s ease' }}>
               {hero.rotatingWords[wordIndex]}
             </span>
-          </strong>{' '}
-          without limits, for a fixed price.
+          </strong>
+          {hero.subheadAfter}
         </p>
       </div>
 

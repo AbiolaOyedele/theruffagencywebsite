@@ -100,7 +100,7 @@ export function Hero({ introActive }: HeroProps) {
       id="hero-section"
       style={{
         position: 'relative',
-        background: color.brand,
+        background: color.white,
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
@@ -131,7 +131,7 @@ export function Hero({ introActive }: HeroProps) {
         >
           {hero.headline[0]}
           <br />
-          Start <AccentWord>designing.</AccentWord>
+          Build a <AccentWord>brand.</AccentWord>
         </h1>
 
         <p
@@ -146,8 +146,9 @@ export function Hero({ introActive }: HeroProps) {
             whiteSpace: isMobile ? 'normal' : 'nowrap',
           }}
         >
-          We design your <RotatingWord words={hero.rotatingWords} /> without limits, for a fixed
-          price.
+          {hero.subheadBefore}
+          <RotatingWord words={hero.rotatingWords} />
+          {hero.subheadAfter}
         </p>
       </div>
 

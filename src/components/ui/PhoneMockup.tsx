@@ -117,6 +117,8 @@ export function PhoneMockup({
           height: cardHeight,
           background: color.white,
           borderRadius: 17,
+          // The card sits on a white hero now, so it needs its own edge.
+          border: `1.5px solid ${color.ink}`,
           padding: 6,
           display: 'flex',
           flexDirection: 'column',
@@ -130,7 +132,9 @@ export function PhoneMockup({
         <div style={{ display: 'flex', gap: 9, alignItems: 'center', flexShrink: 0 }}>
           <div
             style={{
-              background: color.brand,
+              // Pink, not red: red is reserved for buttons, and the wordmark's
+              // white letterforms would vanish on a white chip.
+              background: color.accentPink,
               borderRadius: 10,
               width: 44,
               height: 44,

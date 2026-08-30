@@ -4,11 +4,11 @@ import { useEffect, useRef, useState } from 'react';
 import { Logo } from '@/components/ui/Logo';
 import { MobileMenu } from '@/components/features/navigation/MobileMenu';
 import { StepIndicator } from '@/components/features/navigation/StepIndicator';
-import { color, font, radius, shape } from '@/config/tokens';
-import { brand, sectionLinks, viewTabs } from '@/content/site';
+import { color, font, radius, shape, weight } from '@/config/tokens';
+import { brand, sectionLinks } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { clamp, scrollToSection } from '@/utils/scroll';
-import { HOW_IT_WORKS_STEPS } from '@/config/tokens';
+import { SERVICE_STEPS } from '@/config/tokens';
 
 /** Fraction of the pinned section's scroll length used for horizontal travel. */
 const HORIZONTAL_TRAVEL_RATIO = 4 / 5;
@@ -20,21 +20,19 @@ interface NavbarProps {
   readonly revealed: boolean;
   /** Lifts the pill above the intro overlay during the handover. */
   readonly aboveOverlay: boolean;
-  /** Slides the pill away while switching between Studio and Academy. */
-  readonly exiting: boolean;
-  readonly onOpenAcademy: () => void;
 }
 
 /**
  * Floating pill navigation.
  *
- * Four states, all driven by scroll position:
- *  - hero:      view tabs + dark "Start today"
- *  - scrolled:  section anchors + red "Book a call"
- *  - pinned:    five-dot stepper tracking the horizontal section
- *  - mobile:    logo + hamburger that opens a full-screen menu
+ * Three states, all driven by scroll position:
+ *  - hero:      logo and a dark "Start today"; the links stay collapsed
+ *  - scrolled:  the pill widens to reveal the section links, CTA turns red
+ *  - pinned:    five-dot stepper tracking the horizontal Services section
+ *
+ * Below `md` it collapses to a logo and a hamburger.
  */
-export function Navbar({ revealed, aboveOverlay, exiting, onOpenAcademy }: NavbarProps) {
+export function Navbar({ revealed, aboveOverlay }: NavbarProps) {
   const isMobile = useIsMobile();
 
   const [contentVisible, setContentVisible] = useState(true);
@@ -66,7 +64,7 @@ export function Navbar({ revealed, aboveOverlay, exiting, onOpenAcademy }: Navba
         window.scrollY <= (heroSection ? heroSection.offsetHeight : window.innerHeight);
 
       // Track progress through the pinned horizontal section.
-      const pinned = document.getElementById('how-it-works');
+      const pinned = document.getElementById('services');
       let isPinned = false;
 
       if (pinned) {
@@ -77,8 +75,8 @@ export function Navbar({ revealed, aboveOverlay, exiting, onOpenAcademy }: Navba
         if (isPinned) {
           const progress = clamp(scrolledIntoPin / travel);
           const step = Math.min(
-            HOW_IT_WORKS_STEPS - 1,
-            Math.floor(progress * HOW_IT_WORKS_STEPS),
+            SERVICE_STEPS - 1,
+            Math.floor(progress * SERVICE_STEPS),
           );
           if (step !== lastStep.current) {
             lastStep.current = step;
@@ -107,7 +105,7 @@ export function Navbar({ revealed, aboveOverlay, exiting, onOpenAcademy }: Navba
 
       // Highlight whichever section owns the upper third of the viewport.
       let current = '';
-      for (const id of ['how-it-works', 'clientstories', 'pricing', 'faq']) {
+      for (const id of ['services', 'work', 'pricing', 'faq']) {
         const element = document.querySelector<HTMLElement>(`[data-section="${id}"], #${id}`);
         if (!element) continue;
         const rect = element.getBoundingClientRect();
@@ -116,9 +114,9 @@ export function Navbar({ revealed, aboveOverlay, exiting, onOpenAcademy }: Navba
         }
       }
       // Once past the horizontal travel, the stories section is what's on screen.
-      if (current === 'how-it-works' && pinned) {
+      if (current === 'services' && pinned) {
         const travel = (pinned.offsetHeight - window.innerHeight) * HORIZONTAL_TRAVEL_RATIO;
-        if (Math.max(0, -pinned.getBoundingClientRect().top) > travel) current = 'clientstories';
+        if (Math.max(0, -pinned.getBoundingClientRect().top) > travel) current = 'work';
       }
       setActiveSection(current);
     };
@@ -132,8 +130,9 @@ export function Navbar({ revealed, aboveOverlay, exiting, onOpenAcademy }: Navba
     };
   }, []);
 
-  const showInnerContent = contentVisible;
-  const tabs = isScrolled ? sectionLinks.map((link) => link.label) : [...viewTabs];
+  // The links only exist once you are past the hero; before that the pill
+  // stays collapsed around the logo and the CTA.
+  const showInnerContent = contentVisible && (isScrolled || inPinnedSection);
 
   const shellStyle = {
     display: 'flex',
@@ -159,8 +158,8 @@ export function Navbar({ revealed, aboveOverlay, exiting, onOpenAcademy }: Navba
           display: 'flex',
           justifyContent: 'center',
           pointerEvents: 'none',
-          opacity: exiting || !revealed ? 0 : 1,
-          transform: exiting || !revealed ? 'translateY(-200%)' : 'translateY(0)',
+          opacity: revealed ? 1 : 0,
+          transform: revealed ? 'translateY(0)' : 'translateY(-200%)',
           transition: 'opacity 0.5s ease, transform 0.5s cubic-bezier(0.4,0,0.6,1)',
         }}
       >
@@ -241,31 +240,22 @@ export function Navbar({ revealed, aboveOverlay, exiting, onOpenAcademy }: Navba
                     <StepIndicator activeIndex={activeStep} />
                   ) : (
                     <nav style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                      {tabs.map((label) => {
-                        const targetId = sectionLinks.find(
-                          (link) => link.label === label,
-                        )?.targetId;
-                        const isActive = isScrolled
-                          ? Boolean(targetId) && activeSection === targetId
-                          : label === 'Design Studio';
+                      {sectionLinks.map((link) => {
+                        const isActive = activeSection === link.targetId;
 
                         return (
                           <a
-                            key={label}
-                            href={targetId ? `#${targetId}` : '#'}
+                            key={link.targetId}
+                            href={`#${link.targetId}`}
                             onClick={(event) => {
                               event.preventDefault();
-                              if (label === 'Design Academy') {
-                                onOpenAcademy();
-                                return;
-                              }
-                              if (targetId) scrollToSection(targetId);
+                              scrollToSection(link.targetId);
                             }}
                             style={{
-                              fontFamily: font.body,
-                              fontWeight: isActive ? 800 : 600,
+                              fontFamily: font.sans,
+                              fontWeight: isActive ? weight.extrabold : weight.medium,
                               fontSize: 16,
-                              color: isActive ? color.brand : color.inkNavy,
+                              color: isActive ? color.brand : color.ink,
                               textDecoration: 'none',
                               padding: '10px',
                               borderRadius: 8,
@@ -273,7 +263,7 @@ export function Navbar({ revealed, aboveOverlay, exiting, onOpenAcademy }: Navba
                               transition: 'color 0.2s ease',
                             }}
                           >
-                            {label}
+                            {link.label}
                           </a>
                         );
                       })}

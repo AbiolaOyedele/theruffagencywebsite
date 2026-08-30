@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { Logo } from '@/components/ui/Logo';
-import { color, font } from '@/config/tokens';
-import { brand } from '@/content/site';
+import { color, font, shape } from '@/config/tokens';
+import { brand, caseStudyChrome } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import type { CaseStudy } from '@/types/content';
 
@@ -37,11 +37,13 @@ export function CaseStudyView({ study, onBack }: CaseStudyViewProps) {
     };
   }, [onBack]);
 
-  const stats = [
-    { value: `${study.months}`, label: 'Months' },
-    { value: `${study.tasks}`, label: 'Tasks delivered' },
-    { value: `${study.designers.length}`, label: 'Designers' },
-  ];
+  const stats: readonly { value: string; label: string }[] = (
+    [
+      { value: study.duration, label: 'Duration' },
+      { value: study.deliverables, label: 'Deliverables' },
+      { value: study.credits?.length ? `${study.credits.length}` : undefined, label: 'Team' },
+    ] as { value?: string; label: string }[]
+  ).flatMap((stat) => (stat.value ? [{ value: stat.value, label: stat.label }] : []));
 
   return (
     <div style={{ background: color.paperAlt, minHeight: '100vh' }}>
@@ -85,7 +87,7 @@ export function CaseStudyView({ study, onBack }: CaseStudyViewProps) {
               fontSize: 14,
             }}
           >
-            ← Back
+            {caseStudyChrome.back}
           </button>
           <Logo height={isMobile ? 26 : 32} />
         </header>
@@ -114,13 +116,34 @@ export function CaseStudyView({ study, onBack }: CaseStudyViewProps) {
               fontWeight: 700,
               fontSize: 12,
               letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              color: color.brand,
+              color: color.accentPink,
               margin: '0 0 24px',
             }}
           >
-            {study.collaboration}
+            {study.collaboration ?? study.client}
           </p>
+
+          {study.placeholder ? (
+            <p
+              role="status"
+              style={{
+                display: 'inline-block',
+                fontFamily: font.sans,
+                fontWeight: 700,
+                fontSize: 12,
+                letterSpacing: '0.06em',
+                textTransform: 'uppercase',
+                color: color.ink,
+                background: color.accentPink,
+                border: shape.keyline,
+                borderRadius: 999,
+                padding: '8px 16px',
+                margin: '0 0 24px',
+              }}
+            >
+              Placeholder copy — awaiting the real write-up
+            </p>
+          ) : null}
 
           <h1
             style={{
@@ -133,22 +156,24 @@ export function CaseStudyView({ study, onBack }: CaseStudyViewProps) {
               margin: 0,
             }}
           >
-            {study.title}
+            {study.title ?? study.client}
           </h1>
 
-          <p
-            style={{
-              fontFamily: font.body,
-              fontWeight: 300,
-              fontSize: isMobile ? 16 : 20,
-              color: 'rgba(255,255,255,0.6)',
-              lineHeight: 1.6,
-              margin: '24px 0 0',
-              maxWidth: 640,
-            }}
-          >
-            {study.summary}
-          </p>
+          {study.summary ? (
+            <p
+              style={{
+                fontFamily: font.body,
+                fontWeight: 300,
+                fontSize: isMobile ? 16 : 20,
+                color: 'rgba(255,255,255,0.6)',
+                lineHeight: 1.6,
+                margin: '24px 0 0',
+                maxWidth: 640,
+              }}
+            >
+              {study.summary}
+            </p>
+          ) : null}
 
           <div
             style={{
@@ -237,13 +262,13 @@ export function CaseStudyView({ study, onBack }: CaseStudyViewProps) {
                 marginTop: 16,
               }}
             >
-              {study.authorName} — {study.authorRole}
+              {[study.authorName, study.authorRole].filter(Boolean).join(' — ')}
             </footer>
           </blockquote>
         ) : null}
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 48 }}>
-          {study.sections.map((section) => (
+          {(study.sections ?? []).map((section) => (
             <section key={section.heading}>
               <h2
                 style={{
@@ -273,107 +298,111 @@ export function CaseStudyView({ study, onBack }: CaseStudyViewProps) {
           ))}
         </div>
 
-        <section>
-          <h2
-            style={{
-              fontFamily: font.display,
-              fontWeight: 800,
-              fontSize: isMobile ? 26 : 36,
-              letterSpacing: '-0.02em',
-              color: color.ink,
-              margin: '0 0 24px',
-            }}
-          >
-            Selected tickets
-          </h2>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            {study.tickets.map((ticket) => (
-              <article
-                key={ticket.title}
-                style={{
-                  background: color.white,
-                  borderRadius: 20,
-                  padding: isMobile ? 24 : 32,
-                  border: `1px solid ${color.border}`,
-                }}
-              >
-                <h3
+        {study.tickets?.length ? (
+          <section>
+            <h2
+              style={{
+                fontFamily: font.display,
+                fontWeight: 800,
+                fontSize: isMobile ? 26 : 36,
+                letterSpacing: '-0.02em',
+                color: color.ink,
+                margin: '0 0 24px',
+              }}
+            >
+              {caseStudyChrome.ticketsHeading}
+            </h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              {(study.tickets ?? []).map((ticket) => (
+                <article
+                  key={ticket.title}
                   style={{
-                    fontFamily: font.body,
-                    fontWeight: 700,
-                    fontSize: isMobile ? 17 : 20,
-                    color: color.ink,
-                    margin: '0 0 12px',
-                  }}
-                >
-                  {ticket.title}
-                </h3>
-                <p
-                  style={{
-                    fontFamily: font.body,
-                    fontWeight: 300,
-                    fontSize: 16,
-                    color: color.muted,
-                    lineHeight: 1.65,
-                    margin: 0,
-                  }}
-                >
-                  {ticket.request}
-                </p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section>
-          <h2
-            style={{
-              fontFamily: font.display,
-              fontWeight: 800,
-              fontSize: isMobile ? 26 : 36,
-              letterSpacing: '-0.02em',
-              color: color.ink,
-              margin: '0 0 24px',
-            }}
-          >
-            Selected work
-          </h2>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
-              gap: 16,
-            }}
-          >
-            {study.gallery.map((item) => (
-              <figure key={item.src} style={{ margin: 0 }}>
-                {/* eslint-disable-next-line @next/next/no-img-element -- gallery art of unknown intrinsic size */}
-                <img
-                  src={item.src}
-                  alt={item.caption}
-                  loading="lazy"
-                  style={{
-                    width: '100%',
-                    height: 'auto',
+                    background: color.white,
                     borderRadius: 20,
-                    display: 'block',
-                    background: color.paper,
-                  }}
-                />
-                <figcaption
-                  style={{
-                    fontFamily: font.body,
-                    fontSize: 13,
-                    color: color.muted,
-                    marginTop: 12,
+                    padding: isMobile ? 24 : 32,
+                    border: `1px solid ${color.border}`,
                   }}
                 >
-                  {item.caption}
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-        </section>
+                  <h3
+                    style={{
+                      fontFamily: font.body,
+                      fontWeight: 700,
+                      fontSize: isMobile ? 17 : 20,
+                      color: color.ink,
+                      margin: '0 0 12px',
+                    }}
+                  >
+                    {ticket.title}
+                  </h3>
+                  <p
+                    style={{
+                      fontFamily: font.body,
+                      fontWeight: 300,
+                      fontSize: 16,
+                      color: color.muted,
+                      lineHeight: 1.65,
+                      margin: 0,
+                    }}
+                  >
+                    {ticket.request}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </section>
+        ) : null}
+
+        {study.gallery?.length ? (
+          <section>
+            <h2
+              style={{
+                fontFamily: font.display,
+                fontWeight: 800,
+                fontSize: isMobile ? 26 : 36,
+                letterSpacing: '-0.02em',
+                color: color.ink,
+                margin: '0 0 24px',
+              }}
+            >
+              {caseStudyChrome.workHeading}
+            </h2>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
+                gap: 16,
+              }}
+            >
+              {(study.gallery ?? []).map((item) => (
+                <figure key={item.src} style={{ margin: 0 }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element -- gallery art of unknown intrinsic size */}
+                  <img
+                    src={item.src}
+                    alt={item.caption}
+                    loading="lazy"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: 20,
+                      display: 'block',
+                      background: color.paper,
+                    }}
+                  />
+                  <figcaption
+                    style={{
+                      fontFamily: font.body,
+                      fontSize: 13,
+                      color: color.muted,
+                      marginTop: 12,
+                    }}
+                  >
+                    {item.caption}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </section>
+        ) : null}
 
         <section
           style={{
@@ -398,7 +427,7 @@ export function CaseStudyView({ study, onBack }: CaseStudyViewProps) {
                 letterSpacing: '-0.02em',
               }}
             >
-              Want results like these?
+              {caseStudyChrome.ctaHeading}
             </h2>
             <p
               style={{
@@ -408,7 +437,7 @@ export function CaseStudyView({ study, onBack }: CaseStudyViewProps) {
                 margin: 0,
               }}
             >
-              Book a call and we&apos;ll match you with the right designer.
+              {caseStudyChrome.ctaBody}
             </p>
           </div>
           <a
@@ -427,7 +456,7 @@ export function CaseStudyView({ study, onBack }: CaseStudyViewProps) {
               whiteSpace: 'nowrap',
             }}
           >
-            Book a call
+            {caseStudyChrome.ctaButton}
           </a>
         </section>
       </div>

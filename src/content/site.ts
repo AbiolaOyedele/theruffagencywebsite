@@ -1,3 +1,4 @@
+import { color } from '@/config/tokens';
 import type {
   CaseStudy,
   ClientLogo,
@@ -14,25 +15,25 @@ import type {
 
 export const brand = {
   name: 'The Ruff Agency',
-  shortName: 'RUFF',
-  legalName: 'THE RUFF AGENCY',
+  shortName: 'Ruff',
+  legalName: 'The Ruff Agency',
   email: 'hi@theruff.agency',
-  tagline: ['Senior product design,', 'on demand.'],
-  copyright: '© 2026 THE RUFF AGENCY. All rights reserved.',
+  tagline: ['Brand & creative,', 'made to launch.'],
+  copyright: '© 2026 The Ruff Agency. All rights reserved.',
   bookACallUrl: 'https://calendar.app.google/tU2SHfJjpBd56rmx7',
-  linkedInUrl: 'https://www.linkedin.com/company/theruffagency/',
-  basedIn: ['Annecy & Paris, France', 'Working remotely with clients worldwide'],
+  /** TODO: confirm which platform this should point at. */
+  socialUrl: '',
+  socialLabel: 'LinkedIn',
+  basedIn: ['Lagos, Nigeria', 'Working remotely with clients worldwide'],
 } as const;
 
 /* ------------------------------------------------------------------ */
 /* Navigation                                                          */
 /* ------------------------------------------------------------------ */
 
-export const viewTabs = ['Design Studio', 'Design Academy'] as const;
-
 export const sectionLinks: readonly NavLink[] = [
-  { label: 'How it works', targetId: 'how-it-works' },
-  { label: 'Client stories', targetId: 'clientstories' },
+  { label: 'Services', targetId: 'services' },
+  { label: 'Work', targetId: 'work' },
   { label: 'Pricing', targetId: 'pricing' },
 ];
 
@@ -41,20 +42,27 @@ export const sectionLinks: readonly NavLink[] = [
 /* ------------------------------------------------------------------ */
 
 export const hero = {
-  headline: ['Pause hiring,', 'Start designing.'],
+  headline: ['Skip the guessing.', 'Build a brand.'],
   rotatingWords: [
-    'Mobile App',
-    'SaaS',
-    'Website',
-    'Software',
-    'Landing Pages',
     'Brand',
-    'Product',
-    'Flows',
+    'Campaign',
+    'Identity',
+    'Content',
+    'Launch',
+    'Strategy',
+    'Story',
+    'Motion',
   ],
+  /**
+   * Wraps the rotating word. On desktop the whole line is forced onto one
+   * unbroken row, so before + longest word + after must stay under ~65
+   * characters.
+   */
+  subheadBefore: 'We turn your ',
+  subheadAfter: ' into a brand people remember.',
   notification: {
-    eyebrow: 'Get the job done',
-    title: 'Your design has been delivered',
+    eyebrow: 'Consider it handled',
+    title: 'Your next campaign, delivered.',
   },
 } as const;
 
@@ -62,382 +70,255 @@ export const hero = {
 /* Logo strip                                                          */
 /* ------------------------------------------------------------------ */
 
+/**
+ * Only clients cleared for public use appear here.
+ *
+ * No `src` yet, so each renders as a wordmark rather than borrowing another
+ * company's mark. Drop in a logo file and the strip picks it up.
+ */
 export const logoStrip = {
-  label: 'Our designers have been part of these teams.',
+  label: "Some of the teams we've worked with.",
   logos: [
-    {
-      name: 'GoPro',
-      src: '/assets/4749c967c7f8adfedb3d46b0d1431c47a4a6e817.webp',
-      width: 124,
-      height: 69,
-    },
-    {
-      name: 'Gillette',
-      src: '/assets/ea55a0a638beaab91dee0dbca6565714337197b1.webp',
-      width: 124,
-      height: 37,
-    },
-    {
-      name: 'Revolut',
-      src: '/assets/39949f69e900d50476534b8abec29b6bb7030c99.webp',
-      width: 158,
-      height: 105,
-    },
-    {
-      name: 'Nespresso',
-      src: '/assets/cf9789569f4d0ab00ff30680fc494f3416e9d992.webp',
-      width: 163,
-      height: 92,
-    },
-    {
-      name: 'Alan',
-      src: '/assets/f7e17e89fae89964272fc250d4fa15c376f4f99f.webp',
-      width: 156,
-      height: 69,
-    },
-  ] satisfies readonly ClientLogo[],
-} as const;
+    { name: 'Teemplot' },
+    { name: 'IPC Africa' },
+    { name: 'Zero to 16' },
+  ] as readonly ClientLogo[],
+};
 
 /* ------------------------------------------------------------------ */
 /* Scroll-scrubbed statement                                           */
 /* ------------------------------------------------------------------ */
 
 export const statementWords: readonly string[] = [
-  'Finding',
+  'Building',
   'a',
-  'product',
-  'designer',
+  'brand',
   'takes',
-  'months.',
-  'Starting',
-  'with',
-  'RUFF',
+  'strategy.',
+  'Earning',
+  'trust',
   'takes',
-  'minutes.',
-  'Unlimited',
-  'requests.',
-  'Fixed',
-  'monthly',
-  'price.',
-  'No',
-  'commitment.',
+  'proof.',
+  'Ruff',
+  'brings',
+  'both.',
+  'Thirty',
+  'plus',
+  'campaigns.',
+  'Real',
+  'sectors.',
+  'Real',
+  'results.',
 ];
 
 /* ------------------------------------------------------------------ */
-/* How it works                                                        */
+/* Services                                                            */
 /* ------------------------------------------------------------------ */
 
-export const features: readonly Feature[] = [
-  {
-    title: 'Your designer, from day one',
-    description:
-      'A senior product designer fully dedicated to your company. Working like a founding designer, without the hiring process.',
-    icon: '/assets/83f5508eeeebc94fff7e8755d7f494e548438dfb.svg',
-    video: '/card1-designer.mp4',
-  },
-  {
-    title: 'Unlimited design requests',
-    description:
-      'Submit as many tasks as you need. No per-task billing, no cap, no waiting list. Just continuous output.',
-    icon: '/assets/designrequest.svg',
-    video: '/card2.mp4',
-  },
-  {
-    title: 'Delivered in 4 days or less',
-    description:
-      'Every task is delivered within 4 days. Your roadmap keeps moving, your product keeps shipping.',
-    icon: '/assets/delivery.svg',
-  },
-  {
-    title: 'Embedded in your workflow',
-    description:
-      'Slack, Jira, Notion, Figma, Linear. We plug into whatever you use and work like part of your team.',
-    icon: '/assets/embedded.svg',
-  },
-  {
-    title: 'Flexible and predictable',
-    description:
-      'One flat subscription. No surprises, no contracts. Pause or cancel anytime. Scale design up or down as you grow.',
-    icon: '/assets/budget.svg',
-  },
-];
+export const services = {
+  navLabel: 'Services',
+  items: [
+    {
+      title: 'We start with strategy',
+      description:
+        'Before a single visual, we map your market, your audience, and what makes you worth choosing.',
+      icon: '/assets/83f5508eeeebc94fff7e8755d7f494e548438dfb.svg',
+      video: '/card1-designer.mp4',
+    },
+    {
+      title: 'Creative direction that fits',
+      description:
+        'Every idea is built around your brand, not a template. Concepts you can actually ship.',
+      icon: '/assets/designrequest.svg',
+      video: '/card2.mp4',
+    },
+    {
+      title: 'Design, motion, and content',
+      description:
+        'From identity systems to short-form video, one team builds it, so nothing gets lost in handoff.',
+      icon: '/assets/delivery.svg',
+    },
+    {
+      title: 'Built into your workflow',
+      description:
+        'Slack, Notion, Figma, whatever you run on. We work inside it, not around it.',
+      icon: '/assets/embedded.svg',
+    },
+    {
+      title: 'Delivered, ready to launch',
+      description: 'Every project comes with a plan for how to launch it.',
+      icon: '/assets/budget.svg',
+    },
+  ] satisfies readonly Feature[],
+} as const;
 
-/** Tool logos tumbling inside the "Embedded in your workflow" card. */
+/** Tool logos tumbling inside the "Built into your workflow" card. */
 export const toolStackLogos: readonly string[] = Array.from(
   { length: 12 },
   (_unused, index) => `/stack/tool-${index}.png`,
 );
 
 /* ------------------------------------------------------------------ */
-/* Client stories                                                      */
+/* Work                                                                */
 /* ------------------------------------------------------------------ */
 
-export const clientStories = {
-  headline: ['Stories of', 'our clients.'],
-  startupCount: 15,
-  subheadBefore: "We've already helped ",
+export const work = {
+  headline: ['Real work,', 'real results.'],
+  campaignCount: 30,
+  subheadBefore: 'Our designers have worked on ',
   subheadAfter:
-    ' startups deliver products, features, and brands, to grow their business and raise money.',
+    ' campaigns across SaaS, food, fashion, startups, tech, and procurement.',
+  cardCta: 'Read the story',
+  statLabels: {
+    duration: 'Duration',
+    deliverables: 'Deliverables',
+    impact: 'Impact',
+  },
 } as const;
 
 /**
- * Case studies.
+ * Client engagements.
  *
- * NOTE: these are placeholder engagements carried over from the reference
- * build. Replace the copy, logos, videos and screenshots with The Ruff
- * Agency's own work before this site goes live.
+ * TODO — awaiting content from the clients themselves: quote, duration,
+ * deliverables, impact, the four narrative sections, tickets and gallery.
+ * A card stays a name-only tile until `sections` is filled in; nothing is
+ * written on a client's behalf.
  */
+/**
+ * Placeholder narrative, shown so the case-study layout can be reviewed before
+ * the real write-ups arrive. Every study carrying `placeholder: true` renders a
+ * banner saying so — remove the flag once real copy replaces this.
+ */
+function placeholderStory(client: string) {
+  return {
+    placeholder: true,
+    title: 'The outcome headline goes here',
+    summary:
+      'One sentence on what was delivered — the shape of the work, in the client’s language rather than ours. Around 140 characters.',
+    quote:
+      'A short testimonial from the client goes here. One or two sentences, in their own words, about what working together was actually like.',
+    authorName: 'Name',
+    authorRole: 'Role',
+    duration: '12 weeks',
+    deliverables: '30+ assets',
+    impact: 'The headline outcome goes here — one measurable result.',
+    credits: [{ name: 'Name', role: 'Creative Lead' }],
+    sections: [
+      {
+        heading: 'The context',
+        body: `Who ${client} are and what they were building when we came in. The market they operate in, who they are trying to reach, and the state of their brand at the start. Around 80–120 words.`,
+      },
+      {
+        heading: 'The problem',
+        body: 'What was actually getting in the way — not a list of missing features, but the underlying reason the brand was not landing. This is the section that earns the reader’s attention, so it should be specific and honest. Around 120–200 words.',
+      },
+      {
+        heading: 'What we did',
+        body: 'The work itself, in the order it happened: strategy, creative direction, then production. Name the deliverables and the decisions behind them rather than listing outputs. Around 150–200 words.',
+      },
+      {
+        heading: 'The impact',
+        body: 'What changed as a result, stated plainly. Numbers where they exist, and where they do not, the concrete difference the client can point to. Around 80–120 words.',
+      },
+    ],
+    tickets: [
+      {
+        title: 'A representative brief goes here',
+        request:
+          'The request in the client’s own voice — what they asked for, what they were worried about, and what a good outcome looked like to them. Around 60 words.',
+      },
+      {
+        title: 'A second brief, showing range',
+        request:
+          'Pick briefs that show different parts of the offer: one strategic, one craft-led, one that shows how a tricky constraint was handled.',
+      },
+      {
+        title: 'A third brief, showing depth',
+        request:
+          'The point of this section is to show how Ruff works, not just what it produced. Keep the client’s framing intact.',
+      },
+    ],
+  };
+}
+
 export const caseStudies: readonly CaseStudy[] = [
   {
-    slug: 'alpa',
-    collaboration: 'RUFF x ALPA',
-    title: 'From complex data to clear financial decisions',
-    summary:
-      'Rebuilt P&L and Cash Flow experiences, structured financial data into actionable layers, and redesigned onboarding flows.',
-    quote:
-      'They plugged straight into the team and started shipping. No ramp-up, no hand-holding, just senior design output from week one.',
-    authorName: 'Mickael B.',
-    authorRole: 'CEO',
+    slug: 'teemplot',
+    client: 'Teemplot',
+    accent: color.accentPink,
+    collaboration: 'Ruff × Teemplot',
     video: '/card-alpa.mp4',
-    logo: '/assets/logo-alpa.png',
-    logoHeight: 24,
-    months: 3,
-    tasks: 40,
-    impact:
-      'Structured and designed the product from MVP to commercial launch, supporting the company in raising $4M',
-    designers: [
-      { name: 'Samy', role: 'Product Designer', avatar: '/assets/avatar-samy.webp' },
-    ],
-    sections: [
-      {
-        heading: 'The context',
-        body: 'Alpa is building a financial OS for the hospitality industry. They connect POS, banking, and supplier data to give restaurant operators a real-time understanding of their business. Ambitious product. Complex data. High expectations.',
-      },
-      {
-        heading: 'The problem',
-        body: "The product was powerful, but power without clarity doesn't scale. Financial data was dense and hard to read, key insights were buried in tables, multi-location logic was confusing, and onboarding created friction. Users weren't struggling because of missing features. They were struggling to understand what was already there. And when users don't understand, they don't trust. And when they don't trust, they don't act.",
-      },
-      {
-        heading: 'What we did',
-        body: 'We plugged into the team as a senior product design layer and started shipping immediately. No hiring. No onboarding time. No slowdown. Over 4 months, we rebuilt P&L and Cash Flow experiences from the ground up, structured financial data into readable and actionable layers, designed comparison systems for previous periods and budgets, simplified complex tables with hierarchy and grouping, redesigned POS & bank onboarding flows, clarified account and location attribution, introduced consistent UI patterns for financial data, designed notification and alert logic, and built first-time user guidance and contextual onboarding. Everything delivered ready-to-build, with clear rationale, async.',
-      },
-      {
-        heading: 'The impact',
-        body: "Users can read and understand their data instantly. Decisions are made faster, with more confidence. Onboarding friction was significantly reduced. Product consistency increased across the board. The team ships faster, without design bottlenecks. The product didn't just look better, it became usable at scale.",
-      },
-    ],
-    tickets: [
-      {
-        title: 'Design the notification center and alert system',
-        request:
-          "We're adding notifications to the product, but we don't want to overwhelm users. We need a system that highlights what matters, prioritizes alerts, and fits naturally into the experience without cluttering the interface.",
-      },
-      {
-        title: 'Redesign the P&L experience from the ground up',
-        request:
-          "Our current P&L isn't working. It's hard to read, hard to navigate, and users don't trust it. We need to rethink it entirely, structure, hierarchy, comparisons, and rebuild it into something clear, usable, and scalable for multi-location businesses.",
-      },
-      {
-        title: 'Clarify bank account selection and allocation',
-        request:
-          'After connecting their bank, users often import too many accounts and assign them incorrectly. We need a clear flow to help them select the right accounts and map them properly to each location.',
-      },
-    ],
-    gallery: [
-      { src: '/assets/alpa-dashboard-today.webp', caption: 'Daily dashboard overview' },
-      {
-        src: '/assets/alpa-cashflow-notifications.webp',
-        caption: 'Cash flow tracking with notifications',
-      },
-      {
-        src: '/assets/alpa-onboarding-flow.webp',
-        caption: 'Onboarding and transaction categorization',
-      },
-    ],
+    ...placeholderStory('Teemplot'),
   },
   {
-    slug: 'alpin-capital',
-    collaboration: 'RUFF x ALPIN CAPITAL',
-    title: 'From multi-layer complexity to a platform ready to scale',
-    summary:
-      'Delivered the brand, two ready-to-integrate versions of their B2C app, and the launch website, from scratch.',
-    quote:
-      'The collaboration was dynamic and we are more than satisfied with the results. The understanding of our needs was crystal clear, we can only recommend their services.',
-    authorName: 'Mickaël B.',
-    authorRole: 'CEO',
+    slug: 'ipc-africa',
+    client: 'IPC Africa',
+    accent: color.accentPink,
+    collaboration: 'Ruff × IPC Africa',
     video: '/card-alpin.mp4',
-    logo: '/assets/logo-klintt.png',
-    logoHeight: 32,
-    months: 8,
-    tasks: 60,
-    impact:
-      'Supported the team from initial idea to research and creation of the product and brand from scratch',
-    designers: [
-      { name: 'Samy', role: 'Senior Product Designer', avatar: '/assets/avatar-samy.webp' },
-      { name: 'Camille', role: 'Senior Brand Designer', avatar: '/assets/avatar-camille.webp' },
-      { name: 'Franck', role: 'Senior Web Developer', avatar: '/assets/avatar-franck.webp' },
-      {
-        name: 'Aysha',
-        role: 'Senior Presentation Designer',
-        avatar: '/assets/avatar-aysha.webp',
-      },
-    ],
-    sections: [
-      {
-        heading: 'The context',
-        body: 'Alpin Capital is building a multi-layer investment platform designed to serve different audiences, from institutional partners to end clients. Alongside this, Klintt acts as the public-facing layer, focused on education, acquisition, and onboarding a new generation of investors. Ambitious vision. Multiple targets. Complex product architecture.',
-      },
-      {
-        heading: 'The problem',
-        body: "The challenge wasn't just about designing screens. It was about bringing clarity to a system that needed to work across very different user types. On the product side, roles, permissions, and navigation were not clearly structured yet. Without a solid architecture, the experience risked becoming confusing very quickly, especially with multiple dashboards. On the brand and acquisition side, Klintt needed to exist before the product. Two fronts. One core issue: making complexity understandable and actionable.",
-      },
-      {
-        heading: 'What we did',
-        body: 'We stepped in at an early stage and worked on both product foundations and brand experience. On the product side, we defined the global navigation architecture, mapped user roles and permissions, and structured the platform into clear modules. We designed dashboards adapted to each profile, admin, manager, and client, with a focus on readability, hierarchy, and actionable data. On the Klintt side, we designed and built the marketing website with a content-first approach, creating an ecosystem of educational pages to drive acquisition and build trust before conversion. We also supported the setup of the analytics and growth stack, so everything was measurable from day one.',
-      },
-      {
-        heading: 'The impact',
-        body: 'The product now has a clear structural foundation. Roles, navigation, and modules are defined, making future development faster and more consistent. Klintt is live with a strong content-driven approach, allowing the team to start acquiring users and building credibility before the full product rollout. The team gained clarity, speed, and a solid base to scale both product and brand.',
-      },
-    ],
-    tickets: [
-      {
-        title: 'Design a content-first website to drive acquisition before launch',
-        request:
-          "The product wasn't fully live yet, but growth couldn't wait. We needed a website that could educate users, build trust, and capture leads from day one, while subtly introducing the product without relying on it.",
-      },
-      {
-        title: 'Structure the experience between education and product discovery',
-        request:
-          'Users come to learn, but we want them to convert. We needed to design an experience that smoothly transitions from content consumption to product understanding, balancing editorial depth and progressive product exposure.',
-      },
-      {
-        title: 'Design the foundations of the app experience',
-        request:
-          'The app needed to feel simple, modern, and reassuring, despite the complexity underneath. We structured the main user flows, defined key screens, and established UI patterns that make information easy to read, understand, and act on.',
-      },
-    ],
-    gallery: [
-      { src: '/assets/alpin-klintt-site.webp', caption: 'Content-first mobile experience' },
-      { src: '/assets/alpin-klintt-app.webp', caption: 'Investor dashboard' },
-      {
-        src: '/assets/alpin-klintt-flows.webp',
-        caption: 'App user flows, onboarding, connection, and recovery',
-      },
-    ],
+    ...placeholderStory('IPC Africa'),
   },
   {
-    slug: 'winter',
-    collaboration: 'RUFF x WINTER',
-    title: 'Turning energy data into action users actually take',
-    summary:
-      'From self-audit redesign to renovation scenarios, signature flows, user journeys, and a more human tone of voice.',
-    quote:
-      'Relevant recommendations on user journeys, backed by a thoughtful analysis of needs. Great flexibility with feedback and strong availability.',
-    authorName: 'Louise S.',
-    authorRole: 'Product Manager',
+    slug: 'zero-to-16',
+    client: 'Zero to 16',
+    accent: color.accentPink,
+    collaboration: 'Ruff × Zero to 16',
     video: '/card-winter.mp4',
-    logo: '/assets/logo-winter.png',
-    logoHeight: 24,
-    months: 7,
-    tasks: 50,
-    impact: 'Supported the growth to 50K users',
-    designers: [
-      { name: 'Samy', role: 'Senior Product Designer', avatar: '/assets/avatar-samy.webp' },
-    ],
-    sections: [
-      {
-        heading: 'The context',
-        body: 'Winter is building an energy optimization platform that helps individuals understand their consumption and take action to reduce it. The product connects energy data, analyzes usage patterns, and translates them into actionable insights. Ambitious vision. Complex data. Strong behavioral challenge: turning awareness into action.',
-      },
-      {
-        heading: 'The problem',
-        body: "The product had the right foundations, but the experience wasn't driving engagement at the right level. Key information lacked clarity and hierarchy. Actions were present, but not always compelling or contextualized enough to trigger adoption. Users weren't lacking features, they were lacking clarity, guidance, and momentum. And when users don't clearly see value, they don't act.",
-      },
-      {
-        heading: 'What we did',
-        body: 'We plugged into the team as a senior product design layer and started shipping immediately. Over 7 months, we redesigned the self-audit experience from the ground up, optimized renovation scenarios and made them approachable, rethought signature flows and user journeys, and built a more accessible and human tone of voice across the product. We restructured the core experience around actionability and clarity, redesigning the dashboard to better articulate consumption vs. savings potential. We also contributed to the design system by introducing new components, states, and consistent patterns.',
-      },
-      {
-        heading: 'The impact',
-        body: "Users better understand their energy situation and where to act. The product becomes more actionable, not just informative. Complex topics are now approachable and structured. Engagement increased through clearer entry points and feedback loops. The product didn't just improve, it became a tool that drives action.",
-      },
-    ],
-    tickets: [
-      {
-        title: 'Redesign the energy dashboard to drive action',
-        request:
-          "The dashboard was informative, but not actionable. Key metrics lacked hierarchy and clarity. Users couldn't easily understand where to act. We restructured the experience to highlight what matters and turn insight into action.",
-      },
-      {
-        title: 'Structure the "Actions" experience for clarity and engagement',
-        request:
-          'Users had access to multiple energy-saving actions, but the system lacked coherence and feedback. We redesigned the action framework, states, navigation, and interactions to make it intuitive and easy to progress through.',
-      },
-      {
-        title: 'Design a clear and actionable consumption experience',
-        request:
-          'Energy data is complex and hard to interpret. We redesigned the experience to make consumption instantly readable, structured, and useful, combining clear visualizations, usage breakdowns, and robust handling of missing data.',
-      },
-    ],
-    gallery: [
-      {
-        src: '/assets/winter-energy-dashboard-dpe.webp',
-        caption: 'Energy dashboard with consumption estimation',
-      },
-      { src: '/assets/winter-actions.webp', caption: 'Energy saving recommendations' },
-      {
-        src: '/assets/winter-consumption-detailed-view.webp',
-        caption: 'Detailed consumption analysis',
-      },
-      {
-        src: '/assets/winter-renovation-journey-flow.webp',
-        caption: 'Renovation journey user flow',
-      },
-    ],
+    ...placeholderStory('Zero to 16'),
   },
 ];
 
-/** Position of each fanned card inside the pinned stories section. */
+/** Position of each fanned card inside the pinned work section. */
 export const storyCardLayouts = [
   { x: 18, y: 22, rotation: -12, from: 'left', enterAt: 0 },
   { x: 62, y: 20, rotation: 10, from: 'right', enterAt: 0.3 },
   { x: 38, y: 42, rotation: 2, from: 'left', enterAt: 0.6 },
 ] as const;
 
+/** Copy that is the same on every case-study page. */
+export const caseStudyChrome = {
+  back: '← Back',
+  workHeading: 'Selected work',
+  ticketsHeading: 'Selected briefs',
+  ctaHeading: 'Want results like these?',
+  ctaBody: "Book a call and we'll match you with the right creative lead.",
+  ctaButton: 'Book a call',
+} as const;
+
 /* ------------------------------------------------------------------ */
 /* Pricing                                                             */
 /* ------------------------------------------------------------------ */
 
 export const pricing = {
-  headline: 'Simple and transparent pricing.',
+  headline: 'Simple, honest pricing.',
   plans: [
     {
-      name: 'Subscription',
-      price: 'From 260€/day',
+      name: 'Project',
+      /** TODO: replace with the detailed pricing structure. */
+      price: 'From ₦150,000',
       description:
-        'A senior product designer delivering asynchronously all your design tasks, without limits.',
+        'A single, well-scoped project, from brand strategy to launch-ready creative.',
       features: [
-        { icon: '/assets/designrequest.svg', label: 'Unlimited design requests' },
-        { icon: '/assets/face-content.svg', label: '1 dedicated senior designer' },
-        { icon: '/assets/delivery.svg', label: 'Deliveries within 4 days' },
-        { icon: '/assets/webcam-02.svg', label: 'Weekly call' },
-        { icon: '/assets/budget.svg', label: 'Monthly subscription' },
-        { icon: '/assets/pause-circle.svg', label: 'Pause or cancel anytime' },
+        { icon: '/assets/designrequest.svg', label: 'Defined scope & timeline' },
+        { icon: '/assets/face-content.svg', label: 'Dedicated creative lead' },
+        { icon: '/assets/budget.svg', label: 'Fixed project price' },
+        { icon: '/assets/webcam-02.svg', label: 'Milestone check-ins' },
+        { icon: '/assets/delivery.svg', label: 'Built-in revisions' },
+        { icon: '/assets/full design ownership.svg', label: 'Launch-ready files' },
       ],
     },
     {
-      name: 'Mission',
-      price: 'From 850€/day',
+      name: 'Retainer',
+      price: 'Custom',
       description:
-        'A senior product designer joining your team full time for a defined period, available all day for you.',
+        'Ongoing brand, content, and creative support for teams that need a steady hand.',
       features: [
-        { icon: '/assets/designrequest.svg', label: 'Defined mission scope' },
-        { icon: '/assets/face-content.svg', label: '1 dedicated senior designer' },
-        { icon: '/assets/delivery.svg', label: 'Continuous delivery' },
-        { icon: '/assets/webcam-02.svg', label: 'Daily calls' },
-        { icon: '/assets/defined period.svg', label: 'Defined period' },
-        { icon: '/assets/full design ownership.svg', label: 'Full design ownership' },
+        { icon: '/assets/designrequest.svg', label: 'Ongoing scope, monthly' },
+        { icon: '/assets/face-content.svg', label: 'Dedicated creative lead' },
+        { icon: '/assets/budget.svg', label: 'Predictable monthly rate' },
+        { icon: '/assets/webcam-02.svg', label: 'Weekly check-ins' },
+        { icon: '/assets/delivery.svg', label: 'Ongoing creative support' },
+        { icon: '/assets/pause-circle.svg', label: 'Pause or end anytime' },
       ],
     },
   ] satisfies readonly PricingPlan[],
@@ -452,29 +333,29 @@ export const faq = {
   subhead: 'Everything you need to know before getting started.',
   items: [
     {
-      question: 'How much does it cost?',
+      question: 'How much does a project cost?',
       answer:
-        "Please reach out to us — we'll be happy to discuss it with you and find the right plan for your needs.",
+        "Projects start from ₦150,000, depending on scope. Book a call and we'll send a clear quote before any work begins.",
     },
     {
       question: 'We already have a design team. Can you still help?',
       answer:
-        'Absolutely. We integrate into your existing workflow and tools. Jira, Notion, Figma, Slack, Linear. Think of us as an extension of your team, not a replacement.',
+        'Yes. We plug into your existing workflow and tools, working as an extension of your team rather than a replacement.',
     },
     {
-      question: 'Who will be my designer?',
+      question: 'Who will work on my project?',
       answer:
-        'A dedicated senior product designer with experience shipping products at startups and scale-ups. They own your project end to end. No handoffs, no junior rotations.',
+        'A dedicated creative lead who owns your project from strategy through delivery, backed by our full team for design, motion, and content.',
     },
     {
-      question: 'What can you design?',
+      question: 'What can you help with?',
       answer:
-        'Everything a founding designer would handle. Mobile apps, SaaS products, websites, landing pages, design systems, dashboards, and more. UX research, UI design, prototyping, all the way to developer handoff.',
+        'Brand strategy, creative direction, social content, and motion and video, from a single campaign to an ongoing retainer.',
     },
     {
-      question: 'How fast can you start?',
+      question: 'How fast can we start?',
       answer:
-        "Most engagements kick off within a few days. Book a call, tell us what you need, and we'll match you with the right designer.",
+        "Most projects kick off within a week of your first call. Tell us what you need and we'll scope it from there.",
     },
   ] satisfies readonly FaqItem[],
 } as const;
@@ -485,8 +366,8 @@ export const faq = {
 
 export const footerLinks = {
   links: [
-    { label: 'How it works', targetId: 'how-it-works' },
-    { label: 'Client stories', targetId: 'clientstories' },
+    { label: 'Services', targetId: 'services' },
+    { label: 'Work', targetId: 'work' },
     { label: 'FAQ', targetId: 'faq' },
   ] satisfies readonly NavLink[],
   company: [
@@ -497,27 +378,12 @@ export const footerLinks = {
 } as const;
 
 /* ------------------------------------------------------------------ */
-/* Design Academy                                                      */
-/* ------------------------------------------------------------------ */
-
-export const academy = {
-  headline: ['Pause vibing.', 'Start designing.'],
-  bodyBefore:
-    "AI is multiplying your team's capacity to build. But design isn't about producing screens, it's about using the right methods to solve real user problems. We've already trained ",
-  bodyAfter:
-    " in design thinking, UX strategy, and product design. Soon, we'll offer focused sessions to help your designers leverage AI without losing craft, and your PMs think like designers. Drop your email, we'll let you know when doors open.",
-  studentCount: 500,
-  cta: 'Join the waiting list',
-  successMessage: "You're on the list. We'll be in touch.",
-} as const;
-
-/* ------------------------------------------------------------------ */
 /* Cookie consent                                                      */
 /* ------------------------------------------------------------------ */
 
 export const cookieBanner = {
-  title: 'Good design starts with understanding',
-  body: 'We use analytics cookies to understand how you browse this site. Nothing more.',
+  title: 'Good work starts with understanding.',
+  body: 'We use analytics cookies to understand how you use this site. Nothing more.',
   reject: 'Reject',
   accept: 'Accept',
 } as const;
@@ -529,8 +395,8 @@ export const cookieBanner = {
 export const contact = {
   title: 'Contact',
   intro:
-    "We'd love to hear from you. Whether you have a project in mind, a question about our services, or just want to say hi, reach out anytime.",
-  bookACallLabel: 'Schedule a 30-min intro call',
+    "We'd love to hear about your project. Whether you have a brand to build, a campaign to launch, or just a question, reach out anytime.",
+  bookACallLabel: 'Schedule an intro call',
 } as const;
 
 export const privacyPolicy = {
@@ -563,7 +429,7 @@ export const privacyPolicy = {
     },
     {
       heading: '7. Your rights',
-      body: 'Under applicable data protection laws (including GDPR), you have the right to access, correct, or delete your personal data; withdraw consent at any time; request data portability; lodge a complaint with a supervisory authority. To exercise any of these rights, contact us at hi@theruff.agency.',
+      body: 'Under applicable data protection laws, including the Nigeria Data Protection Act, you have the right to access, correct, or delete your personal data; withdraw consent at any time; request data portability; lodge a complaint with a supervisory authority. To exercise any of these rights, contact us at hi@theruff.agency.',
     },
     {
       heading: '8. Security',
@@ -586,15 +452,15 @@ export const termsOfService = {
     },
     {
       heading: '2. Services',
-      body: 'The Ruff Agency provides product design services on a subscription or mission basis. The scope, deliverables, and timeline for each engagement are agreed upon between both parties before work begins.',
+      body: 'The Ruff Agency provides brand strategy, creative direction, design, motion, and content services on a project or retainer basis. The scope, deliverables, and timeline for each engagement are agreed upon between both parties before work begins.',
     },
     {
-      heading: '3. Subscriptions',
-      body: 'Subscription plans are billed on a recurring basis (monthly). You may pause or cancel your subscription at any time. Pausing freezes your billing cycle and remaining days. Cancellation takes effect at the end of the current billing period.',
+      heading: '3. Projects and retainers',
+      body: 'Project work is scoped and priced before it starts. Retainers are billed on a recurring monthly basis and may be paused or ended with notice as agreed in your engagement letter.',
     },
     {
       heading: '4. Intellectual property',
-      body: 'Upon full payment, all design deliverables created during an engagement are transferred to the client. Until payment is received, The Ruff Agency retains ownership of all work produced. We reserve the right to showcase completed work in our portfolio unless otherwise agreed in writing.',
+      body: 'Upon full payment, all deliverables created during an engagement are transferred to the client. Until payment is received, The Ruff Agency retains ownership of all work produced. We reserve the right to showcase completed work in our portfolio unless otherwise agreed in writing.',
     },
     {
       heading: '5. Confidentiality',
@@ -602,7 +468,7 @@ export const termsOfService = {
     },
     {
       heading: '6. Payment terms',
-      body: 'Invoices are issued at the beginning of each billing cycle for subscriptions, or as agreed for mission-based work. Payment is due within 14 days of invoice date unless otherwise specified. Late payments may result in suspension of services.',
+      body: 'Invoices are issued as agreed at the start of each engagement or billing cycle. Payment is due within 14 days of invoice date unless otherwise specified. Late payments may result in suspension of services.',
     },
     {
       heading: '7. Limitation of liability',
@@ -614,7 +480,7 @@ export const termsOfService = {
     },
     {
       heading: '9. Governing law',
-      body: 'These Terms are governed by and construed in accordance with the laws of France. Any disputes arising from these Terms shall be subject to the exclusive jurisdiction of the courts of Paris, France.',
+      body: 'These Terms are governed by and construed in accordance with the laws of the Federal Republic of Nigeria. Any disputes arising from these Terms shall be subject to the exclusive jurisdiction of the courts of Lagos, Nigeria.',
     },
     {
       heading: '10. Changes',

@@ -93,7 +93,7 @@ export function Footer({ onOpenOverlay, ref }: FooterProps) {
         <div
           style={{
             flex: isMobile ? '1 1 auto' : '0 0 380px',
-            background: `linear-gradient(165deg, ${color.brand} 0%, ${color.brandDeep} 100%)`,
+            background: color.white,
             borderRadius: 28,
             border: shape.keyline,
             boxShadow: shape.hardShadow,
@@ -118,7 +118,7 @@ export function Footer({ onOpenOverlay, ref }: FooterProps) {
                 fontFamily: font.body,
                 fontWeight: 700,
                 fontSize: 18,
-                color: color.white,
+                color: color.ink,
                 margin: 0,
                 lineHeight: 1.4,
               }}
@@ -130,7 +130,7 @@ export function Footer({ onOpenOverlay, ref }: FooterProps) {
                 fontFamily: font.body,
                 fontWeight: 300,
                 fontSize: 18,
-                color: 'rgba(255,255,255,0.7)',
+                color: color.muted,
                 margin: 0,
                 lineHeight: 1.4,
               }}
@@ -165,13 +165,13 @@ export function Footer({ onOpenOverlay, ref }: FooterProps) {
               right: -12,
               width: 96,
               height: 96,
-              background: `linear-gradient(135deg, ${color.brand}, ${color.brandDeep})`,
+              background: color.accentPink,
               borderRadius: 22,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               transform: 'rotate(12deg)',
-              boxShadow: '0 8px 32px rgba(255, 105, 46, 0.3)',
+              boxShadow: shape.hardShadowSmall,
             }}
           >
             <RuffLogo style={{ width: 68, height: 68 / LOGO_ASPECT.wordmark }} />

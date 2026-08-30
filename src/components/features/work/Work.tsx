@@ -1,0 +1,244 @@
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
+import { StoryCard, type StoryCardLayout } from '@/components/features/work/StoryCard';
+import { AccentWord } from '@/components/ui/AccentWord';
+import { color, font, shape, weight } from '@/config/tokens';
+import { caseStudies, storyCardLayouts, work } from '@/content/site';
+import { useCountUp } from '@/hooks/useCountUp';
+import { useIsMobile } from '@/hooks/useIsMobile';
+import { hasStory } from '@/types/content';
+import { clamp } from '@/utils/scroll';
+
+interface WorkProps {
+  readonly onOpenCaseStudy: (slug: string) => void;
+}
+
+/**
+ * "Real work, real results" — a pinned dark section.
+ *
+ * The headline sits behind three client cards that deal themselves in as you
+ * scroll, fading the headline back as they arrive. Below `md` the fan is
+ * replaced by a readable vertical list.
+ */
+export function Work({ onOpenCaseStudy }: WorkProps) {
+  const isMobile = useIsMobile();
+  const trackRef = useRef<HTMLElement | null>(null);
+  const [progress, setProgress] = useState(0);
+  const { ref: counterRef, value: campaigns } = useCountUp<HTMLSpanElement>(work.campaignCount);
+
+  useEffect(() => {
+    if (isMobile) return;
+
+    const handleScroll = (): void => {
+      const track = trackRef.current;
+      if (!track) return;
+      const travel = track.offsetHeight - window.innerHeight;
+      if (travel <= 0) return;
+      setProgress(clamp(-track.getBoundingClientRect().top / travel));
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isMobile]);
+
+  const headlineOpacity = isMobile ? 1 : Math.max(0.5, 1 - progress * 2);
+
+  const heading = (
+    <div
+      style={{
+        position: isMobile ? 'relative' : 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: isMobile ? 'auto' : 0,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 5,
+        pointerEvents: 'none',
+        opacity: headlineOpacity,
+        transition: 'opacity 0.1s linear',
+        padding: isMobile ? '0 20px' : '0',
+      }}
+    >
+      <h2
+        style={{
+          fontFamily: font.display,
+          fontWeight: weight.black,
+          fontSize: isMobile ? 42 : 'clamp(56px, 8vw, 120px)',
+          lineHeight: 0.95,
+          letterSpacing: '-0.03em',
+          color: color.white,
+          margin: 0,
+          textAlign: 'center',
+        }}
+      >
+        {work.headline[0]}
+        <br />
+        real <AccentWord>results.</AccentWord>
+      </h2>
+      <p
+        style={{
+          fontFamily: font.body,
+          fontWeight: weight.light,
+          fontSize: isMobile ? 15 : 18,
+          color: color.white,
+          lineHeight: '28px',
+          margin: '24px 0 0',
+          textAlign: 'center',
+          maxWidth: 560,
+        }}
+      >
+        {work.subheadBefore}
+        <span ref={counterRef} style={{ fontFamily: font.sans, fontWeight: weight.bold }}>
+          {campaigns >= work.campaignCount ? `${work.campaignCount}+` : campaigns}
+        </span>
+        {work.subheadAfter}
+      </p>
+    </div>
+  );
+
+  if (isMobile) {
+    return (
+      <section
+        id="work"
+        data-section="work"
+        style={{ position: 'relative', background: color.ink, padding: '80px 0' }}
+      >
+        {heading}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 20,
+            padding: '48px 20px 0',
+            width: '100%',
+          }}
+        >
+          {caseStudies.map((study) => {
+            const openable = hasStory(study);
+            const inner = (
+              <>
+                <p
+                  style={{
+                    fontFamily: font.display,
+                    fontWeight: weight.black,
+                    fontSize: 32,
+                    lineHeight: 1,
+                    letterSpacing: '-0.03em',
+                    color: color.ink,
+                    margin: 0,
+                  }}
+                >
+                  {study.client}
+                </p>
+                {study.title ? (
+                  <p
+                    style={{
+                      fontFamily: font.body,
+                      fontWeight: weight.light,
+                      fontSize: 15,
+                      color: color.ink,
+                      margin: 0,
+                      opacity: 0.8,
+                    }}
+                  >
+                    {study.title}
+                  </p>
+                ) : null}
+                {openable ? (
+                  <span
+                    style={{
+                      background: color.ink,
+                      borderRadius: 999,
+                      padding: '14px 0',
+                      fontFamily: font.sans,
+                      fontWeight: weight.bold,
+                      fontSize: 14,
+                      color: color.white,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {work.cardCta}
+                  </span>
+                ) : null}
+              </>
+            );
+
+            const cardStyle = {
+              background: study.accent,
+              borderRadius: 24,
+              border: shape.keyline,
+              boxShadow: shape.hardShadow,
+              padding: 24,
+              textAlign: 'left' as const,
+              display: 'flex',
+              flexDirection: 'column' as const,
+              gap: 14,
+              minHeight: 200,
+              justifyContent: 'flex-end' as const,
+            };
+
+            return openable ? (
+              <button
+                key={study.slug}
+                type="button"
+                onClick={() => onOpenCaseStudy(study.slug)}
+                style={{ ...cardStyle, cursor: 'pointer' }}
+              >
+                {inner}
+              </button>
+            ) : (
+              <div key={study.slug} style={cardStyle}>
+                {inner}
+              </div>
+            );
+          })}
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section
+      id="work"
+      data-section="work"
+      ref={trackRef}
+      style={{ position: 'relative', height: '250vh', background: color.ink }}
+    >
+      <div
+        style={{
+          position: 'sticky',
+          top: 0,
+          height: '100vh',
+          overflow: 'hidden',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        {heading}
+        {caseStudies.map((study, index) => {
+          const layout = storyCardLayouts[index];
+          if (!layout) return null;
+
+          return (
+            <StoryCard
+              key={study.slug}
+              study={study}
+              layout={layout as StoryCardLayout}
+              progress={progress}
+              stackIndex={index}
+              onOpen={() => onOpenCaseStudy(study.slug)}
+            />
+          );
+        })}
+      </div>
+    </section>
+  );
+}

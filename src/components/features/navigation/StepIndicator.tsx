@@ -1,5 +1,5 @@
 import { color } from '@/config/tokens';
-import { HOW_IT_WORKS_STEPS } from '@/config/tokens';
+import { SERVICE_STEPS } from '@/config/tokens';
 
 interface StepIndicatorProps {
   readonly activeIndex: number;
@@ -15,9 +15,9 @@ export function StepIndicator({ activeIndex, compact = false }: StepIndicatorPro
   return (
     <div
       role="progressbar"
-      aria-label="How it works progress"
+      aria-label="Services progress"
       aria-valuemin={1}
-      aria-valuemax={HOW_IT_WORKS_STEPS}
+      aria-valuemax={SERVICE_STEPS}
       aria-valuenow={activeIndex + 1}
       style={{
         display: 'flex',
@@ -26,7 +26,7 @@ export function StepIndicator({ activeIndex, compact = false }: StepIndicatorPro
         padding: compact ? '0 4px' : '0 10px',
       }}
     >
-      {Array.from({ length: HOW_IT_WORKS_STEPS }, (_unused, index) => (
+      {Array.from({ length: SERVICE_STEPS }, (_unused, index) => (
         <span
           key={index}
           style={{

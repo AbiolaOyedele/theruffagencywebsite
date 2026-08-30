@@ -1,14 +1,13 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { AcademyPage } from '@/components/features/academy/AcademyPage';
 import { CaseStudyView } from '@/components/features/case-study/CaseStudyView';
-import { ClientStories } from '@/components/features/stories/ClientStories';
+import { Work } from '@/components/features/work/Work';
 import { CookieBanner } from '@/components/features/overlays/CookieBanner';
 import { Faq } from '@/components/features/faq/Faq';
 import { Footer } from '@/components/features/footer/Footer';
 import { Hero } from '@/components/features/hero/Hero';
-import { HowItWorks } from '@/components/features/how-it-works/HowItWorks';
+import { Services } from '@/components/features/services/Services';
 import { InfoOverlay } from '@/components/features/overlays/InfoOverlay';
 import { IntroAnimation } from '@/components/features/intro/IntroAnimation';
 import { LogoStrip } from '@/components/features/logos/LogoStrip';
@@ -21,7 +20,7 @@ import { caseStudies } from '@/content/site';
 import { useCaseStudyRoute } from '@/hooks/useCaseStudyRoute';
 import { useSmoothScroll } from '@/hooks/useSmoothScroll';
 import { clamp, setScrollLocked } from '@/utils/scroll';
-import type { OverlayKey, SiteView } from '@/types/content';
+import type { OverlayKey } from '@/types/content';
 
 /** Assets that must be decoded before the intro can start. */
 const CRITICAL_IMAGES = [
@@ -37,19 +36,15 @@ const WARM_VIDEOS = ['/notif.mp4', '/card1-designer.mp4', '/card2.mp4'] as const
 /** Give up waiting on preloads after this and show the intro anyway. */
 const PRELOAD_TIMEOUT_MS = 4000;
 
-/** Cross-fade time when swapping between the Studio and Academy views. */
-const VIEW_SWAP_MS = 500;
-
 /**
  * Top-level orchestration.
  *
- * Owns the intro handover, the Studio ↔ Academy view swap, the case-study
- * route, the Contact/Privacy/Terms overlays, and the footer reveal — the
+ * Owns the intro handover, the case-study route, the Contact/Privacy/Terms
+ * overlays, and the footer reveal — the
  * footer is fixed behind the page, so the page reserves its height as bottom
  * margin and slides off it on the last scroll.
  */
 export function SiteRoot() {
-  const [view, setView] = useState<SiteView>('studio');
   const caseStudyRoute = useCaseStudyRoute();
   const caseStudySlug = caseStudyRoute.slug;
   const [overlay, setOverlay] = useState<OverlayKey | null>(null);
@@ -58,13 +53,12 @@ export function SiteRoot() {
   const [assetsReady, setAssetsReady] = useState(false);
   const [introDone, setIntroDone] = useState(false);
   const [navRevealed, setNavRevealed] = useState(false);
-  const [navExiting, setNavExiting] = useState(false);
 
   const [footerHeight, setFooterHeight] = useState(0);
   const footerRef = useRef<HTMLElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
 
-  useSmoothScroll(view === 'studio' && caseStudySlug === null);
+  useSmoothScroll(caseStudySlug === null);
 
   // Preload the intro's assets, with a hard timeout so a slow network can't
   // strand visitors on a blank screen.
@@ -116,11 +110,11 @@ export function SiteRoot() {
     const observer = new ResizeObserver(measure);
     observer.observe(footer);
     return () => observer.disconnect();
-  }, [view, caseStudySlug]);
+  }, [caseStudySlug]);
 
   // Inset the page and round the FAQ panel as the footer is revealed beneath it.
   useEffect(() => {
-    if (view !== 'studio' || caseStudySlug !== null) return;
+    if (caseStudySlug !== null) return;
 
     const handleScroll = (): void => {
       const content = contentRef.current;
@@ -143,7 +137,7 @@ export function SiteRoot() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [view, caseStudySlug]);
+  }, [caseStudySlug]);
 
   const handleIntroComplete = useCallback(() => {
     window.scrollTo(0, 0);
@@ -152,15 +146,6 @@ export function SiteRoot() {
 
   const handleNavReveal = useCallback(() => setNavRevealed(true), []);
 
-  /** Slides the nav out, swaps the view, then slides it back in. */
-  const swapView = useCallback((next: SiteView) => {
-    setNavExiting(true);
-    setTimeout(() => {
-      setNavExiting(false);
-      setView(next);
-      window.scrollTo(0, 0);
-    }, VIEW_SWAP_MS);
-  }, []);
 
   const openOverlay = useCallback((key: OverlayKey) => {
     const active = document.activeElement;
@@ -179,14 +164,6 @@ export function SiteRoot() {
     );
   }
 
-  if (view === 'academy') {
-    return (
-      <>
-        <NoiseOverlay />
-        <AcademyPage onStudio={() => swapView('studio')} navExiting={navExiting} />
-      </>
-    );
-  }
 
   return (
     <div style={{ overflowX: 'clip', background: color.paperAlt }}>
@@ -201,12 +178,7 @@ export function SiteRoot() {
         />
       ) : null}
 
-      <Navbar
-        revealed={navRevealed}
-        aboveOverlay={!introFinished}
-        exiting={navExiting}
-        onOpenAcademy={() => swapView('academy')}
-      />
+      <Navbar revealed={navRevealed} aboveOverlay={!introFinished} />
 
       <div
         ref={contentRef}
@@ -217,8 +189,8 @@ export function SiteRoot() {
         </div>
         <LogoStrip />
         <ScrollStatement />
-        <HowItWorks />
-        <ClientStories onOpenCaseStudy={caseStudyRoute.open} />
+        <Services />
+        <Work onOpenCaseStudy={caseStudyRoute.open} />
         <Pricing />
         <Faq />
       </div>
