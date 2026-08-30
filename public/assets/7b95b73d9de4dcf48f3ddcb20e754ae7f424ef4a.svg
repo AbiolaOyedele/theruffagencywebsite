@@ -1,0 +1,7 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 17.5879 8.04883" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Frame">
+<rect id="Border" opacity="0.35" x="0.30957" y="0.30957" width="14.8594" height="7.42969" rx="2.35273" stroke="var(--stroke-0, black)" stroke-width="0.619141"/>
+<path id="Cap" opacity="0.4" d="M16.0977 2.78613V5.30942C16.5959 5.09572 16.9199 4.59857 16.9199 4.04778C16.9199 3.49699 16.5959 2.99984 16.0977 2.78613" fill="var(--fill-0, black)"/>
+<rect id="Capacity" x="1.23828" y="1.23828" width="13.002" height="5.57227" rx="1.54785" fill="var(--fill-0, black)"/>
+</g>
+</svg>

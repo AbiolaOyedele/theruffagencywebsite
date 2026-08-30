@@ -1,0 +1,240 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/* Brand typefaces — self-hosted, no external requests                 */
+/*                                                                     */
+/* Awesome Serif carries display headlines; Milligram carries body and */
+/* UI. Only the weights the site actually uses are shipped.            */
+/* ------------------------------------------------------------------ */
+
+@font-face {
+  font-family: "Awesome Serif";
+  src: url("/fonts/AwesomeSerif-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Awesome Serif";
+  src: url("/fonts/AwesomeSerif-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Awesome Serif";
+  src: url("/fonts/AwesomeSerif-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Awesome Serif";
+  src: url("/fonts/AwesomeSerif-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Awesome Serif";
+  src: url("/fonts/AwesomeSerif-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Awesome Serif";
+  src: url("/fonts/AwesomeSerifItalic-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Awesome Serif";
+  src: url("/fonts/AwesomeSerifItalic-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Awesome Serif";
+  src: url("/fonts/AwesomeSerifItalic-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Awesome Serif";
+  src: url("/fonts/AwesomeSerifItalic-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Milligram ships no upright 400 or 600 cut. The weights below are the
+   real ones; the site asks for 300 / 500 / 700 / 800 / 900 only. */
+@font-face {
+  font-family: "Milligram";
+  src: url("/fonts/Milligram-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Milligram";
+  src: url("/fonts/Milligram-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Milligram";
+  src: url("/fonts/Milligram-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Milligram";
+  src: url("/fonts/Milligram-Extrabold.woff2") format("woff2");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Milligram";
+  src: url("/fonts/Milligram-Heavy.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Milligram";
+  src: url("/fonts/Milligram-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ------------------------------------------------------------------ */
+/* Design tokens — Ruff brand system                                   */
+/* ------------------------------------------------------------------ */
+
+:root {
+  --font-display: "Awesome Serif", Georgia, "Times New Roman", serif;
+  --font-body: "Milligram", system-ui, -apple-system, sans-serif;
+
+  /* Core pairing: red, ink, white */
+  --color-brand: #e92038;
+  --color-brand-deep: #c81a2f;
+  --color-ink: #250200;
+  --color-ink-soft: #3a0d0a;
+
+  /* Rotating accents */
+  --color-accent-yellow: #ffd741;
+  --color-accent-orange: #fd7b33;
+  --color-accent-green: #2dc05e;
+  --color-accent-lime: #c3fb50;
+  --color-accent-pink: #feb3d2;
+  --color-accent-purple: #7c65fe;
+
+  /* Surfaces */
+  --color-surface: #ffffff;
+  --color-surface-muted: #f6f1ee;
+  --color-paper: #f0e9e5;
+  --color-paper-alt: #f6f1ee;
+  --color-cream: #efe6e0;
+  --color-tan: #d3c2bb;
+  --color-nav-pill: #f4efec;
+  --color-surface-dark: #3a1512;
+
+  /* Text */
+  --color-muted: #6b5a55;
+  --color-border: rgba(37, 2, 0, 0.12);
+
+  --radius-nav: 55px;
+  --radius-cta: 43px;
+  --radius-pill: 100px;
+  --radius-card: 24px;
+  --radius-section: 42px;
+}
+
+/* Expose tokens to Tailwind utilities (bg-brand, text-ink, …) */
+@theme inline {
+  --color-brand: var(--color-brand);
+  --color-brand-deep: var(--color-brand-deep);
+  --color-ink: var(--color-ink);
+  --color-paper: var(--color-paper);
+  --color-paper-alt: var(--color-paper-alt);
+  --color-cream: var(--color-cream);
+  --color-tan: var(--color-tan);
+  --color-muted: var(--color-muted);
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+}
+
+/* ------------------------------------------------------------------ */
+/* Base                                                                */
+/* ------------------------------------------------------------------ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  color: var(--color-ink);
+  background-color: var(--color-paper-alt);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* The horizontal-pin and fanned-card sections deliberately overflow. */
+  overflow-x: clip;
+}
+
+img,
+video,
+svg {
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Lock scroll while the intro overlay or a modal is showing. */
+body[data-scroll-locked="true"] {
+  overflow: hidden !important;
+}
+
+/* ------------------------------------------------------------------ */
+/* Motion preferences                                                  */
+/* ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
