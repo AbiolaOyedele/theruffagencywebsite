@@ -431,9 +431,7 @@ export const cookieBanner = {
 /** The contact surface: the panel at #contact, and the /contact route. */
 export const contactPage = {
   /** Heading on the panel that opens over the page. */
-  panelTitle: 'Tell us about the work.',
-  /** One entry per rendered line. The break is deliberate, not a wrap. */
-  panelTitleLines: ['Tell us about', 'the work.'],
+  panelTitle: 'Let’s Talk!',
   eyebrow: 'Work with us',
   intro:
     'Five short questions — about a minute. We will come back with the most useful next step, whether that is a quote or a conversation.',
@@ -444,11 +442,15 @@ export const contactPage = {
    * build its summary, so a question can never appear in one and not the other.
    */
   steps: {
+    service: {
+      question: 'What kind of work is it?',
+      label: 'Kind of work',
+    },
     project: {
-      question: 'What are you looking to build?',
-      label: 'What you are building',
+      question: 'Tell us about the project.',
+      label: 'The project',
       placeholder:
-        'A brand identity, a campaign, a launch — and anything you already know about it.',
+        'What is it for, who is it meant to reach, and what would make it a success? A few sentences is plenty.',
     },
     you: {
       question: 'What should we call you, and where can we reach you?',
@@ -458,19 +460,17 @@ export const contactPage = {
       emailPlaceholder: 'you@company.com',
     },
     context: {
-      question: 'Does it have a name yet, and how did you find us?',
-      companyLabel: 'Company or project',
+      question: 'Does the brand have a name yet, and how did you find us?',
+      companyLabel: 'Brand or company',
       companyPlaceholder: 'What is it called? (optional)',
       referralLabel: 'How you found us',
       referralPlaceholder: 'A referral, a search, something you saw (optional)',
     },
-    stage: {
-      question: 'Where does the work stand today?',
-      label: 'Current stage',
-    },
-    budget: {
-      question: 'What budget are you working with?',
-      label: 'Budget',
+    scope: {
+      question: 'When do you need it, and what budget are you working with?',
+      label: 'Timing and budget',
+      timelineLabel: 'Timeline',
+      budgetLabel: 'Budget',
       note: 'Projects start from ₦150,000. A rough band is enough — it only helps us shape the right scope.',
     },
     review: {
@@ -495,7 +495,7 @@ export const contactPage = {
   /** The paste-to-fill flow an AI agent can follow on the visitor's behalf. */
   agent: {
     heading: 'Working with an AI agent?',
-    body: 'Copy one prompt into Claude, ChatGPT, or any agent. It drafts the brief with you, then hands you a snippet to paste on this page — every answer fills itself in and you check it over before sending.',
+    body: 'Copy one prompt into Claude, ChatGPT, or any agent. It works the brief out with you, then hands you a snippet to paste on this page — every answer fills itself in and you check it over before sending.',
     copyLabel: 'Copy prompt',
     copiedLabel: 'Copied',
     copyFailedLabel: 'Copy failed — open it instead',

@@ -63,7 +63,6 @@ const PANELS: Record<
 > = {
   contact: {
     title: contactPage.panelTitle,
-    titleLines: contactPage.panelTitleLines,
     body: <ContactContent />,
     maxWidth: 1120,
   },

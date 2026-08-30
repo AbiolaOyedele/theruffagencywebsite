@@ -7,12 +7,13 @@ import { INQUIRY_MARKER, parseInquiryBlock } from '@/lib/agent-inquiry';
 import {
   BUDGET_BANDS,
   HONEYPOT_FIELD,
-  PROJECT_STAGES,
+  SERVICE_TYPES,
+  TIMELINES,
 } from '@/lib/schemas/form-constants';
 import { useIsMobile } from '@/hooks/useIsMobile';
 
 /** The questions, in order. The last one is the review. */
-const STEPS = ['project', 'you', 'context', 'stage', 'budget', 'review'] as const;
+const STEPS = ['service', 'project', 'you', 'context', 'scope', 'review'] as const;
 type StepId = (typeof STEPS)[number];
 
 /** Steps a visitor may pass without answering. */
@@ -21,22 +22,24 @@ const OPTIONAL: ReadonlySet<StepId> = new Set<StepId>(['context']);
 const REVIEW_INDEX = STEPS.indexOf('review');
 
 interface Values {
+  service: string;
   projectDetails: string;
   name: string;
   email: string;
   company: string;
   referralSource: string;
-  stage: string;
+  timeline: string;
   budget: string;
 }
 
 const EMPTY: Values = {
+  service: '',
   projectDetails: '',
   name: '',
   email: '',
   company: '',
   referralSource: '',
-  stage: '',
+  timeline: '',
   budget: '',
 };
 
@@ -106,6 +109,7 @@ export function ContactWizard() {
 
   /** What is missing on this step, if anything. Server-side rules still apply. */
   function blockedReason(target: StepId): string | null {
+    if (target === 'service' && !values.service) return 'Pick whichever is closest.';
     if (target === 'project' && !values.projectDetails.trim()) {
       return 'Tell us a little about the project first.';
     }
@@ -115,8 +119,10 @@ export function ContactWizard() {
         return 'Enter an email address we can reach you on.';
       }
     }
-    if (target === 'stage' && !values.stage) return 'Pick whichever is closest.';
-    if (target === 'budget' && !values.budget) return 'Pick whichever is closest.';
+    if (target === 'scope') {
+      if (!values.timeline) return 'Roughly when do you need it?';
+      if (!values.budget) return 'Pick whichever band is closest.';
+    }
     return null;
   }
 
@@ -199,6 +205,7 @@ export function ContactWizard() {
   /** One line per answered question, for the trail and the review. */
   const summaries: readonly { readonly id: StepId; readonly label: string; readonly value: string }[] =
     [
+      { id: 'service', label: contactPage.steps.service.label, value: values.service },
       {
         id: 'project',
         label: contactPage.steps.project.label,
@@ -214,8 +221,11 @@ export function ContactWizard() {
         label: contactPage.steps.context.companyLabel,
         value: [values.company, values.referralSource].filter(Boolean).join(' · '),
       },
-      { id: 'stage', label: contactPage.steps.stage.label, value: values.stage },
-      { id: 'budget', label: contactPage.steps.budget.label, value: values.budget },
+      {
+        id: 'scope',
+        label: contactPage.steps.scope.label,
+        value: [values.timeline, values.budget].filter(Boolean).join(' · '),
+      },
     ];
 
   /**
@@ -248,12 +258,13 @@ export function ContactWizard() {
         </div>
 
         {/* Every answer travels with the submission, whichever step is showing. */}
+        <input type="hidden" name="service" value={values.service} readOnly />
         <input type="hidden" name="projectDetails" value={values.projectDetails} readOnly />
         <input type="hidden" name="name" value={values.name} readOnly />
         <input type="hidden" name="email" value={values.email} readOnly />
         <input type="hidden" name="company" value={values.company} readOnly />
         <input type="hidden" name="referralSource" value={values.referralSource} readOnly />
-        <input type="hidden" name="stage" value={values.stage} readOnly />
+        <input type="hidden" name="timeline" value={values.timeline} readOnly />
         <input type="hidden" name="budget" value={values.budget} readOnly />
 
         <div
@@ -344,6 +355,15 @@ export function ContactWizard() {
         </h2>
 
         <div style={{ marginTop: 20 }}>
+          {step === 'service' ? (
+            <ChoiceGroup
+              label={contactPage.steps.service.question}
+              options={SERVICE_TYPES}
+              value={values.service}
+              onChange={(next) => set('service', next)}
+            />
+          ) : null}
+
           {step === 'project' ? (
             <Field label={contactPage.steps.project.label}>
               {(id) => (
@@ -435,24 +455,28 @@ export function ContactWizard() {
             </div>
           ) : null}
 
-          {step === 'stage' ? (
-            <ChoiceGroup
-              label={contactPage.steps.stage.question}
-              options={PROJECT_STAGES}
-              value={values.stage}
-              onChange={(next) => set('stage', next)}
-            />
-          ) : null}
+          {step === 'scope' ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                <span style={groupLabelStyle}>{contactPage.steps.scope.timelineLabel}</span>
+                <ChoiceGroup
+                  label={contactPage.steps.scope.timelineLabel}
+                  options={TIMELINES}
+                  value={values.timeline}
+                  onChange={(next) => set('timeline', next)}
+                />
+              </div>
 
-          {step === 'budget' ? (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <ChoiceGroup
-                label={contactPage.steps.budget.question}
-                options={BUDGET_BANDS}
-                value={values.budget}
-                onChange={(next) => set('budget', next)}
-              />
-              <p style={{ ...bodyStyle, fontSize: 14 }}>{contactPage.steps.budget.note}</p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                <span style={groupLabelStyle}>{contactPage.steps.scope.budgetLabel}</span>
+                <ChoiceGroup
+                  label={contactPage.steps.scope.budgetLabel}
+                  options={BUDGET_BANDS}
+                  value={values.budget}
+                  onChange={(next) => set('budget', next)}
+                />
+                <p style={{ ...bodyStyle, fontSize: 14 }}>{contactPage.steps.scope.note}</p>
+              </div>
             </div>
           ) : null}
 
@@ -569,11 +593,11 @@ function fieldErrorFor(
   errors: Readonly<Record<string, string>>,
 ): string | undefined {
   const byStep: Partial<Record<StepId, readonly string[]>> = {
+    service: ['service'],
     project: ['projectDetails'],
     you: ['name', 'email'],
     context: ['company', 'referralSource'],
-    stage: ['stage'],
-    budget: ['budget'],
+    scope: ['timeline', 'budget'],
   };
   for (const key of byStep[id] ?? []) {
     const found = errors[key];
@@ -779,6 +803,13 @@ const headingStyle = (isMobile: boolean) =>
     margin: 0,
     textWrap: 'balance',
   }) as const;
+
+const groupLabelStyle = {
+  fontFamily: font.sans,
+  fontWeight: weight.bold,
+  fontSize: 13,
+  color: color.ink,
+} as const;
 
 const bodyStyle = {
   fontFamily: font.body,

@@ -22,15 +22,25 @@ export const REFERRAL_SOURCES = [
 ] as const;
 
 /**
- * Where the work stands today. Every set ends with a way out — nobody should
- * be stuck on a question they cannot honestly answer.
+ * The kind of work. These are the services the studio actually sells — a
+ * creative brief, not a product build — and the set ends with a way out so
+ * nobody has to force their project into a box that does not fit.
  */
-export const PROJECT_STAGES = [
-  'Just an idea',
-  'Early concept',
-  'Building it now',
-  'Already launched',
-  'Needs a refresh',
+export const SERVICE_TYPES = [
+  'Brand identity',
+  'Brand strategy',
+  'Campaign',
+  'Content & motion',
+  'Packaging',
+  'Something else',
+] as const;
+
+/** When it is needed. Ends with a way out, like every closed question here. */
+export const TIMELINES = [
+  'As soon as possible',
+  'Within a month',
+  'This quarter',
+  'Later this year',
   'Not sure yet',
 ] as const;
 
@@ -44,7 +54,8 @@ export const BUDGET_BANDS = [
   'Not sure yet',
 ] as const;
 
-export type ProjectStage = (typeof PROJECT_STAGES)[number];
+export type ServiceType = (typeof SERVICE_TYPES)[number];
+export type Timeline = (typeof TIMELINES)[number];
 export type BudgetBand = (typeof BUDGET_BANDS)[number];
 
 export const LIMITS = {

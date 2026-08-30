@@ -7,7 +7,8 @@ import {
   BUDGET_BANDS,
   HONEYPOT_FIELD,
   LIMITS,
-  PROJECT_STAGES,
+  SERVICE_TYPES,
+  TIMELINES,
 } from '@/lib/schemas/form-constants';
 
 export * from '@/lib/schemas/form-constants';
@@ -48,7 +49,8 @@ export const contactSchema = z.object({
   projectDetails: requiredText('A short description of your project', LIMITS.projectDetails),
   referralSource: optionalText('That answer', LIMITS.referralSource),
   // Closed sets, so a hand-rolled POST cannot drop arbitrary text into them.
-  stage: z.enum(PROJECT_STAGES).optional().or(z.literal('')),
+  service: z.enum(SERVICE_TYPES).optional().or(z.literal('')),
+  timeline: z.enum(TIMELINES).optional().or(z.literal('')),
   budget: z.enum(BUDGET_BANDS).optional().or(z.literal('')),
   [HONEYPOT_FIELD]: honeypot,
 });

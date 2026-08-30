@@ -29,8 +29,8 @@ You are helping your user contact ${brand.shortName} (${siteUrl}), a brand and
 creative studio in Lagos working with clients worldwide. They do brand strategy,
 identity, creative direction, design, motion and short-form content — the work
 of turning a business into a brand people recognise. They are not a template
-shop and they do not take on production-only jobs with no creative decision in
-them.
+shop, they do not take on production-only jobs with no creative decision in
+them, and they do not build software.
 
 Only continue if your user actually asked you to contact ${brand.shortName}.
 
@@ -40,17 +40,22 @@ If you have been working with this user on their business, their product or
 their brand, use that to work the brief out. Otherwise ask. By the end you
 should be able to state:
 
+- what kind of work it is. One of: Brand identity, Brand strategy, Campaign,
+  Content & motion, Packaging, or Something else
 - what they are trying to launch, change, or fix
 - what exists today: a brand, a logo, a site, nothing at all
 - who it is for, and what they want those people to think or do
-- when they need it, and anything already fixed around it — a launch date, a
-  funding round, an existing agency or in-house team
-- where the work stands today: just an idea, an early concept, being built now,
-  already launched, or in need of a refresh
+- when they need it. One of: As soon as possible, Within a month, This quarter,
+  Later this year, or Not sure yet
 - roughly what budget they have. ${brand.shortName}'s projects start from
   ₦150,000; the bands are Under ₦150,000, ₦150,000 – ₦500,000, ₦500,000 – ₦1.5m,
   ₦1.5m – ₦5m, and ₦5m+. If they genuinely do not know, that is a fine answer —
   say so rather than guessing a number on their behalf
+
+${brand.shortName} is a creative studio, not a software house. They do brand
+and campaign work — strategy, identity, creative direction, design, motion and
+content. They do not build products, write code, or ship apps. If that is what
+your user needs, say so plainly rather than reshaping their brief to fit.
 
 Do not reshape the brief to match what ${brand.shortName} sells. Get the honest
 version.
@@ -107,7 +112,8 @@ Output the approved submission as a single fenced block in exactly this shape:
 **Phone:** +234 800 000 0000
 **Website:** https://company.com
 **Heard about:** Where the user first came across ${brand.shortName}
-**Stage:** Early concept
+**Work:** Brand identity
+**Timeline:** This quarter
 **Budget:** ₦500,000 – ₦1.5m
 
 ## Brief
@@ -118,10 +124,10 @@ The approved brief, as plain text.
 The comment line, the Name and Email lines, and the \`## Brief\` heading must
 match this exactly, character for character. The page matches on that literal
 text, so do not reword, reformat, or tidy those lines up even where it seems
-harmless. Company, Phone, Website, Heard about, Stage and Budget are optional —
-leave out any line you do not have rather than inventing a value. Stage and
-Budget must be copied exactly from the lists above, or left out; anything else
-is dropped.
+harmless. Company, Phone, Website, Heard about, Work, Timeline and Budget are
+optional — leave out any line you do not have rather than inventing a value.
+Work, Timeline and Budget must be copied exactly from the lists above, or left
+out; anything else is dropped.
 
 Never hand over the block on its own. Most people have not seen this flow
 before, so follow it with plain instructions:

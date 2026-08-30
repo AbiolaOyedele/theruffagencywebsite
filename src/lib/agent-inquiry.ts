@@ -14,7 +14,8 @@
 import {
   BUDGET_BANDS,
   LIMITS,
-  PROJECT_STAGES,
+  SERVICE_TYPES,
+  TIMELINES,
 } from '@/lib/schemas/form-constants';
 
 /** Present on the block's first line, and the stem of the instructions marker. */
@@ -40,7 +41,8 @@ export interface ParsedInquiry {
   email?: string;
   company?: string;
   phone?: string;
-  stage?: string;
+  service?: string;
+  timeline?: string;
   budget?: string;
   projectDetails?: string;
   referralSource?: string;
@@ -95,7 +97,8 @@ export function parseInquiryBlock(text: string): ParsedInquiry | null {
   assign('referralSource', clamp(field(text, 'Heard about'), LIMITS.referralSource));
   // Closed sets: anything that is not one of ours is dropped rather than
   // carried through to a field the server would reject anyway.
-  assign('stage', oneOf(field(text, 'Stage'), PROJECT_STAGES));
+  assign('service', oneOf(field(text, 'Work'), SERVICE_TYPES));
+  assign('timeline', oneOf(field(text, 'Timeline'), TIMELINES));
   assign('budget', oneOf(field(text, 'Budget'), BUDGET_BANDS));
 
   return parsed;
