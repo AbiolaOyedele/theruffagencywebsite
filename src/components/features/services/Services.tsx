@@ -74,9 +74,36 @@ export function Services() {
   const zoomProgress = useRef(0);
   const stickyRef = useRef<HTMLDivElement | null>(null);
 
-  const cardWidth = isMobile ? Math.max(240, Math.min(320, viewport.width - 32)) : 487;
+  /**
+   * Card width. Fixed at 487 up to about 2030px, which is every ordinary
+   * laptop and monitor, then grows with the viewport.
+   *
+   * Past that width five 487px cards very nearly fit on screen at once, which
+   * leaves the pinned rail with almost nothing to travel and the section reads
+   * as a static row of small cards in a lot of empty space. Growing them keeps
+   * the rail longer than the viewport, so the horizontal scroll still has a
+   * job, and stops the cards looking lost.
+   */
+  const desktopCardWidth = Math.round(Math.min(660, Math.max(487, viewport.width * 0.24)));
+  const cardWidth = isMobile
+    ? Math.max(240, Math.min(320, viewport.width - 32))
+    : desktopCardWidth;
   const railPadding = isMobile ? 20 : 80;
-  const desktopMediaHeight = Math.max(240, Math.min(694, viewport.height - 112 - 260));
+  /**
+   * Media height, bounded by the card's own proportions as well as the window.
+   *
+   * Height alone used to decide this, so a tall window stretched the media to
+   * 694 against a 487 card — a narrow, over-tall portrait that looked nothing
+   * like the same card on a laptop. The aspect cap holds the shape steady and
+   * the viewport term still shrinks it when there is genuinely no room.
+   */
+  const MEDIA_MAX_ASPECT = 1.15;
+  const desktopMediaHeight = Math.round(
+    Math.max(
+      240,
+      Math.min(694, desktopCardWidth * MEDIA_MAX_ASPECT, viewport.height - 112 - 260),
+    ),
+  );
   const mediaHeight = isMobile ? Math.round(cardWidth * 1.35) : desktopMediaHeight;
 
   // Horizontal pin, card entrances, and the final zoom-to-dark transition.
