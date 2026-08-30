@@ -4,12 +4,16 @@ import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import { color, font } from '@/config/tokens';
 import { ContactContent } from '@/components/features/contact/ContactContent';
 import { contactPage, privacyPolicy, termsOfService } from '@/content/site';
+import { useIsMobile } from '@/hooks/useIsMobile';
 import { setScrollLocked } from '@/utils/scroll';
 import type { LegalSection, OverlayKey } from '@/types/content';
 
 type Phase = 'enter' | 'open' | 'exit';
 
-/** Inset of the opened panel from the viewport edges. */
+/**
+ * Inset of the opened panel from the viewport edges. Dropped to zero on
+ * narrow screens, where 32px a side is width the contact form cannot spare.
+ */
 const PANEL_INSET = 32;
 
 function LegalBody({ sections }: { readonly sections: readonly LegalSection[] }) {
@@ -46,8 +50,11 @@ function LegalBody({ sections }: { readonly sections: readonly LegalSection[] })
   );
 }
 
-const PANELS: Record<OverlayKey, { title: string; subtitle?: string; body: ReactNode }> = {
-  contact: { title: contactPage.panelTitle, body: <ContactContent /> },
+const PANELS: Record<
+  OverlayKey,
+  { title: string; subtitle?: string; body: ReactNode; maxWidth?: number }
+> = {
+  contact: { title: contactPage.panelTitle, body: <ContactContent />, maxWidth: 1120 },
   privacy: {
     title: privacyPolicy.title,
     subtitle: privacyPolicy.updated,
@@ -74,6 +81,7 @@ interface InfoOverlayProps {
  * blurred backdrop. Closes on the button, the backdrop, or Escape.
  */
 export function InfoOverlay({ panel, origin, onClose }: InfoOverlayProps) {
+  const isMobile = useIsMobile();
   const [phase, setPhase] = useState<Phase>('enter');
   const content = PANELS[panel];
 
@@ -114,6 +122,7 @@ export function InfoOverlay({ panel, origin, onClose }: InfoOverlayProps) {
   const from =
     origin ??
     new DOMRect(window.innerWidth / 2 - 100, window.innerHeight / 2 - 50, 200, 40);
+  const inset = isMobile ? 0 : PANEL_INSET;
   const isOpen = phase === 'open';
   const isExiting = phase === 'exit';
   const settled = isOpen || isExiting;
@@ -143,11 +152,11 @@ export function InfoOverlay({ panel, origin, onClose }: InfoOverlayProps) {
         style={{
           position: 'fixed',
           zIndex: 10_002,
-          top: settled ? PANEL_INSET : from.top,
-          left: settled ? PANEL_INSET : from.left,
-          width: settled ? `calc(100vw - ${PANEL_INSET * 2}px)` : from.width,
-          height: settled ? `calc(100dvh - ${PANEL_INSET * 2}px)` : from.height,
-          borderRadius: 24,
+          top: settled ? inset : from.top,
+          left: settled ? inset : from.left,
+          width: settled ? `calc(100vw - ${inset * 2}px)` : from.width,
+          height: settled ? `calc(100dvh - ${inset * 2}px)` : from.height,
+          borderRadius: isMobile ? 0 : 24,
           overflow: 'hidden',
           background: color.white,
           isolation: 'isolate',
@@ -170,7 +179,13 @@ export function InfoOverlay({ panel, origin, onClose }: InfoOverlayProps) {
             overflowX: 'hidden',
           }}
         >
-          <div style={{ maxWidth: 720, margin: '0 auto', padding: '80px 24px 120px' }}>
+          <div
+            style={{
+              maxWidth: content.maxWidth ?? 720,
+              margin: '0 auto',
+              padding: '80px 24px 120px',
+            }}
+          >
             <h1
               style={{
                 fontFamily: font.display,

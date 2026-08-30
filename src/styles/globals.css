@@ -298,34 +298,9 @@ body[data-scroll-locked="true"] {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* The static layout is chosen in the component — see LogoStrip. This is the
+     backstop for the frame between first paint and the media query resolving. */
   .marquee-track {
     animation: none;
-    /* Without the slide the second copy is redundant, and centring what is
-       left keeps the strip from sitting hard against one edge. */
-    justify-content: center;
-    width: 100%;
-    flex-wrap: wrap;
-    row-gap: 28px;
-  }
-
-  .marquee-track > li[aria-hidden='true'] {
-    display: none;
-  }
-
-  /* The remaining copy has to wrap, or the row runs past the clip. */
-  .marquee-track > li,
-  .marquee-track > li > ul {
-    width: 100%;
-  }
-
-  .marquee-track > li > ul {
-    flex-wrap: wrap;
-    justify-content: center;
-    row-gap: 28px;
-  }
-
-  .marquee {
-    mask-image: none !important;
-    -webkit-mask-image: none !important;
   }
 }

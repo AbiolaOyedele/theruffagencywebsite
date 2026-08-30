@@ -52,12 +52,13 @@ export function AgentPromptCard() {
         border: shape.keyline,
         borderRadius: 22,
         boxShadow: shape.hardShadowSmall,
-        padding: isMobile ? 22 : 28,
+        padding: isMobile ? 22 : 26,
         display: 'flex',
-        flexDirection: isMobile ? 'column' : 'row',
-        alignItems: isMobile ? 'stretch' : 'center',
-        justifyContent: 'space-between',
-        gap: isMobile ? 18 : 28,
+        // Always stacked: this sits in a narrow rail beside the form, where a
+        // row would squeeze the copy into a column two words wide.
+        flexDirection: 'column',
+        alignItems: 'stretch',
+        gap: 18,
       }}
     >
       <div style={{ minWidth: 0 }}>
@@ -80,7 +81,6 @@ export function AgentPromptCard() {
             lineHeight: 1.65,
             color: color.muted,
             margin: 0,
-            maxWidth: 460,
           }}
         >
           {contactPage.agent.body}
@@ -91,8 +91,9 @@ export function AgentPromptCard() {
         style={{
           display: 'flex',
           alignItems: 'center',
+          justifyContent: 'space-between',
           gap: 12,
-          flexShrink: 0,
+          flexWrap: 'wrap',
         }}
       >
         <span

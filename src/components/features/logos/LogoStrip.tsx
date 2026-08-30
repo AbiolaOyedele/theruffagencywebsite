@@ -3,6 +3,7 @@
 import { color, font, weight } from '@/config/tokens';
 import { logoStrip } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
+import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { useRevealOnScroll } from '@/hooks/useRevealOnScroll';
 import type { ClientLogo } from '@/types/content';
 
@@ -23,9 +24,14 @@ const SECONDS_PER_NAME = 3.2;
  */
 export function LogoStrip() {
   const isMobile = useIsMobile();
+  const still = usePrefersReducedMotion();
   const { ref, style } = useRevealOnScroll<HTMLDivElement>();
 
   const duration = logoStrip.logos.length * SECONDS_PER_NAME;
+  // One copy, wrapped, when the strip is not allowed to move. The sliding
+  // layout is `width: max-content` by necessity, which no stylesheet rule can
+  // wrap — so the choice is made here rather than in a media query.
+  const passes = still ? [0] : [0, 1];
 
   return (
     <section
@@ -71,17 +77,22 @@ export function LogoStrip() {
             overflow: 'hidden',
             // A mask, not a gradient overlay: the hero behind this is white but
             // the section's own ground should not have to be repeated here.
-            maskImage:
-              'linear-gradient(to right, transparent, #000 8%, #000 92%, transparent)',
-            WebkitMaskImage:
-              'linear-gradient(to right, transparent, #000 8%, #000 92%, transparent)',
+            ...(still
+              ? {}
+              : {
+                  maskImage:
+                    'linear-gradient(to right, transparent, #000 8%, #000 92%, transparent)',
+                  WebkitMaskImage:
+                    'linear-gradient(to right, transparent, #000 8%, #000 92%, transparent)',
+                }),
           }}
         >
           <ul
             className="marquee-track"
             style={{
               display: 'flex',
-              width: 'max-content',
+              width: still ? '100%' : 'max-content',
+              justifyContent: 'center',
               alignItems: 'center',
               // No gap between the two copies: each carries half the spacing as
               // its own padding, so one copy's width is exactly the -50% the
@@ -96,16 +107,22 @@ export function LogoStrip() {
             {/* Two passes of the same list. The second is hidden from screen
                 readers and from tab order — it exists only to fill the gap the
                 first leaves as it slides away. */}
-            {[0, 1].map((pass) => (
-              <li key={pass} aria-hidden={pass === 1 ? true : undefined} style={{ margin: 0 }}>
+            {passes.map((pass) => (
+              <li
+                key={pass}
+                aria-hidden={pass === 1 ? true : undefined}
+                style={{ margin: 0, ...(still ? { width: '100%' } : {}) }}
+              >
                 <ul
                   style={{
                     display: 'flex',
                     alignItems: 'center',
+                    justifyContent: 'center',
                     gap: isMobile ? 36 : 88,
                     margin: 0,
                     padding: `0 ${isMobile ? 18 : 44}px`,
                     listStyle: 'none',
+                    ...(still ? { flexWrap: 'wrap' as const, rowGap: 24 } : {}),
                   }}
                 >
                   {logoStrip.logos.map((logo) => (

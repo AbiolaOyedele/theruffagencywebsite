@@ -33,38 +33,61 @@ export function ContactContent() {
         {contactPage.intro}
       </p>
 
-      <AgentPromptCard />
-
-      <ContactForm />
-
-      <section
+      {/* Two tracks on desktop: the form is what people came for, so it takes
+          the wider one, with the ways in that are not a form beside it. Below
+          the breakpoint they stack in the same order. */}
+      <div
         style={{
-          background: color.cream,
-          border: shape.keyline,
-          borderRadius: 22,
-          boxShadow: shape.hardShadowSmall,
-          padding: isMobile ? 22 : 28,
-          display: 'flex',
-          flexDirection: isMobile ? 'column' : 'row',
-          gap: isMobile ? 18 : 40,
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : 'minmax(0, 1.45fr) minmax(300px, 1fr)',
+          gap: isMobile ? 20 : 24,
+          alignItems: 'start',
         }}
       >
-        <Detail label={contactPage.emailLabel}>
-          <a href={`mailto:${brand.email}`} style={linkStyle}>
-            {brand.email}
-          </a>
-        </Detail>
+        <ContactForm />
 
-        <Detail label="Based in">
-          <span style={{ ...linkStyle, textDecoration: 'none' }}>
-            {brand.basedIn[0]}
-            <br />
-            <span style={{ fontWeight: weight.medium, color: color.muted }}>
-              {brand.basedIn[1]}
-            </span>
-          </span>
-        </Detail>
-      </section>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: isMobile ? 20 : 24,
+            position: isMobile ? 'static' : 'sticky',
+            top: 0,
+            minWidth: 0,
+          }}
+        >
+          <AgentPromptCard />
+
+          <section
+            style={{
+              background: color.cream,
+              border: shape.keyline,
+              borderRadius: 22,
+              boxShadow: shape.hardShadowSmall,
+              padding: isMobile ? 22 : 28,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 18,
+            }}
+          >
+            <Detail label={contactPage.emailLabel}>
+              <a href={`mailto:${brand.email}`} style={linkStyle}>
+                {brand.email}
+              </a>
+            </Detail>
+
+            <Detail label="Based in">
+              <span style={{ ...linkStyle, textDecoration: 'none' }}>
+                {brand.basedIn[0]}
+                <br />
+                <span style={{ fontWeight: weight.medium, color: color.muted }}>
+                  {brand.basedIn[1]}
+                </span>
+              </span>
+            </Detail>
+          </section>
+        </div>
+      </div>
     </div>
   );
 }
