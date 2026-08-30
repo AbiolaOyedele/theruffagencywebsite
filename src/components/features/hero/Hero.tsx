@@ -6,13 +6,11 @@ import { RotatingWord } from '@/components/features/hero/RotatingWord';
 import { AccentWord } from '@/components/ui/AccentWord';
 import { color } from '@/config/tokens';
 import {
-  HERO_COLUMN_GAP,
-  HERO_PADDING_LEFT,
-  HERO_PADDING_TOP,
   HERO_PHONE_SCALE,
   heroCopyColumn,
   heroHeadlineStyle,
   heroPhoneColumn,
+  heroStage,
   heroSubheadStyle,
 } from '@/config/heroLayout';
 import { hero } from '@/content/site';
@@ -66,22 +64,9 @@ export function Hero() {
     <section
       ref={sectionRef}
       id="hero-section"
-      style={{
-        position: 'relative',
-        background: color.white,
-        overflow: 'hidden',
-        display: 'flex',
-        // Split layout on desktop — copy left, phone right. Stacked and
-        // centred on mobile, where there is only room for one column.
-        flexDirection: isMobile ? 'column' : 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: isMobile ? 0 : HERO_COLUMN_GAP,
-        minHeight: isMobile ? undefined : '100vh',
-        paddingTop: isMobile ? 120 : HERO_PADDING_TOP,
-        paddingBottom: 0,
-        paddingLeft: isMobile ? 0 : HERO_PADDING_LEFT,
-      }}
+      // Split layout on desktop — copy left, phone right. Stacked and centred
+      // on mobile, where there is only room for one column.
+      style={{ ...heroStage(isMobile), position: 'relative', background: color.white }}
     >
       <div style={heroCopyColumn(isMobile)}>
         <h1 style={heroHeadlineStyle(isMobile)}>

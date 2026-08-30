@@ -6,14 +6,12 @@ import { NotificationCard } from '@/components/ui/NotificationCard';
 import { PhoneMockup } from '@/components/ui/PhoneMockup';
 import { color, font } from '@/config/tokens';
 import {
-  HERO_COLUMN_GAP,
-  HERO_PADDING_LEFT,
-  HERO_PADDING_TOP,
   HERO_PHONE_SCALE,
   NOTIFICATION_CARD,
   heroCopyColumn,
   heroHeadlineStyle,
   heroPhoneColumn,
+  heroStage,
   heroSubheadStyle,
 } from '@/config/heroLayout';
 import { hero } from '@/content/site';
@@ -156,23 +154,21 @@ export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps)
   return (
     <div
       aria-hidden="true"
+      // Mirrors the hero's stage exactly, so the phone and the copy hand over
+      // without jumping.
       style={{
+        ...heroStage(isMobile),
         position: 'fixed',
-        inset: 0,
+        top: 0,
+        left: 0,
+        right: 0,
+        // Deliberately no `bottom`: pinning all four edges caps the overlay at
+        // the viewport, and where the composition is taller than that — narrow
+        // screens — it centres the overflow while the hero underneath grows to
+        // fit. Letting it size to its content is what keeps the two aligned.
         zIndex: 9999,
-        display: 'flex',
-        // Mirrors the hero's split layout exactly, so the phone hands over
-        // without jumping across the screen.
-        flexDirection: isMobile ? 'column' : 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: isMobile ? 0 : HERO_COLUMN_GAP,
-        paddingTop: isMobile ? 120 : HERO_PADDING_TOP,
-        paddingBottom: 0,
-        paddingLeft: isMobile ? 0 : HERO_PADDING_LEFT,
         background: pulledBack ? color.white : color.paper,
         transition: pulledBack ? 'background 1.3s ease' : 'none',
-        overflow: 'hidden',
       }}
     >
       {/* The two loose notifications, dealt out before the phone arrives.
@@ -230,12 +226,7 @@ export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps)
       </div>
 
       {/* Same crop window as the hero, so the phone hands over in place. */}
-      <div
-        style={{
-          ...heroPhoneColumn(isMobile),
-          ...(isMobile ? { display: 'contents' } : { flexShrink: 0 }),
-        }}
-      >
+      <div style={{ ...heroPhoneColumn(isMobile), flexShrink: 0 }}>
         {/* Same static scale wrapper as the hero, so the phone is already at
             its final size when the overlay hands over. */}
         <div
@@ -261,7 +252,6 @@ export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps)
                 : 'opacity 0.45s ease, transform 0.45s ease'
             }
             style={{
-              marginTop: isMobile ? 'auto' : 0,
               transform: pulledBack ? 'scale(1)' : `scale(${zoomScale})`,
               transformOrigin: ZOOM_ORIGIN,
               transition: pulledBack

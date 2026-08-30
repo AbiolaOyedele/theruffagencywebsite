@@ -73,6 +73,30 @@ export const HERO_PHONE_OVERFLOW_TOP = Math.ceil(
 export const HERO_PHONE_BOTTOM_LIFT = Math.round(BOARD_OVERHANG_BOTTOM * HERO_PHONE_SCALE);
 
 /**
+ * The stage both the hero and the intro lay out inside.
+ *
+ * The intro is a fixed overlay and the hero is a section in flow, but every
+ * other box they draw has to agree — otherwise the phone and the copy land in
+ * one place under the overlay and another once it retires.
+ */
+export function heroStage(isMobile: boolean): CSSProperties {
+  return {
+    display: 'flex',
+    flexDirection: isMobile ? 'column' : 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: isMobile ? 0 : HERO_COLUMN_GAP,
+    // The overlay is `inset: 0`, so the hero has to claim the same height or
+    // the phone sits at a different distance from the fold on each side.
+    minHeight: '100vh',
+    paddingTop: isMobile ? 120 : HERO_PADDING_TOP,
+    paddingBottom: 0,
+    paddingLeft: isMobile ? 0 : HERO_PADDING_LEFT,
+    overflow: 'hidden',
+  };
+}
+
+/**
  * The column the phone composition sits in.
  *
  * Padding opens the clip window out to the full painted extent so neither the
@@ -87,6 +111,7 @@ export function heroPhoneColumn(isMobile: boolean): CSSProperties {
       display: 'flex',
       justifyContent: 'center',
       overflow: 'visible',
+      flexShrink: 0,
     };
   }
 
