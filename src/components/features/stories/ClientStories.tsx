@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { StoryCard, type StoryCardLayout } from '@/components/features/stories/StoryCard';
+import { AccentWord } from '@/components/ui/AccentWord';
 import { AutoplayVideo } from '@/components/ui/AutoplayVideo';
 import { color, font } from '@/config/tokens';
 import { caseStudies, clientStories, storyCardLayouts } from '@/content/site';
@@ -68,7 +69,7 @@ export function ClientStories({ onOpenCaseStudy }: ClientStoriesProps) {
       <h2
         style={{
           fontFamily: font.display,
-          fontWeight: 700,
+          fontWeight: 900,
           fontSize: isMobile ? 42 : 'clamp(56px, 8vw, 120px)',
           lineHeight: 0.95,
           letterSpacing: '-0.03em',
@@ -79,7 +80,7 @@ export function ClientStories({ onOpenCaseStudy }: ClientStoriesProps) {
       >
         {clientStories.headline[0]}
         <br />
-        {clientStories.headline[1]}
+        our <AccentWord>clients.</AccentWord>
       </h2>
       <p
         style={{

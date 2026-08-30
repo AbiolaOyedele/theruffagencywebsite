@@ -51,7 +51,7 @@ export function ScrollStatement() {
           <p
             style={{
               fontFamily: font.display,
-              fontWeight: 700,
+              fontWeight: 800,
               fontSize: isMobile ? 24 : 36,
               lineHeight: isMobile ? '34px' : '44px',
               margin: 0,

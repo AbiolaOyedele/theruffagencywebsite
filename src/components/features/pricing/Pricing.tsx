@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, type ReactNode } from 'react';
+import { AccentWord } from '@/components/ui/AccentWord';
 import { PhoneMockup } from '@/components/ui/PhoneMockup';
-import { color, font } from '@/config/tokens';
+import { color, font, shape } from '@/config/tokens';
 import { brand, pricing } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { useRevealOnScroll } from '@/hooks/useRevealOnScroll';
@@ -32,12 +33,16 @@ function PricingCard({ plan, visual }: PricingCardProps) {
       aria-label={`${plan.name} — ${plan.price}. Book a call.`}
       style={{
         background: color.white,
-        borderRadius: 24,
+        borderRadius: 28,
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
         textDecoration: 'none',
         color: 'inherit',
+        border: shape.keyline,
+        boxShadow: hovered ? shape.hardShadowPressed : shape.hardShadow,
+        transform: hovered ? 'translate(4px, 4px)' : 'translate(0, 0)',
+        transition: 'box-shadow 0.18s ease, transform 0.18s ease',
       }}
     >
       <div style={{ filter: hovered ? 'grayscale(0)' : 'grayscale(1)', transition: 'filter 0.4s ease' }}>
@@ -57,7 +62,7 @@ function PricingCard({ plan, visual }: PricingCardProps) {
           <h3
             style={{
               fontFamily: font.display,
-              fontWeight: 700,
+              fontWeight: 800,
               fontSize: 30,
               lineHeight: 1.2,
               color: color.ink,
@@ -123,8 +128,8 @@ function PricingCard({ plan, visual }: PricingCardProps) {
           style={{
             width: '100%',
             background: hovered ? color.brand : color.ink,
-            borderRadius: 12,
-            padding: '14px 24px',
+            borderRadius: 999,
+            padding: '16px 24px',
             fontFamily: font.body,
             fontWeight: 700,
             fontSize: 16,
@@ -152,7 +157,7 @@ export function Pricing() {
       id="pricing"
       data-section="pricing"
       style={{
-        background: color.ink,
+        background: color.accentYellow,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -174,16 +179,16 @@ export function Pricing() {
         <h2
           style={{
             fontFamily: font.display,
-            fontWeight: 700,
+            fontWeight: 900,
             fontSize: isMobile ? 36 : 'clamp(42px, 5vw, 64px)',
             lineHeight: 1,
             letterSpacing: '-0.03em',
-            color: color.white,
+            color: color.ink,
             margin: '0 0 16px',
             textAlign: 'center',
           }}
         >
-          {pricing.headline}
+          Simple and <AccentWord>transparent</AccentWord> pricing.
         </h2>
 
         <div

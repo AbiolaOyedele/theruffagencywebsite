@@ -87,7 +87,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
             }}
             style={{
               fontFamily: font.display,
-              fontWeight: 700,
+              fontWeight: 900,
               fontSize: 48,
               color: color.brand,
               textDecoration: 'none',

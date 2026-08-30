@@ -12,6 +12,9 @@ const ROWS = 5;
 const COLUMNS = 5;
 const CELL_COUNT = ROWS * COLUMNS;
 
+/** Ink at low alpha, so the grid holds up on whichever accent the card takes. */
+const PENDING = 'rgba(37, 2, 0, 0.22)';
+
 /** Cells that swell as they complete, so the grid reads as rhythm not wallpaper. */
 const ACCENT_CELLS = new Set(['0-1', '0-2', '1-0', '1-4', '2-1', '3-0', '3-3', '4-0', '4-4']);
 
@@ -68,7 +71,7 @@ export function DotGrid({ width, height }: DotGridProps) {
               cx={insetX + columnIndex * stepX}
               cy={insetY + rowIndex * stepY}
               r={isAccent ? accentRadius : dotRadius}
-              fill={isFilled ? color.brand : color.tan}
+              fill={isFilled ? color.ink : PENDING}
               style={{
                 transition: 'fill 0.15s ease, r 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
               }}

@@ -1,8 +1,9 @@
 'use client';
 
 import { useEffect, useState, type FormEvent } from 'react';
+import { AccentWord } from '@/components/ui/AccentWord';
 import { Logo } from '@/components/ui/Logo';
-import { color, font } from '@/config/tokens';
+import { color, font, shape } from '@/config/tokens';
 import { academy, viewTabs } from '@/content/site';
 import { useCountUp } from '@/hooks/useCountUp';
 import { useIsMobile } from '@/hooks/useIsMobile';
@@ -234,7 +235,7 @@ export function AcademyPage({ onStudio, navExiting }: AcademyPageProps) {
         <h1
           style={{
             fontFamily: font.display,
-            fontWeight: 700,
+            fontWeight: 900,
             fontSize: isMobile ? 36 : 72,
             lineHeight: isMobile ? '44px' : '78px',
             letterSpacing: isMobile ? '-0.72px' : '-1.44px',
@@ -244,7 +245,7 @@ export function AcademyPage({ onStudio, navExiting }: AcademyPageProps) {
             fontFeatureSettings: '"calt" 0, "liga" 0, "dlig" 0, "clig" 0',
           }}
         >
-          {academy.headline[0]}
+          Pause <AccentWord>vibing.</AccentWord>
           <br />
           {academy.headline[1]}
         </h1>
@@ -312,7 +313,7 @@ export function AcademyPage({ onStudio, navExiting }: AcademyPageProps) {
                 padding: '16px 20px',
                 minHeight: 44,
                 borderRadius: 9999,
-                border: 'none',
+                border: shape.keyline,
                 background: color.white,
                 fontFamily: font.body,
                 fontWeight: 500,
@@ -326,7 +327,7 @@ export function AcademyPage({ onStudio, navExiting }: AcademyPageProps) {
               style={{
                 background: color.brand,
                 color: color.white,
-                border: 'none',
+                border: shape.keyline,
                 borderRadius: 9999,
                 padding: '16px 28px',
                 minHeight: 44,

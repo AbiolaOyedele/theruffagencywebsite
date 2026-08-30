@@ -125,7 +125,7 @@ export function CaseStudyView({ study, onBack }: CaseStudyViewProps) {
           <h1
             style={{
               fontFamily: font.display,
-              fontWeight: 700,
+              fontWeight: 900,
               fontSize: isMobile ? 34 : 'clamp(40px, 5vw, 68px)',
               lineHeight: 1.05,
               letterSpacing: '-0.03em',
@@ -248,7 +248,7 @@ export function CaseStudyView({ study, onBack }: CaseStudyViewProps) {
               <h2
                 style={{
                   fontFamily: font.display,
-                  fontWeight: 700,
+                  fontWeight: 800,
                   fontSize: isMobile ? 26 : 36,
                   letterSpacing: '-0.02em',
                   color: color.ink,
@@ -277,7 +277,7 @@ export function CaseStudyView({ study, onBack }: CaseStudyViewProps) {
           <h2
             style={{
               fontFamily: font.display,
-              fontWeight: 700,
+              fontWeight: 800,
               fontSize: isMobile ? 26 : 36,
               letterSpacing: '-0.02em',
               color: color.ink,
@@ -329,7 +329,7 @@ export function CaseStudyView({ study, onBack }: CaseStudyViewProps) {
           <h2
             style={{
               fontFamily: font.display,
-              fontWeight: 700,
+              fontWeight: 800,
               fontSize: isMobile ? 26 : 36,
               letterSpacing: '-0.02em',
               color: color.ink,
@@ -391,7 +391,7 @@ export function CaseStudyView({ study, onBack }: CaseStudyViewProps) {
             <h2
               style={{
                 fontFamily: font.display,
-                fontWeight: 700,
+                fontWeight: 800,
                 fontSize: isMobile ? 26 : 32,
                 color: color.white,
                 margin: '0 0 8px',

@@ -174,7 +174,7 @@ export function Faq() {
         <h2
           style={{
             fontFamily: font.display,
-            fontWeight: 700,
+            fontWeight: 800,
             fontSize: isMobile ? 28 : 36,
             lineHeight: '44px',
             letterSpacing: '-0.72px',

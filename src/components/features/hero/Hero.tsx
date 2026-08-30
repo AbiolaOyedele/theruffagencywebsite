@@ -3,6 +3,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { PhoneMockup } from '@/components/ui/PhoneMockup';
 import { RotatingWord } from '@/components/features/hero/RotatingWord';
+import { AccentWord } from '@/components/ui/AccentWord';
 import { color, font } from '@/config/tokens';
 import { hero } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
@@ -118,7 +119,7 @@ export function Hero({ introActive }: HeroProps) {
         <h1
           style={{
             fontFamily: font.display,
-            fontWeight: 700,
+            fontWeight: 900,
             fontSize: isMobile ? 36 : 72,
             lineHeight: isMobile ? '44px' : '78px',
             letterSpacing: isMobile ? '-0.72px' : '-1.44px',
@@ -130,7 +131,7 @@ export function Hero({ introActive }: HeroProps) {
         >
           {hero.headline[0]}
           <br />
-          {hero.headline[1]}
+          Start <AccentWord>designing.</AccentWord>
         </h1>
 
         <p

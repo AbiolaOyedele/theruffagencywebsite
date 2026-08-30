@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { AutoplayVideo } from '@/components/ui/AutoplayVideo';
-import { color, font } from '@/config/tokens';
+import { color, font, shape } from '@/config/tokens';
 import type { CaseStudy } from '@/types/content';
 import { clamp, easeOutCubic } from '@/utils/scroll';
 
@@ -72,8 +72,8 @@ export function StoryCard({ study, layout, progress, stackIndex, onOpen }: Story
           padding: 0,
           border: 'none',
           background: 'none',
-          borderRadius: 16,
-          boxShadow: '0 16px 48px rgba(0,0,0,0.4)',
+          borderRadius: 20,
+          boxShadow: hovered ? shape.hardShadowPressed : shape.hardShadow,
           transform: `rotate(${hovered ? 0 : rotation}deg) scale(${hovered ? 1.06 : 1})`,
           transition: hovered
             ? 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)'
@@ -86,10 +86,11 @@ export function StoryCard({ study, layout, progress, stackIndex, onOpen }: Story
           style={{
             width: '100%',
             height: '100%',
-            borderRadius: 16,
+            borderRadius: 20,
             overflow: 'hidden',
             background: color.surfaceDark,
             position: 'relative',
+            border: shape.keyline,
           }}
         >
           <AutoplayVideo

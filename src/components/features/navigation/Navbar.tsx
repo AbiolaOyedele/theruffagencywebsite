@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Logo } from '@/components/ui/Logo';
 import { MobileMenu } from '@/components/features/navigation/MobileMenu';
 import { StepIndicator } from '@/components/features/navigation/StepIndicator';
-import { color, font, radius } from '@/config/tokens';
+import { color, font, radius, shape } from '@/config/tokens';
 import { brand, sectionLinks, viewTabs } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { clamp, scrollToSection } from '@/utils/scroll';
@@ -142,6 +142,8 @@ export function Navbar({ revealed, aboveOverlay, exiting, onOpenAcademy }: Navba
     borderRadius: radius.nav,
     height: 81,
     whiteSpace: 'nowrap' as const,
+    border: shape.keyline,
+    boxShadow: shape.hardShadowSmall,
   };
 
   return (
@@ -186,7 +188,7 @@ export function Navbar({ revealed, aboveOverlay, exiting, onOpenAcademy }: Navba
                 style={{
                   background: color.ink,
                   color: color.white,
-                  border: 'none',
+                  border: shape.keyline,
                   borderRadius: radius.cta,
                   padding: '13px 16px',
                   minWidth: 56,
@@ -290,7 +292,7 @@ export function Navbar({ revealed, aboveOverlay, exiting, onOpenAcademy }: Navba
                   fontSize: 16,
                   background: isScrolled ? color.brand : color.ink,
                   color: color.white,
-                  border: 'none',
+                  border: shape.keyline,
                   borderRadius: radius.cta,
                   padding: '12px 20px',
                   cursor: 'pointer',

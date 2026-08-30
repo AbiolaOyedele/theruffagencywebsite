@@ -116,13 +116,28 @@
   font-display: swap;
 }
 
+/* Noir Pro carries body copy. Only the Light cut exists — anything that
+   needs weight steps across to Milligram rather than faking a bold. */
+@font-face {
+  font-family: "Noir Pro";
+  src: url("/fonts/NoirPro-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ------------------------------------------------------------------ */
 /* Design tokens — Ruff brand system                                   */
 /* ------------------------------------------------------------------ */
 
 :root {
-  --font-display: "Awesome Serif", Georgia, "Times New Roman", serif;
-  --font-body: "Milligram", system-ui, -apple-system, sans-serif;
+  /* Three-tier system, per the brand guidelines: a heavy geometric sans for
+     the big claims, an italic Didone for single accent words inside them, and
+     Noir Pro for reading copy. */
+  --font-display: "Milligram", system-ui, -apple-system, sans-serif;
+  --font-accent: "Awesome Serif", Georgia, "Times New Roman", serif;
+  --font-body: "Noir Pro", "Milligram", system-ui, -apple-system, sans-serif;
+  --font-ui: "Milligram", system-ui, -apple-system, sans-serif;
 
   /* Core pairing: red, ink, white */
   --color-brand: #e92038;
@@ -152,6 +167,13 @@
   --color-muted: #6b5a55;
   --color-border: rgba(37, 2, 0, 0.12);
 
+  /* Comic-book shape language: a hard keyline with an offset shadow that
+     collapses on press, rather than a soft blur. */
+  --keyline: 2.5px solid var(--color-ink);
+  --shadow-hard: 6px 6px 0 var(--color-ink);
+  --shadow-hard-sm: 4px 4px 0 var(--color-ink);
+  --shadow-soft: 0 8px 24px rgba(37, 2, 0, 0.14);
+
   --radius-nav: 55px;
   --radius-cta: 43px;
   --radius-pill: 100px;
@@ -170,6 +192,7 @@
   --color-tan: var(--color-tan);
   --color-muted: var(--color-muted);
   --font-display: var(--font-display);
+  --font-accent: var(--font-accent);
   --font-body: var(--font-body);
 }
 

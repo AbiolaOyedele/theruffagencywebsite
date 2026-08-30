@@ -3,7 +3,7 @@
 import { useState, type Ref } from 'react';
 import { LOGO_ASPECT, RuffLogo } from '@/components/ui/RuffLogo';
 import { CopyEmailWatermark } from '@/components/features/footer/CopyEmailWatermark';
-import { color, font } from '@/config/tokens';
+import { color, font, shape } from '@/config/tokens';
 import { brand, footerLinks } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { scrollToSection } from '@/utils/scroll';
@@ -94,7 +94,9 @@ export function Footer({ onOpenOverlay, ref }: FooterProps) {
           style={{
             flex: isMobile ? '1 1 auto' : '0 0 380px',
             background: `linear-gradient(165deg, ${color.brand} 0%, ${color.brandDeep} 100%)`,
-            borderRadius: 24,
+            borderRadius: 28,
+            border: shape.keyline,
+            boxShadow: shape.hardShadow,
             padding: isMobile ? '28px 24px' : '40px 32px',
             display: 'flex',
             flexDirection: 'column',
@@ -142,7 +144,9 @@ export function Footer({ onOpenOverlay, ref }: FooterProps) {
           style={{
             flex: 1,
             background: color.white,
-            borderRadius: 24,
+            borderRadius: 28,
+            border: shape.keyline,
+            boxShadow: shape.hardShadow,
             padding: isMobile ? '28px 24px' : 40,
             display: 'flex',
             flexDirection: 'column',
@@ -229,8 +233,10 @@ export function Footer({ onOpenOverlay, ref }: FooterProps) {
               rel="noopener noreferrer"
               style={{
                 background: color.ink,
-                borderRadius: 100,
+                borderRadius: 999,
                 padding: '14px 28px',
+                border: shape.keyline,
+                boxShadow: shape.hardShadowSmall,
                 fontFamily: font.body,
                 fontWeight: 700,
                 fontSize: 14,

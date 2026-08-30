@@ -152,7 +152,7 @@ export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps)
         <h1
           style={{
             fontFamily: font.display,
-            fontWeight: 700,
+            fontWeight: 900,
             fontSize: isMobile ? 36 : 72,
             lineHeight: isMobile ? '44px' : '78px',
             letterSpacing: isMobile ? '-0.72px' : '-1.44px',

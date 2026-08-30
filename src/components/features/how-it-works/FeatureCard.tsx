@@ -2,7 +2,7 @@
 
 import type { ReactNode, Ref } from 'react';
 import { AutoplayVideo } from '@/components/ui/AutoplayVideo';
-import { color, font } from '@/config/tokens';
+import { color, font, shape } from '@/config/tokens';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { scrollToSection } from '@/utils/scroll';
 
@@ -70,6 +70,8 @@ export function FeatureCard({
           overflow: 'hidden',
           flexShrink: 0,
           background: background ?? color.paper,
+          border: shape.keyline,
+          boxShadow: shape.hardShadow,
         }}
       >
         {video ? (

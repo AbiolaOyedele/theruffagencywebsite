@@ -252,7 +252,7 @@ export function InfoOverlay({ panel, origin, onClose }: InfoOverlayProps) {
             <h1
               style={{
                 fontFamily: font.display,
-                fontWeight: 700,
+                fontWeight: 900,
                 fontSize: 'clamp(32px, 4vw, 52px)',
                 lineHeight: 1.05,
                 letterSpacing: '-0.02em',
