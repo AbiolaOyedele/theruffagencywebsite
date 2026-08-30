@@ -2,9 +2,10 @@
 
 import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import { color, font } from '@/config/tokens';
+import { ArchivePanel } from '@/components/features/blog/ArchivePanel';
 import { CareersContent } from '@/components/features/careers/CareersContent';
 import { ContactContent } from '@/components/features/contact/ContactContent';
-import { careersPage, contactPage, privacyPolicy, termsOfService } from '@/content/site';
+import { blogSection, careersPage, contactPage, privacyPolicy, termsOfService } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { setScrollLocked } from '@/utils/scroll';
 import type { LegalSection, OverlayKey } from '@/types/content';
@@ -70,6 +71,11 @@ const PANELS: Record<
   careers: {
     title: careersPage.panelTitle,
     body: <CareersContent />,
+    maxWidth: 1120,
+  },
+  blog: {
+    title: blogSection.indexTitle,
+    body: <ArchivePanel />,
     maxWidth: 1120,
   },
   privacy: {

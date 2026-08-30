@@ -268,9 +268,13 @@ with a gap beside it.
 | 6 | tall left · two stacked right · full-width · two side by side |
 | 7 | tall left · two stacked right · full-width · **tall right · two stacked left** |
 
-**Seven to a page.** After that it continues at `/blog/page/2` and onward — real
-URLs with prev/next links, so each page is somewhere a search result can point
-and a reader can send on.
+**Seven to a page.** Paging is inside the panel — a link would close the panel
+it lives in — so it is buttons, not URLs.
+
+**Where it opens.** The archive is a panel over the page, the same as contact
+and careers: `#blog`, with `/blog` redirecting into it. Each post is still a
+real page at `/blog/<slug>` for anyone arriving from a search; a card in the
+panel links there, but a click opens the post in the reading panel instead.
 
 **Grounds** are pink, lime, yellow and orange only. The deeper green and purple
 are in the palette but the site does not wear them. Each card takes the first

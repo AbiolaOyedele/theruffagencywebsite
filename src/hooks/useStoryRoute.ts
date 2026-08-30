@@ -2,6 +2,7 @@
 
 import { useCallback, useSyncExternalStore } from 'react';
 import { blogPosts, caseStudies } from '@/content/site';
+import { refreshHash } from '@/hooks/useHash';
 import { postHash } from '@/types/content';
 
 type Listener = () => void;
@@ -64,6 +65,19 @@ function getServerSnapshot(): string | null {
   return null;
 }
 
+/**
+ * Puts a story in the URL and tells everything watching.
+ *
+ * Exported on its own because the archive panel opens posts from outside the
+ * component that owns the route — and `replaceState` fires no `hashchange`,
+ * so setting the hash by hand is not enough on its own.
+ */
+export function openStory(hash: string): void {
+  window.history.replaceState(null, '', `#${hash}`);
+  refresh();
+  refreshHash();
+}
+
 interface StoryRoute {
   /** Hash of the open story, or null when the marketing page is showing. */
   readonly slug: string | null;
@@ -81,14 +95,12 @@ interface StoryRoute {
 export function useStoryRoute(): StoryRoute {
   const slug = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
-  const open = useCallback((next: string) => {
-    window.history.replaceState(null, '', `#${next}`);
-    refresh();
-  }, []);
+  const open = useCallback((next: string) => openStory(next), []);
 
   const close = useCallback(() => {
     window.history.replaceState(null, '', window.location.pathname);
     refresh();
+    refreshHash();
   }, []);
 
   return { slug, open, close };

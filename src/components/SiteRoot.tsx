@@ -46,16 +46,25 @@ const WARM_VIDEOS = [
   'ruff-agency/website/video/card2',
 ] as const;
 
+/** Hashes that open a panel over the page. */
+const OVERLAY_HASHES = new Set<OverlayKey>([
+  'contact',
+  'careers',
+  'blog',
+  'privacy',
+  'terms',
+]);
+
 /** Give up waiting on preloads after this and show the intro anyway. */
 const PRELOAD_TIMEOUT_MS = 4000;
 
 /**
  * Top-level orchestration.
  *
- * Owns the intro handover, the case-study route, the Contact/Privacy/Terms
- * overlays, and the footer reveal — the
- * footer is fixed behind the page, so the page reserves its height as bottom
- * margin and slides off it on the last scroll.
+ * Owns the intro handover, the story route, the panels that open over the
+ * page, and the footer reveal — the footer is fixed behind the page, so the
+ * page reserves its height as bottom margin and slides off it on the last
+ * scroll.
  */
 export function SiteRoot() {
   const storyRoute = useStoryRoute();
@@ -66,8 +75,11 @@ export function SiteRoot() {
   // the URL rather than from a callback threaded through half the tree — and
   // /contact, which the agent instructions point at, redirects here.
   const hash = useHash();
-  const hashOverlay: OverlayKey | null =
-    hash === 'contact' ? 'contact' : hash === 'careers' ? 'careers' : null;
+  // Every panel answers to its own hash, so a link anywhere on the site — or
+  // a route that redirects here, like /blog — opens the right one.
+  const hashOverlay: OverlayKey | null = OVERLAY_HASHES.has(hash as OverlayKey)
+    ? (hash as OverlayKey)
+    : null;
   const activeOverlay = overlay ?? hashOverlay;
   const [overlayOrigin, setOverlayOrigin] = useState<DOMRect | null>(null);
 

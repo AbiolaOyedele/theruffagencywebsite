@@ -1,33 +1,20 @@
 import type { MetadataRoute } from 'next';
 import { publicEnv } from '@/config/env';
 import { blogPosts } from '@/content/site';
-import { pageCount } from '@/types/content';
 
 /**
  * Every address worth indexing.
  *
- * The client stories are still hashes on the home page rather than pages, so
- * they are not listed: a sitemap entry for a fragment is an entry for the home
- * page. Everything else here is a real, server-rendered URL.
+ * The panels — the client stories, and the writing archive — are hashes on the
+ * home page rather than pages, so they are not listed: a sitemap entry for a
+ * fragment is an entry for the home page. `/blog` redirects into its panel and
+ * is left out for the same reason. Individual posts are real pages and each
+ * one is here.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const site = publicEnv.NEXT_PUBLIC_SITE_URL;
-  const newest = blogPosts[0]?.publishedAt;
-
   return [
     { url: site, changeFrequency: 'monthly', priority: 1 },
-    {
-      url: `${site}/blog`,
-      ...(newest ? { lastModified: new Date(newest) } : {}),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    // Page one is /blog; the rest carry their own address.
-    ...Array.from({ length: pageCount(blogPosts.length) - 1 }, (_, index) => ({
-      url: `${site}/blog/page/${index + 2}`,
-      changeFrequency: 'weekly' as const,
-      priority: 0.5,
-    })),
     { url: `${site}/contact`, changeFrequency: 'monthly' as const, priority: 0.9 },
     { url: `${site}/careers`, changeFrequency: 'monthly' as const, priority: 0.7 },
     ...blogPosts.map((post) => ({

@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { BlogCard } from '@/components/features/blog/BlogCard';
 import { AccentWord } from '@/components/ui/AccentWord';
 import { color, font, shape, weight } from '@/config/tokens';
@@ -127,10 +126,13 @@ export function Blog({ onOpenPost }: BlogProps) {
           ))}
         </div>
 
-        {/* Only worth showing once there is something the shelf is not showing. */}
+        {/* Only worth showing once there is something the shelf is not
+            showing. A plain anchor, not a Link: the router changes the hash
+            without firing `hashchange`, and the hash is what opens the panel.
+            Every other call to action on the site works the same way. */}
         {rest > 0 ? (
-          <Link
-            href="/blog"
+          <a
+            href="#blog"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -150,7 +152,7 @@ export function Blog({ onOpenPost }: BlogProps) {
             }}
           >
             {blogSection.allCta} ({blogPosts.length}) →
-          </Link>
+          </a>
         ) : null}
       </div>
     </section>

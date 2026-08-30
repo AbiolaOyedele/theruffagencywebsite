@@ -898,7 +898,7 @@ export const footerLinks = {
     { label: 'FAQ', targetId: 'faq' },
   ] satisfies readonly NavLink[],
   company: [
-    { label: 'Writing', href: '/blog' },
+    { label: 'Writing', overlay: 'blog' },
     { label: 'Contact', overlay: 'contact' },
     { label: 'Careers', overlay: 'careers' },
     { label: 'Privacy Policy', overlay: 'privacy' },

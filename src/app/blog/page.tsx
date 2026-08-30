@@ -1,21 +1,13 @@
-import type { Metadata } from 'next';
-import { ArchiveView } from '@/components/features/blog/ArchiveView';
-import { blogSection, brand } from '@/content/site';
+import { redirect } from 'next/navigation';
 
-export const metadata: Metadata = {
-  title: `${blogSection.indexTitle} | ${brand.name}`,
-  description: blogSection.indexIntro,
-  alternates: { canonical: '/blog' },
-  openGraph: {
-    type: 'website',
-    url: '/blog',
-    title: `${blogSection.indexTitle} | ${brand.name}`,
-    description: blogSection.indexIntro,
-    siteName: brand.name,
-  },
-};
-
-/** The first page of the archive. Later pages live at `/blog/page/<n>`. */
-export default function BlogIndexPage() {
-  return <ArchiveView page={1} />;
+/**
+ * `/blog` is a real, linkable URL — it is where "Writing" has always pointed —
+ * but the archive itself is one of the panels that opens over the page, the
+ * same as contact and careers. This hands straight over to it.
+ *
+ * Individual posts are still pages of their own at `/blog/<slug>`, so anyone
+ * arriving from a search reads the writing without needing the panel.
+ */
+export default function BlogIndexPage(): never {
+  redirect('/#blog');
 }

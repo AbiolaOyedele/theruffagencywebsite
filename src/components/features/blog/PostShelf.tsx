@@ -1,8 +1,12 @@
+'use client';
+
 import Link from 'next/link';
 import { CARD_ACCENTS, color, font, shape, weight } from '@/config/tokens';
 import { blogSection } from '@/content/site';
+import { openStory } from '@/hooks/useStoryRoute';
 import {
   formatPostDate,
+  postHash,
   readingMinutes,
   shelfAccents,
   tileRoles,
@@ -18,6 +22,10 @@ interface PostShelfProps {
  *
  * The arrangement comes from `tileRoles`, which adapts to how many posts there
  * are — the shapes are in `.shelf`, the decision is here.
+ *
+ * Each card is a real link to the post's own page, so a crawler can follow it
+ * and a reader can copy it, but a click opens the post in the reading panel
+ * instead — the same panel a client story opens in. Same writing either way.
  */
 export function PostShelf({ posts }: PostShelfProps) {
   const roles = tileRoles(posts.length);
@@ -35,6 +43,13 @@ export function PostShelf({ posts }: PostShelfProps) {
           <Link
             key={post.slug}
             href={`/blog/${post.slug}`}
+            onClick={(event) => {
+              // Let the browser handle anything that is not a plain click —
+              // a new tab, a saved link, a middle click.
+              if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
+              event.preventDefault();
+              openStory(postHash(post.slug));
+            }}
             data-tile={role}
             style={{
               background: CARD_ACCENTS[accents[index] ?? 0],
