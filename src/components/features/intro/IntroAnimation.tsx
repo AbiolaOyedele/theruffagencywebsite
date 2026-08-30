@@ -1,22 +1,36 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { AccentWord } from '@/components/ui/AccentWord';
+import { NotificationCard } from '@/components/ui/NotificationCard';
 import { PhoneMockup } from '@/components/ui/PhoneMockup';
 import { color, font } from '@/config/tokens';
 import { hero } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
 
 /**
+ * Two free-floating notifications land first, one after the other, before the
+ * third arrives inside the phone.
+ */
+const CARD_AT = [250, 900] as const;
+
+/**
  * Beat timings, in milliseconds from mount.
- *  1 — the notification card fades in, still collapsed
- *  2 — the paper backdrop turns brand red and the phone pulls back to real size
+ *  1 — the loose cards clear and the phone's own notification takes over
+ *  2 — the backdrop settles to white and the phone pulls back to real size
  *  3 — the headline slides up, the card expands, the nav is handed over
  *  4 — the overlay retires and the real page takes over
  */
-const STAGE_AT = [400, 1800, 3200, 5400] as const;
+const STAGE_AT = [1700, 2600, 3900, 6100] as const;
 
 /** The subheadline follows the headline in. */
-const SUBHEAD_AT = 3800;
+const SUBHEAD_AT = 4500;
+
+/** Where each loose card sits, as a share of the viewport. */
+const LOOSE_CARDS = [
+  { top: '25%', left: '13%', rotate: -3, mobileTop: '17%', mobileLeft: '5%' },
+  { top: '58%', left: '23%', rotate: 2.5, mobileTop: '43%', mobileLeft: '16%' },
+] as const;
 
 /** Where the opening zoom is centred on the phone. */
 const ZOOM_ORIGIN = '50% 23.7%';
@@ -41,6 +55,7 @@ export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps)
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const [stage, setStage] = useState(0);
+  const [cardsIn, setCardsIn] = useState(0);
   const [subheadIn, setSubheadIn] = useState(false);
   const [wordIndex, setWordIndex] = useState(0);
   const [wordVisible, setWordVisible] = useState(true);
@@ -73,6 +88,9 @@ export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps)
     );
 
     timers.push(setTimeout(() => setSubheadIn(true), SUBHEAD_AT));
+    CARD_AT.forEach((delay, index) => {
+      timers.push(setTimeout(() => setCardsIn(index + 1), delay));
+    });
     return () => timers.forEach(clearTimeout);
   }, [onNavReveal, onComplete]);
 
@@ -117,7 +135,7 @@ export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps)
                 transitionDelay: `${delays[index] ?? 0}ms`,
               }}
             >
-              {word}
+              {word === hero.headlineAccent ? <AccentWord>{word}</AccentWord> : word}
             </span>
           </span>
         </span>
@@ -140,13 +158,35 @@ export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps)
         justifyContent: 'center',
         gap: isMobile ? 0 : 24,
         paddingTop: 120,
-        paddingBottom: isMobile ? 0 : 42,
+        paddingBottom: 0,
         paddingLeft: isMobile ? 0 : 'clamp(24px, 5vw, 88px)',
         background: pulledBack ? color.white : color.paper,
         transition: pulledBack ? 'background 1.3s ease' : 'none',
         overflow: 'hidden',
       }}
     >
+      {/* The two loose notifications, dealt out before the phone arrives.
+          They clear as soon as the phone's own card takes over at stage 1. */}
+      {LOOSE_CARDS.map((card, index) => {
+        const shown = cardsIn > index && stage < 1;
+        return (
+          <NotificationCard
+            key={card.left}
+            scale={isMobile ? 1.5 : 2.2}
+            style={{
+              position: 'absolute',
+              top: isMobile ? card.mobileTop : card.top,
+              left: isMobile ? card.mobileLeft : card.left,
+              opacity: shown ? 1 : 0,
+              transform: `rotate(${card.rotate}deg) translateY(${shown ? 0 : 18}px) scale(${shown ? 1 : 0.96})`,
+              transition:
+                'opacity 0.32s ease, transform 0.45s cubic-bezier(0.34, 1.4, 0.64, 1)',
+              pointerEvents: 'none',
+            }}
+          />
+        );
+      })}
+
       <div
         style={{
           textAlign: isMobile ? 'center' : 'left',
@@ -170,29 +210,33 @@ export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps)
         >
           {/* Split from the shared headline so the intro can never drift out of
               sync with the hero it hands over to. */}
-          {(hero.headline[0] ?? '').split(' ').length
-            ? renderLine((hero.headline[0] ?? '').split(' '), [0, 100, 200])
-            : null}
-          {renderLine((hero.headline[1] ?? '').split(' '), [220, 320, 420])}
+          {hero.headline.map((line, lineIndex) => (
+            <span key={line} style={{ display: 'block' }}>
+              {renderLine(
+                line.split(' '),
+                line.split(' ').map((_word, wordIndex) => lineIndex * 140 + wordIndex * 90),
+              )}
+            </span>
+          ))}
         </h1>
 
         <p
           style={{
             fontFamily: font.sans,
             fontWeight: 700,
-            fontSize: isMobile ? 18 : 22,
-            lineHeight: isMobile ? '28px' : '32px',
+            fontSize: isMobile ? 18 : 'clamp(15px, 1.55vw, 22px)',
+            lineHeight: isMobile ? '28px' : 1.45,
             letterSpacing: '-0.24px',
             color: color.inkHeading,
             margin: '20px 0 0',
-            maxWidth: isMobile ? undefined : 520,
+            whiteSpace: isMobile ? 'normal' : 'nowrap',
             opacity: subheadIn ? 1 : 0,
             transform: subheadIn ? 'translateY(0)' : 'translateY(16px)',
             transition: 'opacity 0.6s ease, transform 0.6s ease',
           }}
         >
           {hero.subheadBefore}
-          <strong style={{ fontFamily: font.sans, fontWeight: 700 }}>
+          <strong style={{ fontFamily: font.sans, fontWeight: 700, color: color.brand }}>
             <span style={{ opacity: wordVisible ? 1 : 0, transition: 'opacity 0.25s ease' }}>
               {hero.rotatingWords[wordIndex]}
             </span>
@@ -207,9 +251,10 @@ export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps)
           flex: isMobile ? undefined : '0 0 auto',
           flexShrink: 0,
           // Same crop window as the hero, so the phone hands over in place.
-          width: isMobile ? undefined : 'min(620px, 42vw)',
+          width: isMobile ? undefined : 'min(620px, 38vw)',
           justifyContent: 'center',
           overflow: isMobile ? 'visible' : 'hidden',
+          alignSelf: isMobile ? 'auto' : 'flex-end',
         }}
       >
         <PhoneMockup

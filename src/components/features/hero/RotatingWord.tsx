@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { font, weight } from '@/config/tokens';
+import { color, font, weight } from '@/config/tokens';
 
 /** How long each word rests before swapping. */
 const HOLD_MS = 1500;
@@ -74,6 +74,9 @@ export function RotatingWord({ words }: RotatingWordProps) {
         style={{
           fontFamily: font.sans,
           fontWeight: weight.bold,
+          // Picked out in the brand red so the word that changes reads as the
+          // variable part of the sentence.
+          color: color.brand,
           display: 'inline-block',
           opacity: visible ? 1 : 0,
           transform: visible ? 'translateY(0)' : 'translateY(6px)',

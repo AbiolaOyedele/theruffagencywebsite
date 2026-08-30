@@ -11,6 +11,12 @@ import { useIsMobile } from '@/hooks/useIsMobile';
 /** Scroll distance over which the hero tucks in its corners. */
 const CORNER_SCROLL_RANGE = 150;
 
+/**
+ * How much larger than its art board the phone renders in the hero, so the
+ * composition reaches the top of the screen instead of floating mid-section.
+ */
+export const HERO_PHONE_SCALE = 1.2;
+
 interface HeroProps {
   /** True while the intro overlay still covers the page. */
   readonly introActive: boolean;
@@ -110,8 +116,8 @@ export function Hero({ introActive }: HeroProps) {
         justifyContent: 'center',
         gap: isMobile ? 0 : 24,
         minHeight: isMobile ? undefined : '100vh',
-        paddingTop: 120,
-        paddingBottom: isMobile ? 0 : 42,
+        paddingTop: isMobile ? 120 : 104,
+        paddingBottom: 0,
         paddingLeft: isMobile ? 0 : 'clamp(24px, 5vw, 88px)',
       }}
     >
@@ -119,7 +125,7 @@ export function Hero({ introActive }: HeroProps) {
         style={{
           textAlign: isMobile ? 'center' : 'left',
           padding: isMobile ? '24px 20px 0' : 0,
-          maxWidth: isMobile ? 440 : 700,
+          maxWidth: isMobile ? 440 : 780,
           flex: isMobile ? undefined : '1 1 auto',
         }}
       >
@@ -127,7 +133,7 @@ export function Hero({ introActive }: HeroProps) {
           style={{
             fontFamily: font.display,
             fontWeight: 900,
-            fontSize: isMobile ? 36 : 'clamp(48px, 5.2vw, 72px)',
+            fontSize: isMobile ? 38 : 'clamp(52px, 6.6vw, 100px)',
             lineHeight: isMobile ? '44px' : 1.06,
             letterSpacing: isMobile ? '-0.72px' : '-0.02em',
             color: color.inkHeading,
@@ -136,23 +142,32 @@ export function Hero({ introActive }: HeroProps) {
             fontFeatureSettings: '"calt" 0, "liga" 0, "dlig" 0, "clig" 0',
           }}
         >
-          {hero.headline[0]}
-          <br />
-          Build a <AccentWord>brand.</AccentWord>
+          {hero.headline.map((line, lineIndex) => (
+            <span key={line} style={{ display: 'block' }}>
+              {line.split(' ').map((word, wordIndex) => (
+                <span key={`${word}-${wordIndex}`}>
+                  {wordIndex > 0 ? ' ' : null}
+                  {word === hero.headlineAccent ? <AccentWord>{word}</AccentWord> : word}
+                </span>
+              ))}
+              {lineIndex < hero.headline.length - 1 ? null : null}
+            </span>
+          ))}
         </h1>
 
         <p
           style={{
             fontFamily: font.sans,
             fontWeight: 700,
-            fontSize: isMobile ? 18 : 22,
-            lineHeight: isMobile ? '28px' : '32px',
+            // Scales with the column so the line never has to wrap.
+            fontSize: isMobile ? 18 : 'clamp(15px, 1.45vw, 21px)',
+            lineHeight: isMobile ? '28px' : 1.45,
             letterSpacing: '-0.24px',
             color: color.inkHeading,
             margin: '20px 0 0',
-            // The narrower column lets this wrap, so the one-line ceiling the
-            // centred layout imposed no longer applies.
-            maxWidth: isMobile ? undefined : 520,
+            // Strictly one line: a wrap here changes the block's height every
+            // time the rotating word does, which shunts the whole section.
+            whiteSpace: isMobile ? 'normal' : 'nowrap',
           }}
         >
           {hero.subheadBefore}
@@ -169,20 +184,31 @@ export function Hero({ introActive }: HeroProps) {
           // third, so the column is a narrower window that crops the hands and
           // centres the device. Without it the board starves the copy column
           // and the headline wraps.
-          width: isMobile ? undefined : 'min(620px, 42vw)',
+          width: isMobile ? undefined : 'min(720px, 42vw)',
           display: 'flex',
           justifyContent: 'center',
           overflow: isMobile ? 'visible' : 'hidden',
-          alignSelf: 'center',
+          // Anchored to the bottom edge so the art board bleeds off it rather
+          // than leaving a band of empty white underneath.
+          alignSelf: isMobile ? 'auto' : 'flex-end',
         }}
       >
-        <PhoneMockup
-          ref={stageRef}
+        {/* Static scale sits on its own wrapper so the scroll-driven
+            transform on the stage below stays untouched. */}
+        <div
           style={{
-            transformOrigin: isMobile ? '50% 100%' : '50% 50%',
-            willChange: 'transform',
+            transform: isMobile ? 'none' : `scale(${HERO_PHONE_SCALE})`,
+            transformOrigin: 'bottom center',
           }}
-        />
+        >
+          <PhoneMockup
+            ref={stageRef}
+            style={{
+              transformOrigin: isMobile ? '50% 100%' : '50% 50%',
+              willChange: 'transform',
+            }}
+          />
+        </div>
       </div>
     </section>
   );

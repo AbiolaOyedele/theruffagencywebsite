@@ -2,9 +2,8 @@
 
 import type { CSSProperties, Ref } from 'react';
 import { color, font } from '@/config/tokens';
-import { hero } from '@/content/site';
-import { LOGO_ASPECT, RuffLogo } from '@/components/ui/RuffLogo';
 import { AutoplayVideo } from '@/components/ui/AutoplayVideo';
+import { NotificationHeader } from '@/components/ui/NotificationCard';
 
 /** Intrinsic size of the mockup's coordinate space. */
 export const PHONE_STAGE_WIDTH = 891;
@@ -129,49 +128,7 @@ export function PhoneMockup({
           transition: cardTransition,
         }}
       >
-        <div style={{ display: 'flex', gap: 9, alignItems: 'center', flexShrink: 0 }}>
-          <div
-            style={{
-              // Pink, not red: red is reserved for buttons, and the wordmark's
-              // white letterforms would vanish on a white chip.
-              background: color.accentPink,
-              borderRadius: 10,
-              width: 44,
-              height: 44,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0,
-            }}
-          >
-            <RuffLogo style={{ width: 34, height: 34 / LOGO_ASPECT.wordmark }} />
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-            <span
-              style={{
-                fontFamily: font.body,
-                fontWeight: 300,
-                fontSize: 7,
-                color: color.muted,
-                lineHeight: '18px',
-              }}
-            >
-              {hero.notification.eyebrow}
-            </span>
-            <span
-              style={{
-                fontFamily: font.body,
-                fontWeight: 500,
-                fontSize: 10.5,
-                color: color.ink,
-                lineHeight: '16px',
-                marginTop: -2,
-              }}
-            >
-              {hero.notification.title}
-            </span>
-          </div>
-        </div>
+        <NotificationHeader />
 
         <AutoplayVideo
           ref={videoRef}

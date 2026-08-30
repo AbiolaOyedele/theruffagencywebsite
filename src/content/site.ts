@@ -42,7 +42,10 @@ export const sectionLinks: readonly NavLink[] = [
 /* ------------------------------------------------------------------ */
 
 export const hero = {
-  headline: ['Skip the guessing.', 'Build a brand.'],
+  /** One entry per rendered line. The break is deliberate, not a wrap. */
+  headline: ['Skip the', 'guessing.', 'Build a brand.'],
+  /** The single word set in the Didone italic, wherever it appears above. */
+  headlineAccent: 'brand.',
   rotatingWords: [
     'Brand',
     'Campaign',
