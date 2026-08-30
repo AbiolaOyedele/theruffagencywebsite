@@ -7,7 +7,7 @@ import { color, font, primaryButton, shape, weight } from '@/config/tokens';
 import { brand, caseStudyChrome } from '@/content/site';
 import { useIsCompact } from '@/hooks/useIsCompact';
 import { useIsMobile } from '@/hooks/useIsMobile';
-import { imageUrl, videoUrl } from '@/lib/images';
+import { imageUrl } from '@/lib/images';
 import { clamp, setScrollLocked } from '@/utils/scroll';
 import type { Story } from '@/types/content';
 
@@ -218,7 +218,7 @@ export function StoryPanel({ story, fromRect, onClose }: StoryPanelProps) {
           >
             {story.video ? (
               <AutoplayVideo
-                src={videoUrl(story.video)}
+                src={story.video}
                 style={{
                   position: 'absolute',
                   inset: '-20% 0',

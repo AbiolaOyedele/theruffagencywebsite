@@ -1,11 +1,14 @@
 import Link from 'next/link';
-import { color, font, primaryButton, shape, weight } from '@/config/tokens';
+import { PageChrome } from '@/components/ui/PageChrome';
+import { cardAccent, color, font, primaryButton, shape, weight } from '@/config/tokens';
 import { imageUrl } from '@/lib/images';
 import { brand, blogSection } from '@/content/site';
 import { formatPostDate, readingMinutes, postHash, type BlogPost } from '@/types/content';
 
 interface ArticleReaderProps {
   readonly post: BlogPost;
+  /** The post's place in the archive, so the page keeps its card's ground. */
+  readonly index: number;
 }
 
 /** Kept in step with `storyFromPost`, so both readings break in the same place. */
@@ -19,13 +22,14 @@ const GALLERY_AFTER_SECTION = 1;
  * or an AI crawler gets the writing without running any JavaScript — which the
  * panel, being opened by a hash, can never give them.
  */
-export function ArticleReader({ post }: ArticleReaderProps) {
+export function ArticleReader({ post, index }: ArticleReaderProps) {
   return (
-    <article style={{ background: color.paperAlt, minHeight: '100vh' }}>
+    <PageChrome>
+      <article>
       {/* Title block, on the post's own accent. */}
       <header
         style={{
-          background: post.accent,
+          background: cardAccent(index),
           borderBottom: shape.keyline,
           padding: '40px 20px 56px',
         }}
@@ -275,6 +279,7 @@ export function ArticleReader({ post }: ArticleReaderProps) {
           </Link>
         </footer>
       </div>
-    </article>
+      </article>
+    </PageChrome>
   );
 }

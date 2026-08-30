@@ -250,8 +250,14 @@ column.
 
 ### The ten posts ✏️
 
-The home page carries the three newest; `/blog` is the archive, which opens on
-the newest as a wide feature and grids the rest two-up.
+The home page carries the three newest; `/blog` is the archive, laid out as a
+bento — mixed tile sizes on a four-column grid, one column on a phone.
+
+Card grounds come from position, not from the post, cycling pink → lime →
+yellow → orange. Only those four: the deeper green and purple are in the
+palette but the site does not wear them. Because the colour cycle is four long
+and the tile-size pattern is six, no two neighbours ever share a ground —
+checked in the browser rather than assumed.
 
 | Slug | Title | Category |
 |---|---|---|

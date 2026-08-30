@@ -124,8 +124,6 @@ export interface BlogPost {
   /** ISO date, so it can be published as-is in metadata and JSON-LD. */
   readonly publishedAt: string;
   readonly author: { readonly name: string; readonly role: string };
-  /** Card ground, taken from the accent palette. */
-  readonly accent: string;
   /** Looping footage behind the panel's title, when the post has some. */
   readonly video?: string;
   readonly sections: readonly CaseStudySection[];

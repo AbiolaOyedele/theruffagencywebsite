@@ -1,13 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import { color, font, shape, weight } from '@/config/tokens';
+import { cardAccent, color, font, shape, weight } from '@/config/tokens';
 import { blogSection } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { formatPostDate, readingMinutes, type BlogPost } from '@/types/content';
 
 interface BlogCardProps {
   readonly post: BlogPost;
+  /** Position on the shelf, which is what decides the card's ground. */
+  readonly index: number;
   /** Given the card's own box, so the panel can grow out of it. */
   readonly onOpen: (fromRect: DOMRect) => void;
 }
@@ -19,7 +21,7 @@ interface BlogCardProps {
  * keyline, hard offset shadow — and lifts off its shadow on hover so it reads
  * as something you press.
  */
-export function BlogCard({ post, onOpen }: BlogCardProps) {
+export function BlogCard({ post, index, onOpen }: BlogCardProps) {
   const isMobile = useIsMobile();
   const [raised, setRaised] = useState(false);
 
@@ -32,7 +34,7 @@ export function BlogCard({ post, onOpen }: BlogCardProps) {
       onFocus={() => setRaised(true)}
       onBlur={() => setRaised(false)}
       style={{
-        background: post.accent,
+        background: cardAccent(index),
         border: shape.keyline,
         borderRadius: 24,
         boxShadow: raised ? '10px 10px 0 #250200' : shape.hardShadow,

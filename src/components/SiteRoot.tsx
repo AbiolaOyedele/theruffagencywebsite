@@ -21,6 +21,7 @@ import { blogPosts, caseStudies } from '@/content/site';
 import { useStoryRoute } from '@/hooks/useStoryRoute';
 import { refreshHash, useHash } from '@/hooks/useHash';
 import { useSmoothScroll } from '@/hooks/useSmoothScroll';
+import { videoUrl } from '@/lib/images';
 import { clamp, setScrollLocked } from '@/utils/scroll';
 import { postHash, storyFromCaseStudy, storyFromPost } from '@/types/content';
 import type { OverlayKey, Story } from '@/types/content';
@@ -33,8 +34,16 @@ const CRITICAL_IMAGES = [
   '/assets/7b95b73d9de4dcf48f3ddcb20e754ae7f424ef4a.svg',
 ] as const;
 
-/** Videos warmed once the critical images land. */
-const WARM_VIDEOS = ['/notif.mp4', '/card1-designer.mp4', '/card2.mp4'] as const;
+/**
+ * Videos warmed once the critical images land. Named the way content names
+ * them, and resolved through `videoUrl` — warming a local copy of a file the
+ * page then fetches from Cloudinary would download it twice.
+ */
+const WARM_VIDEOS = [
+  'ruff-agency/website/video/notif',
+  'ruff-agency/website/video/card1-designer',
+  'ruff-agency/website/video/card2',
+] as const;
 
 /** Give up waiting on preloads after this and show the intro anyway. */
 const PRELOAD_TIMEOUT_MS = 4000;
@@ -85,7 +94,7 @@ export function SiteRoot() {
       for (const source of WARM_VIDEOS) {
         const video = document.createElement('video');
         video.preload = 'auto';
-        video.src = source;
+        video.src = videoUrl(source);
         video.load();
       }
     };

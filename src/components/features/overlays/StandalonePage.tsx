@@ -1,6 +1,5 @@
-import Link from 'next/link';
+import { PageChrome } from '@/components/ui/PageChrome';
 import { color, font, shape, weight } from '@/config/tokens';
-import { brand } from '@/content/site';
 
 interface StandalonePageProps {
   readonly eyebrow: string;
@@ -25,24 +24,8 @@ export function StandalonePage({
   maxWidth = 1120,
 }: StandalonePageProps) {
   return (
-    <main style={{ background: color.paperAlt, minHeight: '100vh' }}>
-      <div style={{ maxWidth, margin: '0 auto', padding: '40px 20px 96px' }}>
-        <Link
-          href="/"
-          style={{
-            fontFamily: font.sans,
-            fontWeight: weight.bold,
-            fontSize: 14,
-            color: color.ink,
-            textDecoration: 'none',
-            display: 'inline-flex',
-            alignItems: 'center',
-            minHeight: 44,
-          }}
-        >
-          ← {brand.shortName}
-        </Link>
-
+    <PageChrome>
+      <main style={{ maxWidth, margin: '0 auto', padding: '32px 20px 88px' }}>
         <p
           style={{
             fontFamily: font.sans,
@@ -51,7 +34,7 @@ export function StandalonePage({
             letterSpacing: '0.12em',
             textTransform: 'uppercase',
             color: color.muted,
-            margin: '20px 0 12px',
+            margin: '0 0 12px',
           }}
         >
           {eyebrow}
@@ -80,7 +63,7 @@ export function StandalonePage({
         >
           {children}
         </div>
-      </div>
-    </main>
+      </main>
+    </PageChrome>
   );
 }

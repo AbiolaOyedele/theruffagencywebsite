@@ -155,14 +155,14 @@ export const services = {
       description:
         'Before a single visual, we map your market, your audience, and what makes you worth choosing.',
       icon: '/assets/83f5508eeeebc94fff7e8755d7f494e548438dfb.svg',
-      video: '/card1-designer.mp4',
+      video: 'ruff-agency/website/video/card1-designer',
     },
     {
       title: 'Creative direction that fits',
       description:
         'Every idea is built around your brand, not a template. Concepts you can actually ship.',
       icon: '/assets/designrequest.svg',
-      video: '/card2.mp4',
+      video: 'ruff-agency/website/video/card2',
     },
     {
       title: 'Design, motion, and content',
@@ -254,9 +254,9 @@ function placeholderStory(client: string) {
       },
     ],
     gallery: [
-      { src: '/placeholder/case-1.svg', caption: 'Placeholder — a key screen or artefact from the work.' },
-      { src: '/placeholder/case-2.svg', caption: 'Placeholder — a second view, showing a different part of the system.' },
-      { src: '/placeholder/case-3.svg', caption: 'Placeholder — the work in context, or a before-and-after.' },
+      { src: 'ruff-agency/website/placeholder/case-1', caption: 'Placeholder — a key screen or artefact from the work.' },
+      { src: 'ruff-agency/website/placeholder/case-2', caption: 'Placeholder — a second view, showing a different part of the system.' },
+      { src: 'ruff-agency/website/placeholder/case-3', caption: 'Placeholder — the work in context, or a before-and-after.' },
     ],
     tickets: [
       {
@@ -284,7 +284,7 @@ export const caseStudies: readonly CaseStudy[] = [
     client: 'Teemplot',
     accent: color.accentPink,
     collaboration: 'Ruff × Teemplot',
-    video: '/card-alpa.mp4',
+    video: 'ruff-agency/website/video/card-alpa',
     ...placeholderStory('Teemplot'),
   },
   {
@@ -292,7 +292,7 @@ export const caseStudies: readonly CaseStudy[] = [
     client: 'IPC Africa',
     accent: color.accentPink,
     collaboration: 'Ruff × IPC Africa',
-    video: '/card-alpin.mp4',
+    video: 'ruff-agency/website/video/card-alpin',
     ...placeholderStory('IPC Africa'),
   },
   {
@@ -300,7 +300,7 @@ export const caseStudies: readonly CaseStudy[] = [
     client: 'Zero to 16',
     accent: color.accentPink,
     collaboration: 'Ruff × Zero to 16',
-    video: '/card-winter.mp4',
+    video: 'ruff-agency/website/video/card-winter',
     ...placeholderStory('Zero to 16'),
   },
 ];
@@ -358,16 +358,15 @@ export const blogPosts: readonly BlogPost[] = [
     category: 'Brand strategy',
     publishedAt: '2026-08-12',
     author: { name: 'The Ruff Agency', role: 'Studio' },
-    accent: color.accentPink,
     draft: true,
-    video: '/card-alpa.mp4',
+    video: 'ruff-agency/website/video/card-alpa',
     gallery: [
       {
-        src: '/placeholder/writing-1.svg',
+        src: 'ruff-agency/website/placeholder/writing-1',
         caption: 'Placeholder — the positioning line, before and after.',
       },
       {
-        src: '/placeholder/writing-2.svg',
+        src: 'ruff-agency/website/placeholder/writing-2',
         caption: 'Placeholder — the same business, said three different ways.',
       },
     ],
@@ -410,16 +409,15 @@ export const blogPosts: readonly BlogPost[] = [
     category: 'Working together',
     publishedAt: '2026-07-29',
     author: { name: 'The Ruff Agency', role: 'Studio' },
-    accent: color.accentLime,
     draft: true,
-    video: '/card-alpin.mp4',
+    video: 'ruff-agency/website/video/card-alpin',
     gallery: [
       {
-        src: '/placeholder/writing-3.svg',
+        src: 'ruff-agency/website/placeholder/writing-3',
         caption: 'Placeholder — a one-page brief, annotated.',
       },
       {
-        src: '/placeholder/writing-4.svg',
+        src: 'ruff-agency/website/placeholder/writing-4',
         caption: 'Placeholder — the same brief rewritten around the problem.',
       },
     ],
@@ -466,16 +464,15 @@ export const blogPosts: readonly BlogPost[] = [
     category: 'How we work',
     publishedAt: '2026-07-08',
     author: { name: 'The Ruff Agency', role: 'Studio' },
-    accent: color.accentYellow,
     draft: true,
-    video: '/card2.mp4',
+    video: 'ruff-agency/website/video/card2',
     gallery: [
       {
-        src: '/placeholder/writing-5.svg',
+        src: 'ruff-agency/website/placeholder/writing-5',
         caption: 'Placeholder — a request raised where the team already works.',
       },
       {
-        src: '/placeholder/writing-6.svg',
+        src: 'ruff-agency/website/placeholder/writing-6',
         caption: 'Placeholder — work in progress, visible without asking.',
       },
     ],
@@ -518,8 +515,24 @@ export const blogPosts: readonly BlogPost[] = [
     category: 'Social',
     publishedAt: '2026-06-24',
     author: { name: 'The Ruff Agency', role: 'Studio' },
-    accent: color.accentPurple,
     draft: true,
+    video: 'ruff-agency/website/video/card-winter',
+    gallery: [
+      { src: 'ruff-agency/website/placeholder/writing-1', caption: 'Placeholder — replace with art that belongs to this piece.' },
+      { src: 'ruff-agency/website/placeholder/writing-2', caption: 'Placeholder — a second view, or the point made visually.' },
+    ],
+    pullQuotes: [
+      {
+        title: 'Competent is the problem',
+        request:
+          'A consistent feed stops you looking amateur. It does not make anyone care.',
+      },
+      {
+        title: 'The test worth passing',
+        request:
+          'One idea that only your brand could have posted, that a person who saw it last week can still tell you the point of.',
+      },
+    ],
     sections: [
       {
         heading: 'Nothing is wrong, and nothing is working',
@@ -543,8 +556,24 @@ export const blogPosts: readonly BlogPost[] = [
     category: 'Working together',
     publishedAt: '2026-06-10',
     author: { name: 'The Ruff Agency', role: 'Studio' },
-    accent: color.accentOrange,
     draft: true,
+    video: 'ruff-agency/website/video/card1-designer',
+    gallery: [
+      { src: 'ruff-agency/website/placeholder/writing-3', caption: 'Placeholder — replace with art that belongs to this piece.' },
+      { src: 'ruff-agency/website/placeholder/writing-4', caption: 'Placeholder — a second view, or the point made visually.' },
+    ],
+    pullQuotes: [
+      {
+        title: 'Not what you want made',
+        request:
+          'What has to have changed. The answer decides the scope, and the scope decides the number.',
+      },
+      {
+        title: 'Who has to say yes?',
+        request:
+          'The single biggest difference between a project that takes six weeks and the same project taking sixteen.',
+      },
+    ],
     sections: [
       {
         heading: 'What has to be true when this is finished?',
@@ -568,8 +597,24 @@ export const blogPosts: readonly BlogPost[] = [
     category: 'Brand strategy',
     publishedAt: '2026-05-27',
     author: { name: 'The Ruff Agency', role: 'Studio' },
-    accent: color.accentGreen,
     draft: true,
+    video: 'ruff-agency/website/video/notif',
+    gallery: [
+      { src: 'ruff-agency/website/placeholder/writing-5', caption: 'Placeholder — replace with art that belongs to this piece.' },
+      { src: 'ruff-agency/website/placeholder/writing-6', caption: 'Placeholder — a second view, or the point made visually.' },
+    ],
+    pullQuotes: [
+      {
+        title: 'The reference deck problem',
+        request:
+          'A deck full of the same references produces a brand that looks like the deck.',
+      },
+      {
+        title: 'Premium has no nationality',
+        request:
+          'Restraint, confidence, and evidence of care. Copying a look gets you the surface without the substance.',
+      },
+    ],
     sections: [
       {
         heading: 'The reference deck problem',
@@ -593,8 +638,24 @@ export const blogPosts: readonly BlogPost[] = [
     category: 'Creative direction',
     publishedAt: '2026-05-13',
     author: { name: 'The Ruff Agency', role: 'Studio' },
-    accent: color.accentPink,
     draft: true,
+    video: 'ruff-agency/website/video/card-alpa',
+    gallery: [
+      { src: 'ruff-agency/website/placeholder/writing-1', caption: 'Placeholder — replace with art that belongs to this piece.' },
+      { src: 'ruff-agency/website/placeholder/writing-2', caption: 'Placeholder — a second view, or the point made visually.' },
+    ],
+    pullQuotes: [
+      {
+        title: 'Take the motion out',
+        request:
+          'If the piece communicates exactly as well without it, the motion was decoration — and decoration is the first thing an audience learns to ignore.',
+      },
+      {
+        title: 'Flat is a composition problem',
+        request:
+          'Animation cannot fix composition. It can only make a flat thing move.',
+      },
+    ],
     sections: [
       {
         heading: 'The test',
@@ -618,8 +679,24 @@ export const blogPosts: readonly BlogPost[] = [
     category: 'Working together',
     publishedAt: '2026-04-29',
     author: { name: 'The Ruff Agency', role: 'Studio' },
-    accent: color.accentLime,
     draft: true,
+    video: 'ruff-agency/website/video/card-alpin',
+    gallery: [
+      { src: 'ruff-agency/website/placeholder/writing-3', caption: 'Placeholder — replace with art that belongs to this piece.' },
+      { src: 'ruff-agency/website/placeholder/writing-4', caption: 'Placeholder — a second view, or the point made visually.' },
+    ],
+    pullQuotes: [
+      {
+        title: 'Context, not volume',
+        request:
+          'By month four the studio is making judgement calls you would have made yourself. That is when the work starts getting genuinely faster.',
+      },
+      {
+        title: 'When not to',
+        request:
+          'A retainer that exists to hit a monthly quota produces work nobody needed, and both sides can feel it.',
+      },
+    ],
     sections: [
       {
         heading: 'The version people expect',
@@ -643,8 +720,24 @@ export const blogPosts: readonly BlogPost[] = [
     category: 'Working together',
     publishedAt: '2026-04-15',
     author: { name: 'The Ruff Agency', role: 'Studio' },
-    accent: color.accentYellow,
     draft: true,
+    video: 'ruff-agency/website/video/card2',
+    gallery: [
+      { src: 'ruff-agency/website/placeholder/writing-5', caption: 'Placeholder — replace with art that belongs to this piece.' },
+      { src: 'ruff-agency/website/placeholder/writing-6', caption: 'Placeholder — a second view, or the point made visually.' },
+    ],
+    pullQuotes: [
+      {
+        title: 'What gets lost',
+        request:
+          'Designers see structural problems early. Every one is cheap to fix at the thinking stage and expensive at the artwork stage.',
+      },
+      {
+        title: 'One hour, at the start',
+        request:
+          'Not a briefing — a conversation. It costs an hour and it routinely saves a fortnight.',
+      },
+    ],
     sections: [
       {
         heading: 'The usual order',
@@ -668,8 +761,24 @@ export const blogPosts: readonly BlogPost[] = [
     category: 'Brand strategy',
     publishedAt: '2026-04-01',
     author: { name: 'The Ruff Agency', role: 'Studio' },
-    accent: color.accentOrange,
     draft: true,
+    video: 'ruff-agency/website/video/card-winter',
+    gallery: [
+      { src: 'ruff-agency/website/placeholder/writing-1', caption: 'Placeholder — replace with art that belongs to this piece.' },
+      { src: 'ruff-agency/website/placeholder/writing-2', caption: 'Placeholder — a second view, or the point made visually.' },
+    ],
+    pullQuotes: [
+      {
+        title: 'The mockup lies',
+        request:
+          'It will be seen at an angle, half-obscured, under fluorescent light, beside eleven competitors shouting the same thing.',
+      },
+      {
+        title: 'Print it badly',
+        request:
+          'Actual size, among the real competitors, photographed on a phone. It will change the design more than any meeting will.',
+      },
+    ],
     sections: [
       {
         heading: 'The mockup lies',

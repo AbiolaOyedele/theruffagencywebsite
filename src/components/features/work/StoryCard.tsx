@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { AutoplayVideo } from '@/components/ui/AutoplayVideo';
-import { imageUrl, videoUrl } from '@/lib/images';
+import { imageUrl } from '@/lib/images';
 import { color, font, primaryButton, shape, weight } from '@/config/tokens';
 import { work } from '@/content/site';
 import type { CaseStudy } from '@/types/content';
@@ -110,7 +110,7 @@ export function StoryCard({ study, layout, progress, stackIndex, onOpen }: Story
         >
           {study.video ? (
             <AutoplayVideo
-              src={videoUrl(study.video)}
+              src={study.video}
               preload="metadata"
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />

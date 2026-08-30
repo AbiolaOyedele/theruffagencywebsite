@@ -129,7 +129,7 @@ export function PhoneMockup({
 
         <AutoplayVideo
           ref={videoRef}
-          src="/notif.mp4"
+          src="ruff-agency/website/video/notif"
           playOnMount={autoPlay}
           style={{ flex: 1, width: '100%', borderRadius: 10, objectFit: 'cover' }}
         />

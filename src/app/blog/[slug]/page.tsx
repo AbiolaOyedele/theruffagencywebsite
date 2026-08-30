@@ -40,7 +40,8 @@ export async function generateMetadata({ params }: PageProps<'/blog/[slug]'>): P
 
 export default async function BlogPostPage({ params }: PageProps<'/blog/[slug]'>) {
   const { slug } = await params;
-  const post = findPost(slug);
+  const index = blogPosts.findIndex((entry) => entry.slug === slug);
+  const post = blogPosts[index];
   if (!post) notFound();
 
   const structuredData = {
@@ -63,7 +64,7 @@ export default async function BlogPostPage({ params }: PageProps<'/blog/[slug]'>
         // Static, author-controlled JSON-LD — no user input reaches this string.
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-      <ArticleReader post={post} />
+      <ArticleReader post={post} index={index} />
     </>
   );
 }

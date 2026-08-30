@@ -1,8 +1,10 @@
 'use client';
 
 import { useEffect, useImperativeHandle, useRef, type CSSProperties, type Ref } from 'react';
+import { videoUrl } from '@/lib/images';
 
 interface AutoplayVideoProps {
+  /** A path into `public/`, an absolute URL, or a Cloudinary public id. */
   readonly src: string;
   readonly style?: CSSProperties | undefined;
   readonly className?: string | undefined;
@@ -19,6 +21,10 @@ interface AutoplayVideoProps {
  * element starts loading, which makes some browsers refuse to autoplay. This
  * sets `muted` imperatively before asking to play, and retries once the media
  * is actually playable.
+ *
+ * Every video on the site plays through here, so this is where a source is
+ * resolved — content names footage however it likes and one place decides
+ * where it is fetched from.
  */
 export function AutoplayVideo({
   src,
@@ -72,7 +78,7 @@ export function AutoplayVideo({
       className={className}
       style={style}
     >
-      <source src={src} type="video/mp4" />
+      <source src={videoUrl(src)} type="video/mp4" />
     </video>
   );
 }

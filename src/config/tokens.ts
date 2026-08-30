@@ -79,6 +79,27 @@ export const color = {
  * Comic-book shape language: a hard keyline with a solid offset shadow that
  * collapses on press, instead of a soft blur.
  */
+/**
+ * The card grounds, in rotation order.
+ *
+ * The four lighter accents only — the deeper green and purple are in the
+ * palette but the site does not wear them, and a card is a large area of flat
+ * colour. Cards take their ground from position rather than from content, so
+ * the rotation guarantees no two neighbours land on the same colour however
+ * many there are.
+ */
+export const CARD_ACCENTS = [
+  color.accentPink,
+  color.accentLime,
+  color.accentYellow,
+  color.accentOrange,
+] as const;
+
+/** The ground for the card at `index`, cycling through `CARD_ACCENTS`. */
+export function cardAccent(index: number): string {
+  return CARD_ACCENTS[index % CARD_ACCENTS.length] as string;
+}
+
 export const shape = {
   keyline: `2.5px solid ${color.ink}`,
   hardShadow: `6px 6px 0 ${color.ink}`,

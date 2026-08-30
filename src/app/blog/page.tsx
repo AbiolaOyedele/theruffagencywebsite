@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { color, font, shape, weight } from '@/config/tokens';
+import { PageChrome } from '@/components/ui/PageChrome';
+import { cardAccent, color, font, shape, weight } from '@/config/tokens';
 import { blogPosts, blogSection, brand } from '@/content/site';
 import { formatPostDate, readingMinutes } from '@/types/content';
 
@@ -18,41 +19,41 @@ export const metadata: Metadata = {
 };
 
 /**
- * The writing index.
+ * The writing archive.
  *
  * A real page rather than a section of the home page, so each post has an
  * address a search engine can send someone to. Newest first — `blogPosts` is
- * already kept in that order.
+ * already kept in that order — laid out as a bento so ten posts read as an
+ * arrangement rather than a stack. Tile sizes come from `.bento` in
+ * globals.css; grounds come from position, so no two neighbours share one.
  */
 export default function BlogIndexPage() {
   return (
-    <main style={{ background: color.paperAlt, minHeight: '100vh' }}>
-      <div style={{ maxWidth: 1000, margin: '0 auto', padding: '48px 20px 96px' }}>
-        <Link
-          href="/"
+    <PageChrome>
+      <main style={{ maxWidth: 1000, margin: '0 auto', padding: '32px 20px 88px' }}>
+        <p
           style={{
             fontFamily: font.sans,
             fontWeight: weight.bold,
-            fontSize: 14,
-            color: color.ink,
-            textDecoration: 'none',
-            display: 'inline-flex',
-            alignItems: 'center',
-            minHeight: 44,
+            fontSize: 12,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            color: color.muted,
+            margin: '0 0 16px',
           }}
         >
-          ← {brand.shortName}
-        </Link>
+          {blogSection.eyebrow}
+        </p>
 
         <h1
           style={{
             fontFamily: font.display,
             fontWeight: weight.black,
-            fontSize: 'clamp(40px, 7vw, 84px)',
-            lineHeight: 0.98,
+            fontSize: 'clamp(44px, 8vw, 92px)',
+            lineHeight: 0.95,
             letterSpacing: '-0.03em',
             color: color.ink,
-            margin: '24px 0 0',
+            margin: 0,
           }}
         >
           {blogSection.indexTitle}
@@ -85,38 +86,27 @@ export default function BlogIndexPage() {
             {blogSection.empty}
           </p>
         ) : (
-          /* Auto-fill rather than a fixed column count: this is a server
-             component with no viewport to read, and the grid does not need
-             one — it is one column on a phone and two from about 700px up.
-             The newest post spans the row, so the archive opens on something
-             rather than on a wall of equal cards. */
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
-              gap: 20,
-              margin: '56px 0 0',
-              alignItems: 'stretch',
-            }}
-          >
+          <div className="bento" style={{ margin: '48px 0 0' }}>
             {blogPosts.map((post, index) => {
-              const feature = index === 0;
+              // The opener of each run of six gets the room for a bigger
+              // headline; the rest are set to sit comfortably in a half tile.
+              const lead = index % 6 === 0;
 
               return (
                 <Link
                   key={post.slug}
                   href={`/blog/${post.slug}`}
                   style={{
-                    gridColumn: feature ? '1 / -1' : 'auto',
-                    background: post.accent,
+                    background: cardAccent(index),
                     border: shape.keyline,
                     borderRadius: 24,
                     boxShadow: shape.hardShadow,
-                    padding: feature ? 32 : 26,
+                    padding: lead ? 30 : 24,
                     display: 'flex',
                     flexDirection: 'column',
                     gap: 10,
                     textDecoration: 'none',
+                    minHeight: 190,
                   }}
                 >
                   <span
@@ -130,14 +120,14 @@ export default function BlogIndexPage() {
                       opacity: 0.7,
                     }}
                   >
-                    {post.category} · {formatPostDate(post.publishedAt)} · {readingMinutes(post)} min
+                    {post.category} · {formatPostDate(post.publishedAt)}
                   </span>
 
                   <h2
                     style={{
                       fontFamily: font.display,
                       fontWeight: weight.extrabold,
-                      fontSize: feature ? 'clamp(26px, 4vw, 38px)' : 'clamp(20px, 3vw, 24px)',
+                      fontSize: lead ? 'clamp(24px, 3.4vw, 34px)' : 'clamp(19px, 2.2vw, 23px)',
                       lineHeight: 1.12,
                       letterSpacing: '-0.02em',
                       color: color.ink,
@@ -151,12 +141,12 @@ export default function BlogIndexPage() {
                     style={{
                       fontFamily: font.body,
                       fontWeight: weight.light,
-                      fontSize: feature ? 17 : 15,
-                      lineHeight: 1.6,
+                      fontSize: lead ? 16 : 14,
+                      lineHeight: 1.55,
                       color: color.ink,
                       opacity: 0.75,
                       margin: 0,
-                      maxWidth: feature ? 620 : undefined,
+                      maxWidth: 560,
                     }}
                   >
                     {post.excerpt}
@@ -168,18 +158,18 @@ export default function BlogIndexPage() {
                       paddingTop: 12,
                       fontFamily: font.sans,
                       fontWeight: weight.bold,
-                      fontSize: 14,
+                      fontSize: 13,
                       color: color.ink,
                     }}
                   >
-                    {blogSection.cardCta} →
+                    {blogSection.cardCta} → <span style={{ opacity: 0.6 }}>{readingMinutes(post)} min</span>
                   </span>
                 </Link>
               );
             })}
           </div>
         )}
-      </div>
-    </main>
+      </main>
+    </PageChrome>
   );
 }

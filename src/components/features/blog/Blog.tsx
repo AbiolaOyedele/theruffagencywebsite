@@ -117,10 +117,11 @@ export function Blog({ onOpenPost }: BlogProps) {
             alignItems: 'stretch',
           }}
         >
-          {featured.map((post) => (
+          {featured.map((post, index) => (
             <BlogCard
               key={post.slug}
               post={post}
+              index={index}
               onOpen={(fromRect) => onOpenPost(postHash(post.slug), fromRect)}
             />
           ))}
