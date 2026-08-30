@@ -422,9 +422,7 @@ export function CaseStudyPanel({ study, fromRect, onClose }: CaseStudyPanelProps
                 <div>
                   <p style={railLabel}>{caseStudyChrome.ctaHeading}</p>
                   <a
-                    href={brand.bookACallUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href={brand.ctaHref}
                     style={{ ...primaryButton, width: '100%', padding: '14px 0', fontSize: 14 }}
                   >
                     {caseStudyChrome.ctaButton}

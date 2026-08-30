@@ -23,14 +23,12 @@ function PricingCard({ plan, visual }: PricingCardProps) {
 
   return (
     <a
-      href={brand.bookACallUrl}
-      target="_blank"
-      rel="noopener noreferrer"
+      href={brand.ctaHref}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onFocus={() => setHovered(true)}
       onBlur={() => setHovered(false)}
-      aria-label={`${plan.name} — ${plan.price}. Book a call.`}
+      aria-label={`${plan.name} — ${plan.price}. ${brand.ctaLabel}.`}
       style={{
         background: color.white,
         borderRadius: 28,

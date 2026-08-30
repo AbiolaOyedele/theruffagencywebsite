@@ -101,13 +101,11 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
 
       <div style={{ paddingBottom: 32 }}>
         <a
-          href={brand.bookACallUrl}
-          target="_blank"
-          rel="noopener noreferrer"
+          href={brand.ctaHref}
           onClick={onClose}
           style={{ ...primaryButton, display: 'flex', width: '100%', padding: '18px 24px', fontSize: 18 }}
         >
-          Book a call
+          {brand.ctaLabel}
         </a>
       </div>
     </div>

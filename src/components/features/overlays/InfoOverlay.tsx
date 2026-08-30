@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import { color, font } from '@/config/tokens';
-import { brand, contact, privacyPolicy, termsOfService } from '@/content/site';
+import { ContactContent } from '@/components/features/contact/ContactContent';
+import { contactPage, privacyPolicy, termsOfService } from '@/content/site';
 import { setScrollLocked } from '@/utils/scroll';
 import type { LegalSection, OverlayKey } from '@/types/content';
 
@@ -45,93 +46,8 @@ function LegalBody({ sections }: { readonly sections: readonly LegalSection[] })
   );
 }
 
-function ContactBody() {
-  const rows = [
-    { label: 'Email', content: <a href={`mailto:${brand.email}`}>{brand.email}</a> },
-    {
-      label: 'Based in',
-      content: (
-        <>
-          {brand.basedIn[0]}
-          <br />
-          <span style={{ color: color.muted }}>{brand.basedIn[1]}</span>
-        </>
-      ),
-    },
-    {
-      label: 'Book a call',
-      content: (
-        <a href={brand.bookACallUrl} target="_blank" rel="noopener noreferrer">
-          {contact.bookACallLabel}
-        </a>
-      ),
-    },
-    // TODO: awaiting the social handle. The row stays hidden until then
-    // rather than shipping a dead link.
-    ...(brand.socialUrl
-      ? [
-          {
-            label: 'Social',
-            content: (
-              <a href={brand.socialUrl} target="_blank" rel="noopener noreferrer">
-                {brand.socialLabel}
-              </a>
-            ),
-          },
-        ]
-      : []),
-  ];
-
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
-      <p
-        style={{
-          fontFamily: font.body,
-          fontWeight: 300,
-          fontSize: 18,
-          color: color.muted,
-          lineHeight: '30px',
-          margin: 0,
-        }}
-      >
-        {contact.intro}
-      </p>
-
-      {rows.map((row) => (
-        <div key={row.label}>
-          <p
-            style={{
-              fontFamily: font.sans,
-              fontWeight: 700,
-              fontSize: 12,
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              color: color.muted,
-              margin: '0 0 8px',
-            }}
-          >
-            {row.label}
-          </p>
-          <p
-            style={{
-              fontFamily: font.body,
-              fontWeight: 500,
-              fontSize: 18,
-              color: color.ink,
-              lineHeight: '28px',
-              margin: 0,
-            }}
-          >
-            {row.content}
-          </p>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 const PANELS: Record<OverlayKey, { title: string; subtitle?: string; body: ReactNode }> = {
-  contact: { title: contact.title, body: <ContactBody /> },
+  contact: { title: contactPage.panelTitle, body: <ContactContent /> },
   privacy: {
     title: privacyPolicy.title,
     subtitle: privacyPolicy.updated,

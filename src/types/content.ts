@@ -110,3 +110,11 @@ export interface LegalSection {
 
 /** Which overlay panel is open, if any. */
 export type OverlayKey = 'contact' | 'privacy' | 'terms';
+
+/**
+ * A footer link under "Company": either a route of its own, or one of the
+ * reference panels that opens over the page.
+ */
+export type FooterCompanyLink =
+  | { readonly label: string; readonly href: string }
+  | { readonly label: string; readonly overlay: OverlayKey };

@@ -26,7 +26,7 @@ interface NavbarProps {
  * Floating pill navigation.
  *
  * Three states, all driven by scroll position:
- *  - hero:      logo and a dark "Start today"; the links stay collapsed
+ *  - hero:      logo and the call to action; the links stay collapsed
  *  - scrolled:  the pill widens to reveal the section links, CTA turns red
  *  - pinned:    five-dot stepper tracking the horizontal Services section
  *
@@ -273,9 +273,7 @@ export function Navbar({ revealed, aboveOverlay }: NavbarProps) {
               </div>
 
               <a
-                href={brand.bookACallUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={brand.ctaHref}
                 style={{
                   ...primaryButton,
                   fontSize: 16,
@@ -286,7 +284,7 @@ export function Navbar({ revealed, aboveOverlay }: NavbarProps) {
                   transition: 'background 0.35s ease',
                 }}
               >
-                {isScrolled ? 'Book a call' : 'Start today'}
+                {brand.ctaLabel}
               </a>
             </div>
           )}

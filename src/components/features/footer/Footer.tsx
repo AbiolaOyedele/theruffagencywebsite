@@ -12,7 +12,8 @@ import type { OverlayKey } from '@/types/content';
 interface FooterLinkProps {
   readonly label: string;
   readonly href: string;
-  readonly onClick: () => void;
+  /** Given for the panels that open over the page; omitted for real routes. */
+  readonly onClick?: (() => void) | undefined;
 }
 
 function FooterLink({ label, href, onClick }: FooterLinkProps) {
@@ -23,6 +24,7 @@ function FooterLink({ label, href, onClick }: FooterLinkProps) {
     <a
       href={href}
       onClick={(event) => {
+        if (!onClick) return;
         event.preventDefault();
         onClick();
       }}
@@ -199,7 +201,7 @@ export function Footer({ onOpenOverlay, ref }: FooterProps) {
                   <FooterLink
                     key={link.label}
                     label={link.label}
-                    href="#"
+                    href={`#${link.overlay}`}
                     onClick={() => onOpenOverlay(link.overlay)}
                   />
                 ))}
@@ -228,12 +230,10 @@ export function Footer({ onOpenOverlay, ref }: FooterProps) {
               {brand.copyright}
             </p>
             <a
-              href={brand.bookACallUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={brand.ctaHref}
               style={{ ...primaryButton, padding: '14px 28px', fontSize: 14 }}
             >
-              Book a call
+              {brand.ctaLabel}
             </a>
           </div>
         </div>

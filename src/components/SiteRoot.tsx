@@ -18,6 +18,7 @@ import { ScrollStatement } from '@/components/features/statement/ScrollStatement
 import { color } from '@/config/tokens';
 import { caseStudies } from '@/content/site';
 import { useCaseStudyRoute } from '@/hooks/useCaseStudyRoute';
+import { refreshHash, useHash } from '@/hooks/useHash';
 import { useSmoothScroll } from '@/hooks/useSmoothScroll';
 import { clamp, setScrollLocked } from '@/utils/scroll';
 import type { OverlayKey } from '@/types/content';
@@ -49,6 +50,12 @@ export function SiteRoot() {
   const caseStudySlug = caseStudyRoute.slug;
   const [caseStudyOrigin, setCaseStudyOrigin] = useState<DOMRect | null>(null);
   const [overlay, setOverlay] = useState<OverlayKey | null>(null);
+  // Every "Work with us" is a plain link to #contact, so the panel opens from
+  // the URL rather than from a callback threaded through half the tree — and
+  // /contact, which the agent instructions point at, redirects here.
+  const hash = useHash();
+  const hashOverlay: OverlayKey | null = hash === 'contact' ? 'contact' : null;
+  const activeOverlay = overlay ?? hashOverlay;
   const [overlayOrigin, setOverlayOrigin] = useState<DOMRect | null>(null);
 
   const [assetsReady, setAssetsReady] = useState(false);
@@ -91,8 +98,9 @@ export function SiteRoot() {
     return () => clearTimeout(fallback);
   }, []);
 
-  // A deep link into a case study skips the intro entirely.
-  const introFinished = introDone || caseStudySlug !== null;
+  // A deep link into a case study or the contact panel skips the intro: those
+  // visitors came for one thing and should not sit through the opening.
+  const introFinished = introDone || caseStudySlug !== null || hashOverlay !== null;
 
   // Freeze the page under the intro overlay.
   useEffect(() => {
@@ -167,6 +175,15 @@ export function SiteRoot() {
     setOverlay(key);
   }, []);
 
+  const closeOverlay = useCallback(() => {
+    setOverlay(null);
+    // Clear the hash too, or the panel it named simply reopens.
+    if (window.location.hash) {
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+      refreshHash();
+    }
+  }, []);
+
   const activeCaseStudy = caseStudies.find((study) => study.slug === caseStudySlug) ?? null;
 
   return (
@@ -206,8 +223,8 @@ export function SiteRoot() {
       <NoiseOverlay />
       <CookieBanner />
 
-      {overlay ? (
-        <InfoOverlay panel={overlay} origin={overlayOrigin} onClose={() => setOverlay(null)} />
+      {activeOverlay ? (
+        <InfoOverlay panel={activeOverlay} origin={overlayOrigin} onClose={closeOverlay} />
       ) : null}
 
       {activeCaseStudy ? (

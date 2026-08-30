@@ -1,5 +1,6 @@
 import { color } from '@/config/tokens';
 import type {
+  FooterCompanyLink,
   CaseStudy,
   ClientLogo,
   FaqItem,
@@ -20,7 +21,15 @@ export const brand = {
   email: 'hello@theruff.agency',
   tagline: ['Brand & creative,', 'made to launch.'],
   copyright: '© 2026 The Ruff Agency. All rights reserved.',
+  /**
+   * The scheduling link. Only the contact page offers this directly — every
+   * other CTA sends people to /contact first, where they can send a brief or
+   * book the call, whichever suits them.
+   */
   bookACallUrl: 'https://calendar.app.google/tU2SHfJjpBd56rmx7',
+  /** Label and destination shared by every call to action on the site. */
+  ctaLabel: 'Work with us',
+  ctaHref: '/#contact',
   /** TODO: confirm which platform this should point at. */
   socialUrl: '',
   socialLabel: 'LinkedIn',
@@ -308,8 +317,8 @@ export const caseStudyChrome = {
   workHeading: 'Selected work',
   ticketsHeading: 'Selected briefs',
   ctaHeading: 'Want results like these?',
-  ctaBody: "Book a call and we'll match you with the right creative lead.",
-  ctaButton: 'Book a call',
+  ctaBody: "Tell us what you're building and we'll match you with the right creative lead.",
+  ctaButton: 'Work with us',
 } as const;
 
 /* ------------------------------------------------------------------ */
@@ -362,7 +371,7 @@ export const faq = {
     {
       question: 'How much does a project cost?',
       answer:
-        "Projects start from ₦150,000, depending on scope. Book a call and we'll send a clear quote before any work begins.",
+        "Projects start from ₦150,000, depending on scope. Send us a brief and we'll come back with a clear quote before any work begins.",
     },
     {
       question: 'We already have a design team. Can you still help?',
@@ -401,7 +410,7 @@ export const footerLinks = {
     { label: 'Contact', overlay: 'contact' },
     { label: 'Privacy Policy', overlay: 'privacy' },
     { label: 'Terms', overlay: 'terms' },
-  ],
+  ] satisfies readonly FooterCompanyLink[],
 } as const;
 
 /* ------------------------------------------------------------------ */
@@ -419,11 +428,46 @@ export const cookieBanner = {
 /* Overlays: Contact / Privacy / Terms                                 */
 /* ------------------------------------------------------------------ */
 
-export const contact = {
-  title: 'Contact',
+/** The contact page at /contact. */
+export const contactPage = {
+  /** Heading on the panel that opens over the page. */
+  panelTitle: 'Tell us what you are building.',
+  eyebrow: 'Work with us',
+  headline: ['Tell us what', 'you are building.'],
+  headlineAccent: 'building.',
   intro:
-    "We'd love to hear about your project. Whether you have a brand to build, a campaign to launch, or just a question, reach out anytime.",
-  bookACallLabel: 'Schedule an intro call',
+    'Every project starts the same way: a conversation about what you are making and who it is for. Send the brief over, or book a call and talk it through.',
+  formHeading: 'Send us a brief',
+  submitLabel: 'Send it over',
+  submitBusyLabel: 'Sending…',
+  callHeading: 'Rather talk it through?',
+  callBody: 'Book a call and we will match you with the right creative lead.',
+  callLabel: 'Book a direct call',
+  successHeading: 'Message sent',
+  emailLabel: 'Or email us directly',
+  fields: {
+    name: { label: 'Your name', placeholder: 'First and last name' },
+    email: { label: 'Email', placeholder: 'you@company.com' },
+    company: { label: 'Company', placeholder: 'Optional' },
+    phone: { label: 'Phone', placeholder: 'Optional' },
+    referralSource: { label: 'How did you hear about us?', placeholder: 'Optional' },
+    projectDetails: {
+      label: 'About the project',
+      placeholder:
+        'What are you building, who is it for, and what do you need from us? A few sentences is plenty.',
+    },
+  },
+  /** The paste-to-fill flow an AI agent can follow on the visitor's behalf. */
+  agent: {
+    heading: 'Working with an AI agent?',
+    body: 'Copy one prompt into Claude, ChatGPT, or any agent. It drafts the brief with you, then hands you a snippet to paste on this page — the form fills itself in, and you check it over before sending.',
+    copyLabel: 'Copy prompt',
+    copiedLabel: 'Copied',
+    copyFailedLabel: 'Copy failed — open it instead',
+    href: '/agent/prompt.md',
+    pasteNotice:
+      'We filled the form in from your assistant’s draft. Check it over, then send it.',
+  },
 } as const;
 
 export const privacyPolicy = {
