@@ -74,17 +74,6 @@ export const color = {
   white: '#ffffff',
 } as const;
 
-/**
- * Pink is the single accent ground. The other hues stay in the palette for
- * future use but nothing on the site reaches for them.
- */
-export const cardAccents = [
-  color.accentPink,
-  color.accentPink,
-  color.accentPink,
-  color.accentPink,
-  color.accentPink,
-] as const;
 
 /**
  * Comic-book shape language: a hard keyline with a solid offset shadow that

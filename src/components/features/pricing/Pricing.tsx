@@ -157,7 +157,7 @@ export function Pricing() {
       id="pricing"
       data-section="pricing"
       style={{
-        background: color.accentPink,
+        background: color.paperAlt,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',

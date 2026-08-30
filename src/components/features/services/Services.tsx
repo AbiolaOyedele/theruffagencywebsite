@@ -5,7 +5,7 @@ import { CloudScene } from '@/components/features/services/CloudScene';
 import { DotGrid } from '@/components/features/services/DotGrid';
 import { FeatureCard } from '@/components/features/services/FeatureCard';
 import { ToolStack } from '@/components/features/services/ToolStack';
-import { cardAccents, color } from '@/config/tokens';
+import { color } from '@/config/tokens';
 import { services } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { clamp } from '@/utils/scroll';
@@ -14,8 +14,11 @@ import { clamp } from '@/utils/scroll';
 const CARD_GAP = 33;
 /** Share of the pin used for horizontal travel; the rest drives the zoom. */
 const TRAVEL_RATIO = 4 / 5;
-/** Cards that carry a generative illustration rather than video footage. */
-const ILLUSTRATED_CARDS = new Set([2, 3, 4]);
+/**
+ * Every card sits on the same cream ground, whether it carries footage or a
+ * generative illustration, so the track reads as one set.
+ */
+const CARD_GROUND = color.paper;
 
 /**
  * Measures the viewport, re-reading on resize.
@@ -191,8 +194,7 @@ export function Services() {
       // on the same near-black the client-stories section starts from.
       if (media) {
         const darkness = 1 - (1 - clamp((zoom - 0.4) / 0.6)) ** 3;
-        const from = cardAccents[services.items.length - 1] ?? color.cream;
-        media.style.background = `color-mix(in srgb, ${color.ink} ${Math.round(darkness * 100)}%, ${from})`;
+        media.style.background = `color-mix(in srgb, ${color.ink} ${Math.round(darkness * 100)}%, ${CARD_GROUND})`;
       }
 
       const mark = finalMarkRef.current;
@@ -306,9 +308,7 @@ export function Services() {
               {...(feature.video ? { video: feature.video } : {})}
               cardWidth={cardWidth}
               mediaHeight={mediaHeight}
-              {...(ILLUSTRATED_CARDS.has(index)
-                ? { background: cardAccents[index] ?? color.cream }
-                : {})}
+              background={CARD_GROUND}
             >
               {renderIllustration(index)}
             </FeatureCard>
@@ -388,9 +388,7 @@ export function Services() {
                         {...(feature.video ? { video: feature.video } : {})}
                         cardWidth={cardWidth}
                         mediaHeight={mediaHeight}
-                        {...(ILLUSTRATED_CARDS.has(index)
-                          ? { background: cardAccents[index] ?? color.cream }
-                          : {})}
+                        background={CARD_GROUND}
                         videoRef={(element) => {
                           cardVideoRefs.current[index] = element;
                         }}
