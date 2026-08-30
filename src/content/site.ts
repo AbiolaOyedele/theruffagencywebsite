@@ -80,7 +80,7 @@ export const hero = {
  * company's mark. Drop in a logo file and the strip picks it up.
  */
 export const logoStrip = {
-  label: "Some of the teams we've worked with.",
+  label: 'Our designers have worked with these companies and brands',
   logos: [
     { name: 'Teemplot' },
     { name: 'IPC Africa' },

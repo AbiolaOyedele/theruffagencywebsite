@@ -185,7 +185,7 @@ export function SiteRoot() {
         style={{ position: 'relative', zIndex: 1, marginBottom: footerHeight }}
       >
         <div style={{ background: color.white }}>
-          <Hero introActive={!introFinished} />
+          <Hero />
         </div>
         <LogoStrip />
         <ScrollStatement />

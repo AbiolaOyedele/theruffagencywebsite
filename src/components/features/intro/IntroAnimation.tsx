@@ -5,6 +5,14 @@ import { AccentWord } from '@/components/ui/AccentWord';
 import { NotificationCard } from '@/components/ui/NotificationCard';
 import { PhoneMockup } from '@/components/ui/PhoneMockup';
 import { color, font } from '@/config/tokens';
+import {
+  HERO_COLUMN_GAP,
+  HERO_PADDING_LEFT,
+  HERO_PADDING_TOP,
+  HERO_PHONE_BOTTOM_LIFT,
+  HERO_PHONE_SCALE,
+  HERO_PHONE_WINDOW,
+} from '@/config/heroLayout';
 import { hero } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
 
@@ -28,8 +36,8 @@ const SUBHEAD_AT = 4500;
 
 /** Where each loose card sits, as a share of the viewport. */
 const LOOSE_CARDS = [
-  { top: '25%', left: '13%', rotate: -3, mobileTop: '17%', mobileLeft: '5%' },
-  { top: '58%', left: '23%', rotate: 2.5, mobileTop: '43%', mobileLeft: '16%' },
+  { top: '25%', left: '13%', mobileTop: '17%', mobileLeft: '5%' },
+  { top: '58%', left: '23%', mobileTop: '43%', mobileLeft: '16%' },
 ] as const;
 
 /** Where the opening zoom is centred on the phone. */
@@ -156,10 +164,10 @@ export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps)
         flexDirection: isMobile ? 'column' : 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: isMobile ? 0 : 24,
-        paddingTop: 120,
+        gap: isMobile ? 0 : HERO_COLUMN_GAP,
+        paddingTop: isMobile ? 120 : HERO_PADDING_TOP,
         paddingBottom: 0,
-        paddingLeft: isMobile ? 0 : 'clamp(24px, 5vw, 88px)',
+        paddingLeft: isMobile ? 0 : HERO_PADDING_LEFT,
         background: pulledBack ? color.white : color.paper,
         transition: pulledBack ? 'background 1.3s ease' : 'none',
         overflow: 'hidden',
@@ -178,7 +186,7 @@ export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps)
               top: isMobile ? card.mobileTop : card.top,
               left: isMobile ? card.mobileLeft : card.left,
               opacity: shown ? 1 : 0,
-              transform: `rotate(${card.rotate}deg) translateY(${shown ? 0 : 18}px) scale(${shown ? 1 : 0.96})`,
+              transform: `translateY(${shown ? 0 : 18}px) scale(${shown ? 1 : 0.96})`,
               transition:
                 'opacity 0.32s ease, transform 0.45s cubic-bezier(0.34, 1.4, 0.64, 1)',
               pointerEvents: 'none',
@@ -251,33 +259,43 @@ export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps)
           flex: isMobile ? undefined : '0 0 auto',
           flexShrink: 0,
           // Same crop window as the hero, so the phone hands over in place.
-          width: isMobile ? undefined : 'min(620px, 38vw)',
+          width: isMobile ? undefined : HERO_PHONE_WINDOW,
           justifyContent: 'center',
           overflow: isMobile ? 'visible' : 'hidden',
           alignSelf: isMobile ? 'auto' : 'flex-end',
+          marginBottom: isMobile ? 0 : HERO_PHONE_BOTTOM_LIFT,
         }}
       >
-        <PhoneMockup
-          videoRef={videoRef}
-          autoPlay={false}
-          cardVisible={cardVisible}
-          chromeVisible={pulledBack}
-          chromeTransition={pulledBack ? 'opacity 0.9s ease 0.25s' : 'none'}
-          cardHeight={cardExpanded ? 442 : 62}
-          cardTransition={
-            cardExpanded
-              ? 'height 0.6s cubic-bezier(0.34,1.56,0.64,1), opacity 0.45s ease, transform 0.45s ease'
-              : 'opacity 0.45s ease, transform 0.45s ease'
-          }
+        {/* Same static scale wrapper as the hero, so the phone is already at
+            its final size when the overlay hands over. */}
+        <div
           style={{
-            marginTop: isMobile ? 'auto' : 0,
-            transform: pulledBack ? 'scale(1)' : `scale(${zoomScale})`,
-            transformOrigin: ZOOM_ORIGIN,
-            transition: pulledBack
-              ? 'transform 1.3s cubic-bezier(0.25,0.46,0.45,0.94)'
-              : 'none',
+            transform: isMobile ? 'none' : `scale(${HERO_PHONE_SCALE})`,
+            transformOrigin: 'bottom center',
           }}
-        />
+        >
+          <PhoneMockup
+            videoRef={videoRef}
+            autoPlay={false}
+            cardVisible={cardVisible}
+            chromeVisible={pulledBack}
+            chromeTransition={pulledBack ? 'opacity 0.9s ease 0.25s' : 'none'}
+            cardHeight={cardExpanded ? 442 : 62}
+            cardTransition={
+              cardExpanded
+                ? 'height 0.6s cubic-bezier(0.34,1.56,0.64,1), opacity 0.45s ease, transform 0.45s ease'
+                : 'opacity 0.45s ease, transform 0.45s ease'
+            }
+            style={{
+              marginTop: isMobile ? 'auto' : 0,
+              transform: pulledBack ? 'scale(1)' : `scale(${zoomScale})`,
+              transformOrigin: ZOOM_ORIGIN,
+              transition: pulledBack
+                ? 'transform 1.3s cubic-bezier(0.25,0.46,0.45,0.94)'
+                : 'none',
+            }}
+          />
+        </div>
       </div>
     </div>
   );

@@ -210,6 +210,11 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  /* Keep the scrollbar present at all times. Without it, locking scroll for
+     the intro overlay or a modal widens the viewport by the scrollbar's width
+     and shifts the whole page sideways on the way in and out. */
+  scrollbar-gutter: stable;
+  overflow-y: scroll;
 }
 
 body {

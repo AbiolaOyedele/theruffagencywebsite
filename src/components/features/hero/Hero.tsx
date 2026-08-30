@@ -1,10 +1,18 @@
 'use client';
 
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { PhoneMockup } from '@/components/ui/PhoneMockup';
 import { RotatingWord } from '@/components/features/hero/RotatingWord';
 import { AccentWord } from '@/components/ui/AccentWord';
 import { color, font } from '@/config/tokens';
+import {
+  HERO_COLUMN_GAP,
+  HERO_PADDING_LEFT,
+  HERO_PADDING_TOP,
+  HERO_PHONE_BOTTOM_LIFT,
+  HERO_PHONE_SCALE,
+  HERO_PHONE_WINDOW,
+} from '@/config/heroLayout';
 import { hero } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
 
@@ -12,64 +20,19 @@ import { useIsMobile } from '@/hooks/useIsMobile';
 const CORNER_SCROLL_RANGE = 150;
 
 /**
- * How much larger than its art board the phone renders in the hero, so the
- * composition reaches the top of the screen instead of floating mid-section.
- */
-export const HERO_PHONE_SCALE = 1.2;
-
-interface HeroProps {
-  /** True while the intro overlay still covers the page. */
-  readonly introActive: boolean;
-}
-
-/**
- * Full-bleed brand-red hero.
+ * Full-bleed white hero.
  *
  * As the page scrolls the block insets its sides and rounds its bottom
  * corners, while the phone drifts down and tilts on a slight perspective.
- * When the intro overlay hands over, the phone rises into place once.
+ *
+ * The intro overlay leaves its phone at exactly this size and position (see
+ * config/heroLayout), so there is nothing to animate on handover — the overlay
+ * simply retires and this is already underneath it.
  */
-export function Hero({ introActive }: HeroProps) {
+export function Hero() {
   const isMobile = useIsMobile();
   const sectionRef = useRef<HTMLElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
-  const hasSeeded = useRef(false);
-  const isHandingOver = useRef(false);
-  const [handoverDone, setHandoverDone] = useState(false);
-
-  // Park the phone offscreen so the intro's phone appears to fly into it.
-  useLayoutEffect(() => {
-    if (introActive || hasSeeded.current || !stageRef.current) return;
-    stageRef.current.style.transition = 'none';
-    stageRef.current.style.transform = 'translateY(24px)';
-    hasSeeded.current = true;
-    isHandingOver.current = true;
-  }, [introActive]);
-
-  // Then release it into its resting position.
-  useEffect(() => {
-    if (introActive || !isHandingOver.current) return;
-    const stage = stageRef.current;
-    if (!stage) return;
-
-    const start = setTimeout(() => {
-      stage.style.transition = 'transform 0.8s cubic-bezier(0, 0, 0.2, 1)';
-      stage.style.transform = 'translateY(0)';
-    }, 150);
-
-    const finish = setTimeout(() => {
-      isHandingOver.current = false;
-      setHandoverDone(true);
-      stageRef.current?.style.setProperty('transition', '');
-      window.dispatchEvent(new Event('scroll'));
-    }, 950);
-
-    return () => {
-      clearTimeout(start);
-      clearTimeout(finish);
-    };
-  }, [introActive]);
-
   useEffect(() => {
     const section = sectionRef.current;
     const stage = stageRef.current;
@@ -84,9 +47,6 @@ export function Hero({ introActive }: HeroProps) {
       section.style.borderBottomLeftRadius = `${inset * 42}px`;
       section.style.borderBottomRightRadius = `${inset * 42}px`;
 
-      // Leave the phone alone until the intro handover finishes.
-      if (isHandingOver.current) return;
-
       const narrow = window.innerWidth <= 768;
       const drift = narrow ? scrolled * 0.1 : scrolled * 0.28;
       const tilt = narrow ? 0 : Math.min(7, scrolled * 0.018);
@@ -98,7 +58,7 @@ export function Hero({ introActive }: HeroProps) {
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [handoverDone]);
+  }, []);
 
   return (
     <section
@@ -114,11 +74,11 @@ export function Hero({ introActive }: HeroProps) {
         flexDirection: isMobile ? 'column' : 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: isMobile ? 0 : 24,
+        gap: isMobile ? 0 : HERO_COLUMN_GAP,
         minHeight: isMobile ? undefined : '100vh',
-        paddingTop: isMobile ? 120 : 104,
+        paddingTop: isMobile ? 120 : HERO_PADDING_TOP,
         paddingBottom: 0,
-        paddingLeft: isMobile ? 0 : 'clamp(24px, 5vw, 88px)',
+        paddingLeft: isMobile ? 0 : HERO_PADDING_LEFT,
       }}
     >
       <div
@@ -184,13 +144,14 @@ export function Hero({ introActive }: HeroProps) {
           // third, so the column is a narrower window that crops the hands and
           // centres the device. Without it the board starves the copy column
           // and the headline wraps.
-          width: isMobile ? undefined : 'min(720px, 42vw)',
+          width: isMobile ? undefined : HERO_PHONE_WINDOW,
           display: 'flex',
           justifyContent: 'center',
           overflow: isMobile ? 'visible' : 'hidden',
-          // Anchored to the bottom edge so the art board bleeds off it rather
-          // than leaving a band of empty white underneath.
+          // Anchored near the bottom edge, lifted just enough that the hand
+          // photo's overhang is not sliced off at the fold.
           alignSelf: isMobile ? 'auto' : 'flex-end',
+          marginBottom: isMobile ? 0 : HERO_PHONE_BOTTOM_LIFT,
         }}
       >
         {/* Static scale sits on its own wrapper so the scroll-driven
