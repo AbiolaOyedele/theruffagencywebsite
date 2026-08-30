@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { publicEnv } from '@/config/env';
 import { blogPosts } from '@/content/site';
+import { pageCount } from '@/types/content';
 
 /**
  * Every address worth indexing.
@@ -21,6 +22,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.8,
     },
+    // Page one is /blog; the rest carry their own address.
+    ...Array.from({ length: pageCount(blogPosts.length) - 1 }, (_, index) => ({
+      url: `${site}/blog/page/${index + 2}`,
+      changeFrequency: 'weekly' as const,
+      priority: 0.5,
+    })),
     { url: `${site}/contact`, changeFrequency: 'monthly' as const, priority: 0.9 },
     { url: `${site}/careers`, changeFrequency: 'monthly' as const, priority: 0.7 },
     ...blogPosts.map((post) => ({

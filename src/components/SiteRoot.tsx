@@ -20,6 +20,7 @@ import { color } from '@/config/tokens';
 import { blogPosts, caseStudies } from '@/content/site';
 import { useStoryRoute } from '@/hooks/useStoryRoute';
 import { refreshHash, useHash } from '@/hooks/useHash';
+import { markIntroSeen, useIntroSeen } from '@/hooks/useIntroSeen';
 import { useSmoothScroll } from '@/hooks/useSmoothScroll';
 import { videoUrl } from '@/lib/images';
 import { clamp, setScrollLocked } from '@/utils/scroll';
@@ -72,6 +73,9 @@ export function SiteRoot() {
 
   const [assetsReady, setAssetsReady] = useState(false);
   const [introDone, setIntroDone] = useState(false);
+  // Already played earlier in this visit — coming back from /blog or /contact
+  // should return you to the site, not to the opening sequence.
+  const introSeen = useIntroSeen();
   const [navRevealed, setNavRevealed] = useState(false);
 
   const [footerHeight, setFooterHeight] = useState(0);
@@ -112,7 +116,8 @@ export function SiteRoot() {
 
   // A deep link into a case study or the contact panel skips the intro: those
   // visitors came for one thing and should not sit through the opening.
-  const introFinished = introDone || caseStudySlug !== null || hashOverlay !== null;
+  const introFinished =
+    introDone || introSeen || caseStudySlug !== null || hashOverlay !== null;
 
   // Freeze the page under the intro overlay.
   useEffect(() => {
@@ -162,6 +167,7 @@ export function SiteRoot() {
 
   const handleIntroComplete = useCallback(() => {
     window.scrollTo(0, 0);
+    markIntroSeen();
     setIntroDone(true);
   }, []);
 
@@ -218,7 +224,10 @@ export function SiteRoot() {
         />
       ) : null}
 
-      <Navbar revealed={navRevealed} aboveOverlay={!introFinished} />
+      {/* The intro reveals the pill partway through its sequence. When there
+          is no intro to wait for — a deep link, or a return visit — it is
+          simply there. */}
+      <Navbar revealed={navRevealed || introFinished} aboveOverlay={!introFinished} />
 
       <div
         ref={contentRef}

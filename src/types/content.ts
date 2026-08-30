@@ -149,6 +149,155 @@ export function readingMinutes(post: BlogPost): number {
   return Math.max(1, Math.round(words / READING_SPEED));
 }
 
+/** How many posts fill one page of the archive. */
+export const POSTS_PER_PAGE = 7;
+
+/** The shape a card takes on the shelf. */
+export type TileRole = 'lead' | 'stack' | 'wide' | 'leadRight' | 'stackLeft' | 'half';
+
+/**
+ * The shape of every card on one page, in order.
+ *
+ * A full page is seven: the opening block — a tall card beside two stacked —
+ * then one running the full width, then the same block flipped, so the tall
+ * card lands on the other side and the page reads as a pair of blocks rather
+ * than a list.
+ *
+ * Shorter pages take the part of that arrangement which still balances. The
+ * rule is that nothing is left stranded: a lone card takes the full width
+ * rather than sitting in a half column with a gap beside it.
+ */
+const PAGE_SHAPES: readonly (readonly TileRole[])[] = [
+  ['wide'],
+  ['half', 'half'],
+  ['lead', 'stack', 'stack'],
+  ['lead', 'stack', 'stack', 'wide'],
+  ['lead', 'stack', 'stack', 'half', 'half'],
+  ['lead', 'stack', 'stack', 'wide', 'half', 'half'],
+  ['lead', 'stack', 'stack', 'wide', 'leadRight', 'stackLeft', 'stackLeft'],
+];
+
+export function tileRoles(total: number): readonly TileRole[] {
+  if (total <= 0) return [];
+  return PAGE_SHAPES[Math.min(total, PAGE_SHAPES.length) - 1] ?? [];
+}
+
+/**
+ * Where each tile lands on the two-column grid, mirroring what the CSS does.
+ *
+ * Needed because the ground a card gets depends on what ends up beside it, and
+ * that cannot be known from its index alone — a tall opener sits next to the
+ * card four places after it, not the one after it.
+ */
+function tilePlacements(roles: readonly TileRole[]): readonly { row: number; col: number }[][] {
+  const taken = new Set<string>();
+  const at = (row: number, col: number) => `${row}:${col}`;
+  const free = (row: number, col: number) => !taken.has(at(row, col));
+
+  return roles.map((role) => {
+    let row = 0;
+
+    if (role === 'lead') {
+      while (!(free(row, 0) && free(row + 1, 0))) row += 1;
+      taken.add(at(row, 0));
+      taken.add(at(row + 1, 0));
+      return [
+        { row, col: 0 },
+        { row: row + 1, col: 0 },
+      ];
+    }
+
+    if (role === 'leadRight') {
+      while (!(free(row, 1) && free(row + 1, 1))) row += 1;
+      taken.add(at(row, 1));
+      taken.add(at(row + 1, 1));
+      return [
+        { row, col: 1 },
+        { row: row + 1, col: 1 },
+      ];
+    }
+
+    if (role === 'stack') {
+      while (!free(row, 1)) row += 1;
+      taken.add(at(row, 1));
+      return [{ row, col: 1 }];
+    }
+
+    if (role === 'stackLeft') {
+      while (!free(row, 0)) row += 1;
+      taken.add(at(row, 0));
+      return [{ row, col: 0 }];
+    }
+
+    if (role === 'wide') {
+      while (!(free(row, 0) && free(row, 1))) row += 1;
+      taken.add(at(row, 0));
+      taken.add(at(row, 1));
+      return [
+        { row, col: 0 },
+        { row, col: 1 },
+      ];
+    }
+
+    // half: the first free cell, reading left to right.
+    for (;;) {
+      if (free(row, 0)) {
+        taken.add(at(row, 0));
+        return [{ row, col: 0 }];
+      }
+      if (free(row, 1)) {
+        taken.add(at(row, 1));
+        return [{ row, col: 1 }];
+      }
+      row += 1;
+    }
+  });
+}
+
+/**
+ * A ground for every tile on a page, such that no two that touch share one.
+ *
+ * Greedy, in reading order: each card takes the first accent none of its
+ * already-placed neighbours has. Neighbours include diagonals, because a
+ * corner-to-corner match still reads as a repeat, and the card immediately
+ * before it, which is what a phone shows directly above it in one column.
+ *
+ * With four accents and at most a handful of neighbours there is always one
+ * free; the modulo is a backstop that should never be reached.
+ */
+export function shelfAccents(roles: readonly TileRole[], palette: number): readonly number[] {
+  const placements = tilePlacements(roles);
+  const chosen: number[] = [];
+
+  const touching = (a: readonly { row: number; col: number }[], b: typeof a): boolean =>
+    a.some((one) => b.some((two) => Math.abs(one.row - two.row) <= 1 && Math.abs(one.col - two.col) <= 1));
+
+  placements.forEach((cells, index) => {
+    const blocked = new Set<number>();
+
+    for (let other = 0; other < index; other += 1) {
+      const neighbour = other === index - 1 || touching(cells, placements[other] ?? []);
+      if (neighbour) blocked.add(chosen[other] as number);
+    }
+
+    const free = Array.from({ length: palette }, (_, i) => i).find((i) => !blocked.has(i));
+    chosen.push(free ?? index % palette);
+  });
+
+  return chosen;
+}
+
+/** The posts on `page`, counting from one. */
+export function pageOfPosts<T>(posts: readonly T[], page: number): readonly T[] {
+  const start = (page - 1) * POSTS_PER_PAGE;
+  return posts.slice(start, start + POSTS_PER_PAGE);
+}
+
+/** How many pages the archive runs to. Always at least one. */
+export function pageCount(total: number): number {
+  return Math.max(1, Math.ceil(total / POSTS_PER_PAGE));
+}
+
 /* ------------------------------------------------------------------ */
 /* The reading panel                                                   */
 /* ------------------------------------------------------------------ */

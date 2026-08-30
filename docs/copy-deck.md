@@ -250,14 +250,32 @@ column.
 
 ### The ten posts ✏️
 
-The home page carries the three newest; `/blog` is the archive, laid out as a
-bento — mixed tile sizes on a four-column grid, one column on a phone.
+The home page carries the three newest; `/blog` is the archive.
 
-Card grounds come from position, not from the post, cycling pink → lime →
-yellow → orange. Only those four: the deeper green and purple are in the
-palette but the site does not wear them. Because the colour cycle is four long
-and the tile-size pattern is six, no two neighbours ever share a ground —
-checked in the browser rather than assumed.
+**The shelf.** A full page is seven: the opening block — a tall card beside two
+stacked — then one running the full width, then the same block flipped, so the
+tall card lands on the other side. Shorter pages take the part of that
+arrangement which still balances; nothing is left stranded in a half column
+with a gap beside it.
+
+| Posts | Arrangement |
+|---|---|
+| 1 | one full-width |
+| 2 | two side by side |
+| 3 | tall left · two stacked right |
+| 4 | tall left · two stacked right · full-width |
+| 5 | tall left · two stacked right · two side by side |
+| 6 | tall left · two stacked right · full-width · two side by side |
+| 7 | tall left · two stacked right · full-width · **tall right · two stacked left** |
+
+**Seven to a page.** After that it continues at `/blog/page/2` and onward — real
+URLs with prev/next links, so each page is somewhere a search result can point
+and a reader can send on.
+
+**Grounds** are pink, lime, yellow and orange only. The deeper green and purple
+are in the palette but the site does not wear them. Each card takes the first
+of the four that none of its touching neighbours has — diagonals included, and
+the card above it on a phone. Checked at every page size: no clashes.
 
 | Slug | Title | Category |
 |---|---|---|
