@@ -310,6 +310,37 @@ body[data-scroll-locked="true"] {
 /* ------------------------------------------------------------------ */
 
 /*
+ * Every text field on the site, as a class rather than an inline style.
+ *
+ * Password-manager and address-autofill extensions write their own `style`
+ * attribute onto the fields they recognise — usually the email one — which
+ * wiped React's inline styles off it until the next render. The field lost its
+ * border, fill and padding and sat there as bare text. A stylesheet rule is
+ * not on the style attribute, so nothing can clobber it that way.
+ */
+.form-field {
+  width: 100%;
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 16px;
+  /* Holds the field at the 54px it measured before this moved off the
+     element, so nothing shifts by a couple of pixels. */
+  line-height: 1.5;
+  color: var(--color-ink);
+  background: var(--color-paper-alt);
+  border: 2px solid var(--color-border);
+  border-radius: 14px;
+  padding: 13px 14px;
+  min-height: 44px;
+  outline-offset: 2px;
+}
+
+.form-field--area {
+  resize: vertical;
+  min-height: 132px;
+}
+
+/*
  * Chrome paints an autofilled field with its own background and ignores
  * `background-color` entirely — the field loses its fill and, on a white card,
  * simply disappears. A large inset shadow is the one thing that covers it, and

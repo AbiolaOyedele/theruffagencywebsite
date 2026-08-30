@@ -20,7 +20,8 @@ export const brand = {
   shortName: 'Ruff',
   legalName: 'The Ruff Agency',
   email: 'hello@theruff.agency',
-  tagline: 'Creative Rebellion',
+  /** Applications and anything hiring-related go here, not to the studio inbox. */
+  careersEmail: 'careers@theruff.agency',
   copyright: '© 2026 The Ruff Agency. All rights reserved.',
   /**
    * The scheduling link. Only the contact page offers this directly — every

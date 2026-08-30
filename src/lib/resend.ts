@@ -18,6 +18,8 @@ function resend(): Resend {
 
 export interface Notification {
   readonly subject: string;
+  /** Which studio inbox this belongs in. Defaults to the general one. */
+  readonly to?: string;
   /** Set so hitting reply in the inbox answers the enquirer directly. */
   readonly replyTo?: string;
   readonly text: string;
@@ -29,7 +31,7 @@ export async function sendNotification(notification: Notification): Promise<void
 
   const { error } = await resend().emails.send({
     from: env.CONTACT_FROM_EMAIL,
-    to: env.CONTACT_TO_EMAIL,
+    to: notification.to ?? env.CONTACT_TO_EMAIL,
     subject: notification.subject,
     text: notification.text,
     ...(notification.replyTo ? { replyTo: notification.replyTo } : {}),

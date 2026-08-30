@@ -103,6 +103,16 @@ export const radius = {
 /** Single source of truth for the mobile breakpoint (matches Tailwind `md`). */
 export const MOBILE_MAX_WIDTH = 768;
 
+/**
+ * Where a side-by-side panel layout stops paying for itself.
+ *
+ * Between the mobile breakpoint and this one there is enough width for two
+ * columns on paper but not in practice: the panels reserve 300px for the rail
+ * beside the form, which squeezes paired form fields down to about 110px.
+ * Panels stack below this width instead. (Matches Tailwind `lg`.)
+ */
+export const COMPACT_MAX_WIDTH = 1024;
+
 /** Number of cards in the pinned Services section. */
 export const SERVICE_STEPS = 5;
 

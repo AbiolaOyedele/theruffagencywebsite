@@ -236,7 +236,7 @@ export function TalentWizard() {
                       placeholder={careersPage.steps.about.namePlaceholder}
                       value={values.fullName}
                       onChange={(event) => set('fullName', event.target.value)}
-                      style={inputStyle}
+                      className="form-field"
                     />
                   )}
                 </Field>
@@ -249,7 +249,7 @@ export function TalentWizard() {
                       placeholder={careersPage.steps.about.emailPlaceholder}
                       value={values.email}
                       onChange={(event) => set('email', event.target.value)}
-                      style={inputStyle}
+                      className="form-field"
                     />
                   )}
                 </Field>
@@ -263,7 +263,7 @@ export function TalentWizard() {
                       placeholder={careersPage.steps.about.phonePlaceholder}
                       value={values.phone}
                       onChange={(event) => set('phone', event.target.value)}
-                      style={inputStyle}
+                      className="form-field"
                     />
                   )}
                 </Field>
@@ -276,7 +276,7 @@ export function TalentWizard() {
                       placeholder={careersPage.steps.about.experiencePlaceholder}
                       value={values.yearsExperience}
                       onChange={(event) => set('yearsExperience', event.target.value)}
-                      style={inputStyle}
+                      className="form-field"
                     />
                   )}
                 </Field>
@@ -307,7 +307,7 @@ export function TalentWizard() {
                       placeholder={careersPage.steps.about.ratePlaceholder}
                       value={values.expectedRate}
                       onChange={(event) => set('expectedRate', event.target.value)}
-                      style={inputStyle}
+                      className="form-field"
                     />
                   )}
                 </Field>
@@ -321,7 +321,7 @@ export function TalentWizard() {
                       placeholder={careersPage.steps.about.portfolioPlaceholder}
                       value={values.portfolioLink}
                       onChange={(event) => set('portfolioLink', event.target.value)}
-                      style={inputStyle}
+                      className="form-field"
                     />
                   )}
                 </Field>
@@ -365,7 +365,7 @@ export function TalentWizard() {
                   placeholder={careersPage.steps.note.placeholder}
                   value={values.note}
                   onChange={(event) => set('note', event.target.value)}
-                  style={{ ...inputStyle, resize: 'vertical', minHeight: 132 }}
+                  className="form-field form-field--area"
                 />
               )}
             </Field>
@@ -726,20 +726,6 @@ const bodyStyle = {
   lineHeight: 1.65,
   color: color.muted,
   margin: 0,
-} as const;
-
-const inputStyle = {
-  width: '100%',
-  fontFamily: font.body,
-  fontWeight: weight.light,
-  fontSize: 16,
-  color: color.ink,
-  background: color.paperAlt,
-  border: `2px solid ${color.border}`,
-  borderRadius: 14,
-  padding: '13px 14px',
-  minHeight: 44,
-  outlineOffset: 2,
 } as const;
 
 const quietButton = {

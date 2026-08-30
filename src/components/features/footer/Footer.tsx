@@ -34,11 +34,15 @@ const columnHeadingStyle = {
  * until there is something to link to — no dead icons in the meantime.
  */
 function SocialColumn() {
+  const isMobile = useIsMobile();
   const live = socialLinks.filter((link) => link.url.length > 0);
   if (live.length === 0) return null;
 
   return (
-    <div>
+    // On a phone there is not enough width for a third column beside the two
+    // link lists, so this one takes a full row of its own and the icons stay
+    // in a line rather than stacking.
+    <div style={{ flexBasis: isMobile ? '100%' : 'auto' }}>
       <p style={columnHeadingStyle}>Follow</p>
       <ul
         style={{
@@ -179,43 +183,26 @@ export function Footer({ onOpenOverlay, ref }: FooterProps) {
           margin: '0 auto',
         }}
       >
+        {/* No card, no strapline — the mark stands on the footer's own ground
+            at the same height as the links panel beside it. It carries its own
+            black shadow, so it reads on the paper without a white ground. */}
         <div
           style={{
-            flex: isMobile ? '1 1 auto' : '0 0 380px',
-            background: color.white,
-            borderRadius: 28,
-            border: shape.keyline,
-            boxShadow: shape.hardShadow,
-            padding: isMobile ? '28px 24px' : '40px 32px',
+            // Proportional, not fixed: the mark takes 40% of the row up to its
+            // full size, so the links panel beside it keeps its three columns
+            // all the way down to the mobile breakpoint.
+            flex: isMobile ? '1 1 auto' : '0 1 40%',
+            maxWidth: isMobile ? 420 : 480,
+            minWidth: 0,
             display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            gap: isMobile ? 40 : 0,
-            minHeight: isMobile ? 200 : 320,
-            position: 'relative',
-            overflow: 'hidden',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
           }}
         >
-          {/* Sized to the card rather than a fixed height, so the mark carries
-              the panel the way it does in the brand's own layouts. */}
           <RuffLogo
             title={brand.name}
-            style={{ width: '100%', height: 'auto', display: 'block' }}
+            style={{ width: '100%', maxWidth: 480, height: 'auto', display: 'block' }}
           />
-
-          <p
-            style={{
-              fontFamily: font.display,
-              fontWeight: 800,
-              fontSize: isMobile ? 22 : 26,
-              letterSpacing: '-0.02em',
-              color: color.ink,
-              margin: 0,
-              lineHeight: 1.2,
-            }}
-          >
-            {brand.tagline}
-          </p>
         </div>
 
         <div
@@ -235,7 +222,14 @@ export function Footer({ onOpenOverlay, ref }: FooterProps) {
             minHeight: isMobile ? 'auto' : 320,
           }}
         >
-          <div style={{ display: 'flex', flexDirection: 'row', gap: isMobile ? 40 : 64 }}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              gap: isMobile ? '28px 32px' : 64,
+            }}
+          >
             <div>
               <p style={columnHeadingStyle}>Links</p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>

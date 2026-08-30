@@ -374,7 +374,7 @@ export function ContactWizard() {
                   placeholder={contactPage.steps.project.placeholder}
                   value={values.projectDetails}
                   onChange={(event) => set('projectDetails', event.target.value)}
-                  style={{ ...inputStyle, resize: 'vertical', minHeight: 132 }}
+                  className="form-field form-field--area"
                 />
               )}
             </Field>
@@ -398,7 +398,7 @@ export function ContactWizard() {
                     placeholder={contactPage.steps.you.namePlaceholder}
                     value={values.name}
                     onChange={(event) => set('name', event.target.value)}
-                    style={inputStyle}
+                    className="form-field"
                   />
                 )}
               </Field>
@@ -411,7 +411,7 @@ export function ContactWizard() {
                     placeholder={contactPage.steps.you.emailPlaceholder}
                     value={values.email}
                     onChange={(event) => set('email', event.target.value)}
-                    style={inputStyle}
+                    className="form-field"
                   />
                 )}
               </Field>
@@ -436,7 +436,7 @@ export function ContactWizard() {
                     placeholder={contactPage.steps.context.companyPlaceholder}
                     value={values.company}
                     onChange={(event) => set('company', event.target.value)}
-                    style={inputStyle}
+                    className="form-field"
                   />
                 )}
               </Field>
@@ -448,7 +448,7 @@ export function ContactWizard() {
                     placeholder={contactPage.steps.context.referralPlaceholder}
                     value={values.referralSource}
                     onChange={(event) => set('referralSource', event.target.value)}
-                    style={inputStyle}
+                    className="form-field"
                   />
                 )}
               </Field>
@@ -818,20 +818,6 @@ const bodyStyle = {
   lineHeight: 1.65,
   color: color.muted,
   margin: 0,
-} as const;
-
-const inputStyle = {
-  width: '100%',
-  fontFamily: font.body,
-  fontWeight: weight.light,
-  fontSize: 16,
-  color: color.ink,
-  background: color.paperAlt,
-  border: `2px solid ${color.border}`,
-  borderRadius: 14,
-  padding: '13px 14px',
-  minHeight: 44,
-  outlineOffset: 2,
 } as const;
 
 const quietButton = {

@@ -4,6 +4,7 @@ import { AgentPromptCard } from '@/components/features/contact/AgentPromptCard';
 import { ContactWizard } from '@/components/features/contact/ContactWizard';
 import { color, font, shape, weight } from '@/config/tokens';
 import { brand, contactPage } from '@/content/site';
+import { useIsCompact } from '@/hooks/useIsCompact';
 import { useIsMobile } from '@/hooks/useIsMobile';
 
 /**
@@ -16,6 +17,7 @@ import { useIsMobile } from '@/hooks/useIsMobile';
  */
 export function ContactContent() {
   const isMobile = useIsMobile();
+  const isCompact = useIsCompact();
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? 20 : 28 }}>
@@ -33,13 +35,14 @@ export function ContactContent() {
         {contactPage.intro}
       </p>
 
-      {/* Two tracks on desktop: the form is what people came for, so it takes
-          the wider one, with the ways in that are not a form beside it. Below
-          the breakpoint they stack in the same order. */}
+      {/* Two tracks when there is room: the form is what people came for, so it
+          takes the wider one, with the ways in that are not a form beside it.
+          Below the compact breakpoint they stack in the same order — the rail
+          would otherwise take 300px the form cannot spare. */}
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: isMobile ? '1fr' : 'minmax(0, 1.45fr) minmax(300px, 1fr)',
+          gridTemplateColumns: isCompact ? '1fr' : 'minmax(0, 1.45fr) minmax(300px, 1fr)',
           gap: isMobile ? 20 : 24,
           alignItems: 'start',
         }}
@@ -51,7 +54,7 @@ export function ContactContent() {
             display: 'flex',
             flexDirection: 'column',
             gap: isMobile ? 20 : 24,
-            position: isMobile ? 'static' : 'sticky',
+            position: isCompact ? 'static' : 'sticky',
             top: 0,
             minWidth: 0,
           }}

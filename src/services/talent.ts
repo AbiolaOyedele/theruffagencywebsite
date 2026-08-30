@@ -5,6 +5,7 @@
  * comes back. Origin checking and body reading are shared with the enquiry
  * flow — there is one way into this site's forms, not two.
  */
+import { mailEnv } from '@/config/env';
 import { AppError } from '@/lib/errors';
 import { sendNotification } from '@/lib/resend';
 import { HONEYPOT_FIELD } from '@/lib/schemas/form-constants';
@@ -45,6 +46,7 @@ export async function submitTalent(body: Record<string, unknown>): Promise<void>
   const data = result.data;
 
   await sendNotification({
+    to: mailEnv().CAREERS_TO_EMAIL,
     subject: `Talent pool: ${data.fullName}`,
     replyTo: data.email,
     text: asTextBody([

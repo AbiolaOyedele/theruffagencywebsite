@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { TalentWizard } from '@/components/features/careers/TalentWizard';
 import { color, font, primaryButton, shape, weight } from '@/config/tokens';
 import { brand, careersPage } from '@/content/site';
+import { useIsCompact } from '@/hooks/useIsCompact';
 import { useIsMobile } from '@/hooks/useIsMobile';
 
 /**
@@ -16,6 +17,7 @@ import { useIsMobile } from '@/hooks/useIsMobile';
  */
 export function CareersContent() {
   const isMobile = useIsMobile();
+  const isCompact = useIsCompact();
   const [applying, setApplying] = useState(false);
 
   return (
@@ -37,7 +39,8 @@ export function CareersContent() {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: isMobile || applying ? '1fr' : 'minmax(0, 1.45fr) minmax(300px, 1fr)',
+          gridTemplateColumns:
+            isCompact || applying ? '1fr' : 'minmax(0, 1.45fr) minmax(300px, 1fr)',
           gap: isMobile ? 20 : 24,
           alignItems: 'start',
         }}
@@ -138,7 +141,7 @@ export function CareersContent() {
               {careersPage.emailLabel}
             </span>
             <a
-              href={`mailto:${brand.email}`}
+              href={`mailto:${brand.careersEmail}`}
               style={{
                 fontFamily: font.sans,
                 fontWeight: weight.bold,
@@ -151,7 +154,7 @@ export function CareersContent() {
                 minHeight: 44,
               }}
             >
-              {brand.email}
+              {brand.careersEmail}
             </a>
           </section>
         )}

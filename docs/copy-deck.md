@@ -24,10 +24,13 @@ components instead; those are marked **(in code)** with their file.
 | Short name | Ruff | ✅ |
 | Legal name | The Ruff Agency | ✅ |
 | Email | hello@theruff.agency | ✅ |
-| Tagline | Brand & creative, / made to launch. | ✅ |
+| Careers email | careers@theruff.agency | ✅ |
 | Copyright | © 2026 The Ruff Agency. All rights reserved. | ✅ |
 | Based in | Lagos, Nigeria / Working remotely with clients worldwide | ✅ |
-| Social | LinkedIn | ❓ URL not set — the footer row stays hidden until it is |
+| Social | LinkedIn · Instagram · TikTok · X | ✅ |
+
+There is no strapline in the footer any more — the logo carries the block on
+its own.
 
 **Brand name casing:** *Ruff* or *The Ruff Agency*. Never *RUFF*.
 
@@ -285,12 +288,17 @@ Most projects kick off within a week of your first call. Tell us what you need a
 
 ## 10 · Footer
 
+Two blocks: the logo on the footer's own paper — no card, no strapline — and
+the links panel beside it.
+
 | Column | Items |
 |---|---|
-| — | Services · Work · FAQ |
-| Company | Contact · Privacy Policy · Terms |
+| Links | Services · Work · FAQ |
+| Company | Contact · Careers · Privacy Policy · Terms |
+| Follow | LinkedIn · Instagram · TikTok · X |
 
-Plus the tagline, copyright, based-in lines, and the **Work with us** button.
+Plus the copyright line and the **Work with us** button. Below the footer sits
+the watermark: **hello@theruff.agency**, with a **Copy our email** button.
 
 ---
 
@@ -415,7 +423,74 @@ send themselves.
 
 ---
 
-## 14 · Legal
+## 14 · Careers
+
+Opens as a panel at `#careers`, the same way contact does. `/careers`
+redirects into it.
+
+| Field | Copy |
+|---|---|
+| Panel title | Work at Ruff |
+| Eyebrow | Careers |
+| Intro | We are a small studio that takes on work bigger than our size. When we hire, we hire from people who have already told us what they do. |
+| Openings heading | No open roles right now |
+| Openings body | Nothing is posted at the moment. The talent pool is how we find people when that changes — it is the first place we look, before anything goes public. |
+| Button | Join the talent pool |
+| Note beside it | Takes about two minutes. |
+| Side card | Or email us directly → careers@theruff.agency |
+
+**When a role does open,** replace `careersPage.openings` in `site.ts`. That is
+the only edit needed — nothing else on the page assumes the list is empty.
+
+### The talent form — four steps
+
+The option sets are lifted from the studio's existing careers form, so someone
+applying from either place describes themselves the same way.
+
+| # | Question | Fields |
+|---|---|---|
+| 01 | Tell us about you. | Full name · Email · Phone number · Years of experience · Availability · Expected monthly rate or salary · Portfolio or LinkedIn |
+| 02 | Which roles fit you? | 30 roles in five groups, pick as many as apply |
+| 03 | Anything you want us to know? | Optional note |
+| 04 | That is everything. Look it over, then send it when you are ready. | Review, with **Edit** back to any step |
+
+**Availability** — Full-time · Part-time · Freelance
+
+**Role groups** — Creative & Design (13) · Social & Marketing (7) ·
+Client & Ops (4) · Admin & Support (4) · Legal (2)
+
+**Buttons and states** — Join the talent pool · Sending… · **You are in** ·
+"Thanks — you are in the talent pool. We will be in touch when something fits."
+
+### Messages that stop a step **(in code)** — `TalentWizard.tsx`
+
+Shown under the step when someone tries to move on too early.
+
+| Missing | Message |
+|---|---|
+| Name | We need a name to put to the application. |
+| Email | Enter an email address we can reach you on. |
+| Phone | Enter a phone number we can reach you on. |
+| Experience | Roughly how long have you been doing this? |
+| Availability | Pick the one that fits. |
+| Rate | A number or a range is fine. |
+| Roles | Pick at least one role. |
+
+### Messages from the server **(in code)** — `src/lib/schemas/talent.ts`
+
+The same ground covered again on the way in, for anything that skips the form:
+"Your name is required." · "An email address is required." · "Enter a valid
+email address." · "A phone number is required." · "That phone number looks too
+short." · "Enter a phone number we can reach you on." · "Years of experience is
+required." · "Pick your availability." · "An expected rate is required." ·
+"Enter a full link, starting with https://" · "Select at least one role."
+
+❓ The original form asks a set of role-specific follow-up questions after the
+role step. Those are not built here — say the word if they should be.
+
+---
+
+## 15 · Legal
 
 **Privacy Policy** — Last updated: April 2026. Nine sections: Introduction ·
 Information we collect · How we use your information · Cookies · Data sharing ·
@@ -443,9 +518,9 @@ version already reviewed, so it is summarised rather than repeated here.
 | 2 | Case-study gallery images (3 per client) | Ruff |
 | 3 | Client logo files for the marquee | Ruff |
 | 4 | Detailed pricing structure | Ruff |
-| 5 | Social platform + URL | Ruff |
-| 6 | Confirm Nigeria governing law | Ruff / legal |
-| 7 | Update both legal dates on publication | Ruff |
+| 5 | Confirm Nigeria governing law | Ruff / legal |
+| 6 | Update both legal dates on publication | Ruff |
+| 7 | Send a test enquiry and a test application, to confirm both land | Ruff |
 
 ### Flagged for a decision
 

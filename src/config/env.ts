@@ -30,9 +30,17 @@ const mailSchema = z.object({
   RESEND_API_KEY: z.string().min(1, 'RESEND_API_KEY is not set.'),
   CONTACT_TO_EMAIL: z.string().email('CONTACT_TO_EMAIL is not a valid address.'),
   CONTACT_FROM_EMAIL: z.string().email('CONTACT_FROM_EMAIL is not a valid address.'),
+  /** Talent-pool applications. Optional — falls back to the studio inbox. */
+  CAREERS_TO_EMAIL: z.string().email('CAREERS_TO_EMAIL is not a valid address.').optional(),
 });
 
-export type MailEnv = z.infer<typeof mailSchema>;
+/** Resolved credentials — the careers address is filled in, never absent. */
+export interface MailEnv {
+  readonly RESEND_API_KEY: string;
+  readonly CONTACT_TO_EMAIL: string;
+  readonly CONTACT_FROM_EMAIL: string;
+  readonly CAREERS_TO_EMAIL: string;
+}
 
 let mailCache: MailEnv | null = null;
 
@@ -48,6 +56,8 @@ export function mailEnv(): MailEnv {
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     CONTACT_TO_EMAIL: process.env.CONTACT_TO_EMAIL,
     CONTACT_FROM_EMAIL: process.env.CONTACT_FROM_EMAIL,
+    // An empty variable is an unset one, not a malformed address.
+    CAREERS_TO_EMAIL: process.env.CAREERS_TO_EMAIL || undefined,
   });
 
   if (!parsed.success) {
@@ -55,6 +65,9 @@ export function mailEnv(): MailEnv {
     throw new Error('Mail environment validation failed.');
   }
 
-  mailCache = parsed.data;
+  mailCache = {
+    ...parsed.data,
+    CAREERS_TO_EMAIL: parsed.data.CAREERS_TO_EMAIL ?? parsed.data.CONTACT_TO_EMAIL,
+  };
   return mailCache;
 }
