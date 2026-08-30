@@ -1,13 +1,10 @@
 'use client';
 
 import type { CSSProperties, Ref } from 'react';
+import { NOTIFICATION_CARD, PHONE_STAGE_HEIGHT, PHONE_STAGE_WIDTH } from '@/config/heroLayout';
 import { color, font } from '@/config/tokens';
 import { AutoplayVideo } from '@/components/ui/AutoplayVideo';
 import { NotificationHeader } from '@/components/ui/NotificationCard';
-
-/** Intrinsic size of the mockup's coordinate space. */
-export const PHONE_STAGE_WIDTH = 891;
-export const PHONE_STAGE_HEIGHT = 634;
 
 const STATUS_ICONS = [
   { src: '/assets/bbce9ed952a7420976ed2c9f616ed1df87bdb9aa.svg', width: 12 },
@@ -39,7 +36,7 @@ interface PhoneMockupProps {
  * callers scale or clip it to fit their section.
  */
 export function PhoneMockup({
-  cardHeight = 442,
+  cardHeight = NOTIFICATION_CARD.expandedHeight,
   cardVisible = true,
   chromeVisible = true,
   cardTransition,
@@ -112,13 +109,13 @@ export function PhoneMockup({
           position: 'absolute',
           left: 340,
           top: 115,
-          width: 211,
+          width: NOTIFICATION_CARD.width,
           height: cardHeight,
           background: color.white,
-          borderRadius: 17,
+          borderRadius: NOTIFICATION_CARD.radius,
           // The card sits on a white hero now, so it needs its own edge.
-          border: `1.5px solid ${color.ink}`,
-          padding: 6,
+          border: `${NOTIFICATION_CARD.borderWidth}px solid ${color.ink}`,
+          padding: NOTIFICATION_CARD.padding,
           display: 'flex',
           flexDirection: 'column',
           gap: 9,

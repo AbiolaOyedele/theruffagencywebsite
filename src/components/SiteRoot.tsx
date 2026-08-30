@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { CaseStudyView } from '@/components/features/case-study/CaseStudyView';
+import { CaseStudyPanel } from '@/components/features/case-study/CaseStudyPanel';
 import { Work } from '@/components/features/work/Work';
 import { CookieBanner } from '@/components/features/overlays/CookieBanner';
 import { Faq } from '@/components/features/faq/Faq';
@@ -47,6 +47,7 @@ const PRELOAD_TIMEOUT_MS = 4000;
 export function SiteRoot() {
   const caseStudyRoute = useCaseStudyRoute();
   const caseStudySlug = caseStudyRoute.slug;
+  const [caseStudyOrigin, setCaseStudyOrigin] = useState<DOMRect | null>(null);
   const [overlay, setOverlay] = useState<OverlayKey | null>(null);
   const [overlayOrigin, setOverlayOrigin] = useState<DOMRect | null>(null);
 
@@ -146,6 +147,19 @@ export function SiteRoot() {
 
   const handleNavReveal = useCallback(() => setNavRevealed(true), []);
 
+  const openCaseStudy = useCallback(
+    (slug: string, fromRect: DOMRect) => {
+      setCaseStudyOrigin(fromRect);
+      caseStudyRoute.open(slug);
+    },
+    [caseStudyRoute],
+  );
+
+  const closeCaseStudy = useCallback(() => {
+    caseStudyRoute.close();
+    setCaseStudyOrigin(null);
+  }, [caseStudyRoute]);
+
 
   const openOverlay = useCallback((key: OverlayKey) => {
     const active = document.activeElement;
@@ -154,16 +168,6 @@ export function SiteRoot() {
   }, []);
 
   const activeCaseStudy = caseStudies.find((study) => study.slug === caseStudySlug) ?? null;
-
-  if (activeCaseStudy) {
-    return (
-      <>
-        <NoiseOverlay />
-        <CaseStudyView study={activeCaseStudy} onBack={caseStudyRoute.close} />
-      </>
-    );
-  }
-
 
   return (
     <div style={{ overflowX: 'clip', background: color.paperAlt }}>
@@ -190,7 +194,7 @@ export function SiteRoot() {
         <LogoStrip />
         <ScrollStatement />
         <Services />
-        <Work onOpenCaseStudy={caseStudyRoute.open} />
+        <Work onOpenCaseStudy={openCaseStudy} activeSlug={caseStudySlug} />
         <Pricing />
         <Faq />
       </div>
@@ -204,6 +208,14 @@ export function SiteRoot() {
 
       {overlay ? (
         <InfoOverlay panel={overlay} origin={overlayOrigin} onClose={() => setOverlay(null)} />
+      ) : null}
+
+      {activeCaseStudy ? (
+        <CaseStudyPanel
+          study={activeCaseStudy}
+          fromRect={caseStudyOrigin}
+          onClose={closeCaseStudy}
+        />
       ) : null}
     </div>
   );

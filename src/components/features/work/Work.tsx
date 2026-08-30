@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { StoryCard, type StoryCardLayout } from '@/components/features/work/StoryCard';
 import { AccentWord } from '@/components/ui/AccentWord';
 import { color, font, shape, weight } from '@/config/tokens';
@@ -10,8 +10,18 @@ import { useIsMobile } from '@/hooks/useIsMobile';
 import { hasStory } from '@/types/content';
 import { clamp } from '@/utils/scroll';
 
+/** How far the stage flies into the clicked card before the panel takes over. */
+const ZOOM_SCALE = 12;
+/** Zoom runs for 0.7s; the panel is handed the card at 0.5s, mid-flight. */
+const HANDOVER_MS = 500;
+
+/** Stage of the card-to-panel handover. */
+type ZoomPhase = 'idle' | 'zooming' | 'done';
+
 interface WorkProps {
-  readonly onOpenCaseStudy: (slug: string) => void;
+  readonly onOpenCaseStudy: (slug: string, fromRect: DOMRect) => void;
+  /** Slug of the open panel, or null. Returning to null unwinds the zoom. */
+  readonly activeSlug: string | null;
 }
 
 /**
@@ -21,9 +31,12 @@ interface WorkProps {
  * scroll, fading the headline back as they arrive. Below `md` the fan is
  * replaced by a readable vertical list.
  */
-export function Work({ onOpenCaseStudy }: WorkProps) {
+export function Work({ onOpenCaseStudy, activeSlug }: WorkProps) {
   const isMobile = useIsMobile();
   const trackRef = useRef<HTMLElement | null>(null);
+  const stageRef = useRef<HTMLDivElement | null>(null);
+  const [zoomPhase, setZoomPhase] = useState<ZoomPhase>('idle');
+  const [zoomOrigin, setZoomOrigin] = useState('50% 50%');
   const [progress, setProgress] = useState(0);
   const { ref: counterRef, value: campaigns } = useCountUp<HTMLSpanElement>(work.campaignCount);
 
@@ -42,6 +55,51 @@ export function Work({ onOpenCaseStudy }: WorkProps) {
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isMobile]);
+
+  // The panel has closed: hand the navigation back.
+  useEffect(() => {
+    if (activeSlug !== null) return;
+    const nav = document.querySelector<HTMLElement>('[data-main-nav]');
+    if (nav) {
+      nav.style.visibility = '';
+      nav.style.pointerEvents = '';
+    }
+  }, [activeSlug]);
+
+  /**
+   * Flies the whole stage into the card that was clicked, so the panel that
+   * opens on top of it reads as the card itself expanding rather than as a
+   * separate screen arriving.
+   */
+  const openStudy = useCallback(
+    (slug: string, fromRect: DOMRect) => {
+      const nav = document.querySelector<HTMLElement>('[data-main-nav]');
+      if (nav) {
+        nav.style.visibility = 'hidden';
+        nav.style.pointerEvents = 'none';
+      }
+
+      const stage = stageRef.current;
+      if (stage) {
+        const bounds = stage.getBoundingClientRect();
+        setZoomOrigin(
+          `${fromRect.left + fromRect.width / 2 - bounds.left}px ${fromRect.top + fromRect.height / 2 - bounds.top}px`,
+        );
+      }
+
+      // A frame between origin and scale, or the origin change animates too.
+      requestAnimationFrame(() => setZoomPhase('zooming'));
+      setTimeout(() => {
+        setZoomPhase('done');
+        onOpenCaseStudy(slug, fromRect);
+      }, HANDOVER_MS);
+    },
+    [onOpenCaseStudy],
+  );
+
+  // With no panel open the stage is always at rest, whatever the last
+  // handover left behind — so closing drops it back to size on its own.
+  const phase: ZoomPhase = activeSlug === null ? 'idle' : zoomPhase;
 
   const headlineOpacity = isMobile ? 1 : Math.max(0.5, 1 - progress * 2);
 
@@ -188,7 +246,9 @@ export function Work({ onOpenCaseStudy }: WorkProps) {
               <button
                 key={study.slug}
                 type="button"
-                onClick={() => onOpenCaseStudy(study.slug)}
+                onClick={(event) =>
+                  onOpenCaseStudy(study.slug, event.currentTarget.getBoundingClientRect())
+                }
                 style={{ ...cardStyle, cursor: 'pointer' }}
               >
                 {inner}
@@ -212,6 +272,7 @@ export function Work({ onOpenCaseStudy }: WorkProps) {
       style={{ position: 'relative', height: '250vh', background: color.ink }}
     >
       <div
+        ref={stageRef}
         style={{
           position: 'sticky',
           top: 0,
@@ -220,6 +281,16 @@ export function Work({ onOpenCaseStudy }: WorkProps) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          transformOrigin: zoomOrigin,
+          transform: phase === 'idle' ? 'scale(1)' : `scale(${ZOOM_SCALE})`,
+          opacity: phase === 'done' ? 0 : 1,
+          // Idle only transitions opacity, so closing snaps the scale back
+          // while the stage fades in — no giant card flying across the screen.
+          transition:
+            phase === 'zooming'
+              ? 'transform 0.7s cubic-bezier(0.4, 0, 0.2, 1)'
+              : 'opacity 0.35s ease',
+          pointerEvents: phase === 'idle' ? undefined : 'none',
         }}
       >
         {heading}
@@ -234,7 +305,7 @@ export function Work({ onOpenCaseStudy }: WorkProps) {
               layout={layout as StoryCardLayout}
               progress={progress}
               stackIndex={index}
-              onOpen={() => onOpenCaseStudy(study.slug)}
+              onOpen={(fromRect) => openStudy(study.slug, fromRect)}
             />
           );
         })}

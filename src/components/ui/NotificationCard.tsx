@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
 import { LOGO_ASPECT, RuffLogo } from '@/components/ui/RuffLogo';
+import { NOTIFICATION_CARD } from '@/config/heroLayout';
 import { color, font, shape, weight } from '@/config/tokens';
 import { hero } from '@/content/site';
 
@@ -72,28 +73,40 @@ export function NotificationHeader({ scale = 1 }: NotificationHeaderProps) {
 }
 
 interface NotificationCardProps {
+  /** How much larger than the in-phone card this one paints. */
   readonly scale?: number;
   readonly style?: CSSProperties | undefined;
 }
 
 /**
- * A free-floating notification, panelled in the brand's keyline-and-shadow
- * shape language. The intro deals two of these out before the phone arrives.
+ * A free-floating notification. The intro deals two of these out before the
+ * third arrives inside the phone.
+ *
+ * This is the phone's own card at its collapsed size, simply painted larger —
+ * same width, same padding, same line wrap — so the three read as one object
+ * rather than three cards of drifting sizes. Only the shadow is added, since
+ * these two have no phone behind them to sit against.
  */
 export function NotificationCard({ scale = 2.2, style }: NotificationCardProps) {
+  const { width, collapsedHeight, padding, borderWidth, radius } = NOTIFICATION_CARD;
+
   return (
-    <div
-      style={{
-        background: color.white,
-        borderRadius: 18 * (scale / 2.2),
-        border: shape.keyline,
-        boxShadow: shape.hardShadow,
-        padding: `${14 * (scale / 2.2)}px ${20 * (scale / 2.2)}px`,
-        display: 'inline-flex',
-        ...style,
-      }}
-    >
-      <NotificationHeader scale={scale} />
+    <div style={{ transform: `scale(${scale})`, transformOrigin: 'top left', ...style }}>
+      <div
+        style={{
+          width,
+          height: collapsedHeight,
+          background: color.white,
+          borderRadius: radius,
+          border: `${borderWidth}px solid ${color.ink}`,
+          boxShadow: shape.hardShadow,
+          padding,
+          overflow: 'hidden',
+          display: 'flex',
+        }}
+      >
+        <NotificationHeader />
+      </div>
     </div>
   );
 }

@@ -4,14 +4,16 @@ import { useEffect, useRef } from 'react';
 import { PhoneMockup } from '@/components/ui/PhoneMockup';
 import { RotatingWord } from '@/components/features/hero/RotatingWord';
 import { AccentWord } from '@/components/ui/AccentWord';
-import { color, font } from '@/config/tokens';
+import { color } from '@/config/tokens';
 import {
   HERO_COLUMN_GAP,
   HERO_PADDING_LEFT,
   HERO_PADDING_TOP,
-  HERO_PHONE_BOTTOM_LIFT,
   HERO_PHONE_SCALE,
-  HERO_PHONE_WINDOW,
+  heroCopyColumn,
+  heroHeadlineStyle,
+  heroPhoneColumn,
+  heroSubheadStyle,
 } from '@/config/heroLayout';
 import { hero } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
@@ -81,27 +83,8 @@ export function Hero() {
         paddingLeft: isMobile ? 0 : HERO_PADDING_LEFT,
       }}
     >
-      <div
-        style={{
-          textAlign: isMobile ? 'center' : 'left',
-          padding: isMobile ? '24px 20px 0' : 0,
-          maxWidth: isMobile ? 440 : 780,
-          flex: isMobile ? undefined : '1 1 auto',
-        }}
-      >
-        <h1
-          style={{
-            fontFamily: font.display,
-            fontWeight: 900,
-            fontSize: isMobile ? 38 : 'clamp(52px, 6.6vw, 100px)',
-            lineHeight: isMobile ? '44px' : 1.06,
-            letterSpacing: isMobile ? '-0.72px' : '-0.02em',
-            color: color.inkHeading,
-            margin: 0,
-            WebkitFontSmoothing: 'antialiased',
-            fontFeatureSettings: '"calt" 0, "liga" 0, "dlig" 0, "clig" 0',
-          }}
-        >
+      <div style={heroCopyColumn(isMobile)}>
+        <h1 style={heroHeadlineStyle(isMobile)}>
           {hero.headline.map((line, lineIndex) => (
             <span key={line} style={{ display: 'block' }}>
               {line.split(' ').map((word, wordIndex) => (
@@ -115,45 +98,18 @@ export function Hero() {
           ))}
         </h1>
 
-        <p
-          style={{
-            fontFamily: font.sans,
-            fontWeight: 700,
-            // Scales with the column so the line never has to wrap.
-            fontSize: isMobile ? 18 : 'clamp(15px, 1.45vw, 21px)',
-            lineHeight: isMobile ? '28px' : 1.45,
-            letterSpacing: '-0.24px',
-            color: color.inkHeading,
-            margin: '20px 0 0',
-            // Strictly one line: a wrap here changes the block's height every
-            // time the rotating word does, which shunts the whole section.
-            whiteSpace: isMobile ? 'normal' : 'nowrap',
-          }}
-        >
+        <p style={heroSubheadStyle(isMobile)}>
           {hero.subheadBefore}
           <RotatingWord words={hero.rotatingWords} />
           {hero.subheadAfter}
         </p>
       </div>
 
-      <div
-        style={{
-          flex: isMobile ? undefined : '0 0 auto',
-          marginTop: isMobile ? 'auto' : 0,
-          // The art board is 891px wide but the phone only occupies its middle
-          // third, so the column is a narrower window that crops the hands and
-          // centres the device. Without it the board starves the copy column
-          // and the headline wraps.
-          width: isMobile ? undefined : HERO_PHONE_WINDOW,
-          display: 'flex',
-          justifyContent: 'center',
-          overflow: isMobile ? 'visible' : 'hidden',
-          // Anchored near the bottom edge, lifted just enough that the hand
-          // photo's overhang is not sliced off at the fold.
-          alignSelf: isMobile ? 'auto' : 'flex-end',
-          marginBottom: isMobile ? 0 : HERO_PHONE_BOTTOM_LIFT,
-        }}
-      >
+      {/* The art board is 891px wide but the phone occupies only its middle
+          third, so the column is a narrower window that crops the hands and
+          centres the device. Without it the board starves the copy column and
+          the headline wraps. */}
+      <div style={heroPhoneColumn(isMobile)}>
         {/* Static scale sits on its own wrapper so the scroll-driven
             transform on the stage below stays untouched. */}
         <div

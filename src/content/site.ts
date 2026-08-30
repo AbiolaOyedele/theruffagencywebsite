@@ -17,7 +17,7 @@ export const brand = {
   name: 'The Ruff Agency',
   shortName: 'Ruff',
   legalName: 'The Ruff Agency',
-  email: 'hi@theruff.agency',
+  email: 'hello@theruff.agency',
   tagline: ['Brand & creative,', 'made to launch.'],
   copyright: '© 2026 The Ruff Agency. All rights reserved.',
   bookACallUrl: 'https://calendar.app.google/tU2SHfJjpBd56rmx7',
@@ -223,6 +223,11 @@ function placeholderStory(client: string) {
         heading: 'The impact',
         body: 'What changed as a result, stated plainly. Numbers where they exist, and where they do not, the concrete difference the client can point to. Around 80–120 words.',
       },
+    ],
+    gallery: [
+      { src: '/placeholder/case-1.svg', caption: 'Placeholder — a key screen or artefact from the work.' },
+      { src: '/placeholder/case-2.svg', caption: 'Placeholder — a second view, showing a different part of the system.' },
+      { src: '/placeholder/case-3.svg', caption: 'Placeholder — the work in context, or a before-and-after.' },
     ],
     tickets: [
       {
@@ -432,7 +437,7 @@ export const privacyPolicy = {
     },
     {
       heading: '7. Your rights',
-      body: 'Under applicable data protection laws, including the Nigeria Data Protection Act, you have the right to access, correct, or delete your personal data; withdraw consent at any time; request data portability; lodge a complaint with a supervisory authority. To exercise any of these rights, contact us at hi@theruff.agency.',
+      body: 'Under applicable data protection laws, including the Nigeria Data Protection Act, you have the right to access, correct, or delete your personal data; withdraw consent at any time; request data portability; lodge a complaint with a supervisory authority. To exercise any of these rights, contact us at hello@theruff.agency.',
     },
     {
       heading: '8. Security',

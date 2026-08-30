@@ -22,7 +22,8 @@ interface StoryCardProps {
   /** Scroll progress through the pinned work section, 0 → 1. */
   readonly progress: number;
   readonly stackIndex: number;
-  readonly onOpen: () => void;
+  /** Receives the card's on-screen box so the panel can grow out of it. */
+  readonly onOpen: (fromRect: DOMRect) => void;
 }
 
 /**
@@ -70,7 +71,7 @@ export function StoryCard({ study, layout, progress, stackIndex, onOpen }: Story
         onMouseLeave={() => setHovered(false)}
         onFocus={() => setHovered(true)}
         onBlur={() => setHovered(false)}
-        onClick={onOpen}
+        onClick={(event) => onOpen(event.currentTarget.getBoundingClientRect())}
         style={{
           width: '100%',
           height: '100%',

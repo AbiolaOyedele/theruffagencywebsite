@@ -9,9 +9,12 @@ import {
   HERO_COLUMN_GAP,
   HERO_PADDING_LEFT,
   HERO_PADDING_TOP,
-  HERO_PHONE_BOTTOM_LIFT,
   HERO_PHONE_SCALE,
-  HERO_PHONE_WINDOW,
+  NOTIFICATION_CARD,
+  heroCopyColumn,
+  heroHeadlineStyle,
+  heroPhoneColumn,
+  heroSubheadStyle,
 } from '@/config/heroLayout';
 import { hero } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
@@ -33,6 +36,10 @@ const STAGE_AT = [1700, 2600, 3900, 6100] as const;
 
 /** The subheadline follows the headline in. */
 const SUBHEAD_AT = 4500;
+
+/** Painted size of a loose notification, relative to the base card. */
+const LOOSE_CARD_SCALE = 2.2;
+const LOOSE_CARD_SCALE_MOBILE = 1.5;
 
 /** Where each loose card sits, as a share of the viewport. */
 const LOOSE_CARDS = [
@@ -67,15 +74,6 @@ export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps)
   const [subheadIn, setSubheadIn] = useState(false);
   const [wordIndex, setWordIndex] = useState(0);
   const [wordVisible, setWordVisible] = useState(true);
-
-  const [viewportWidth, setViewportWidth] = useState(1200);
-
-  useEffect(() => {
-    const sync = (): void => setViewportWidth(window.innerWidth);
-    sync();
-    window.addEventListener('resize', sync);
-    return () => window.removeEventListener('resize', sync);
-  }, []);
 
   // The whole sequence is one timeline: each beat fires from its own timer,
   // so nothing is set synchronously while the component is rendering.
@@ -118,7 +116,11 @@ export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps)
   const cardVisible = stage >= 1;
   const cardExpanded = stage >= 3;
   const headlineUp = stage >= 3;
-  const zoomScale = isMobile ? Math.max(1, (viewportWidth - 32) / 211) : 2.5;
+  const looseCardScale = isMobile ? LOOSE_CARD_SCALE_MOBILE : LOOSE_CARD_SCALE;
+  // The third notification arrives at exactly the size of the two before it.
+  // The phone is already scaled by HERO_PHONE_SCALE on the way out, so that
+  // has to be backed out of the zoom or the card lands larger than its pair.
+  const zoomScale = looseCardScale / (isMobile ? 1 : HERO_PHONE_SCALE);
 
   /** Splits a line into words that slide up from a clipped mask. */
   const renderLine = (words: readonly string[], delays: readonly number[]) => (
@@ -180,7 +182,7 @@ export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps)
         return (
           <NotificationCard
             key={card.left}
-            scale={isMobile ? 1.5 : 2.2}
+            scale={looseCardScale}
             style={{
               position: 'absolute',
               top: isMobile ? card.mobileTop : card.top,
@@ -195,27 +197,8 @@ export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps)
         );
       })}
 
-      <div
-        style={{
-          textAlign: isMobile ? 'center' : 'left',
-          padding: isMobile ? '24px 20px 0' : 0,
-          maxWidth: isMobile ? 440 : 700,
-          flex: isMobile ? undefined : '1 1 auto',
-        }}
-      >
-        <h1
-          style={{
-            fontFamily: font.display,
-            fontWeight: 900,
-            fontSize: isMobile ? 36 : 'clamp(48px, 5.2vw, 72px)',
-            lineHeight: isMobile ? '44px' : 1.06,
-            letterSpacing: isMobile ? '-0.72px' : '-0.02em',
-            color: color.inkHeading,
-            margin: 0,
-            WebkitFontSmoothing: 'antialiased',
-            fontFeatureSettings: '"calt" 0, "liga" 0, "dlig" 0, "clig" 0',
-          }}
-        >
+      <div style={heroCopyColumn(isMobile)}>
+        <h1 style={heroHeadlineStyle(isMobile)}>
           {/* Split from the shared headline so the intro can never drift out of
               sync with the hero it hands over to. */}
           {hero.headline.map((line, lineIndex) => (
@@ -230,14 +213,7 @@ export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps)
 
         <p
           style={{
-            fontFamily: font.sans,
-            fontWeight: 700,
-            fontSize: isMobile ? 18 : 'clamp(15px, 1.55vw, 22px)',
-            lineHeight: isMobile ? '28px' : 1.45,
-            letterSpacing: '-0.24px',
-            color: color.inkHeading,
-            margin: '20px 0 0',
-            whiteSpace: isMobile ? 'normal' : 'nowrap',
+            ...heroSubheadStyle(isMobile),
             opacity: subheadIn ? 1 : 0,
             transform: subheadIn ? 'translateY(0)' : 'translateY(16px)',
             transition: 'opacity 0.6s ease, transform 0.6s ease',
@@ -253,17 +229,11 @@ export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps)
         </p>
       </div>
 
+      {/* Same crop window as the hero, so the phone hands over in place. */}
       <div
         style={{
-          display: isMobile ? 'contents' : 'flex',
-          flex: isMobile ? undefined : '0 0 auto',
-          flexShrink: 0,
-          // Same crop window as the hero, so the phone hands over in place.
-          width: isMobile ? undefined : HERO_PHONE_WINDOW,
-          justifyContent: 'center',
-          overflow: isMobile ? 'visible' : 'hidden',
-          alignSelf: isMobile ? 'auto' : 'flex-end',
-          marginBottom: isMobile ? 0 : HERO_PHONE_BOTTOM_LIFT,
+          ...heroPhoneColumn(isMobile),
+          ...(isMobile ? { display: 'contents' } : { flexShrink: 0 }),
         }}
       >
         {/* Same static scale wrapper as the hero, so the phone is already at
@@ -280,7 +250,11 @@ export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps)
             cardVisible={cardVisible}
             chromeVisible={pulledBack}
             chromeTransition={pulledBack ? 'opacity 0.9s ease 0.25s' : 'none'}
-            cardHeight={cardExpanded ? 442 : 62}
+            cardHeight={
+              cardExpanded
+                ? NOTIFICATION_CARD.expandedHeight
+                : NOTIFICATION_CARD.collapsedHeight
+            }
             cardTransition={
               cardExpanded
                 ? 'height 0.6s cubic-bezier(0.34,1.56,0.64,1), opacity 0.45s ease, transform 0.45s ease'
