@@ -432,11 +432,14 @@ export const cookieBanner = {
 export const contactPage = {
   /** Heading on the panel that opens over the page. */
   panelTitle: 'Tell us what you are building.',
+  /** One entry per rendered line. The break is deliberate, not a wrap. */
+  panelTitleLines: ['Tell us what', 'you are building.'],
   eyebrow: 'Work with us',
   headline: ['Tell us what', 'you are building.'],
   headlineAccent: 'building.',
+  /** Sits under the heading on two lines — keep it under about 150 characters. */
   intro:
-    'Every project starts the same way: a conversation about what you are making and who it is for. Send the brief over, or book a call and talk it through.',
+    'Every project starts with a conversation about what you are making and who it is for. Send a brief over, or book a call and talk it through.',
   formHeading: 'Send us a brief',
   submitLabel: 'Send it over',
   submitBusyLabel: 'Sending…',

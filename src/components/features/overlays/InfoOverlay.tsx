@@ -52,9 +52,21 @@ function LegalBody({ sections }: { readonly sections: readonly LegalSection[] })
 
 const PANELS: Record<
   OverlayKey,
-  { title: string; subtitle?: string; body: ReactNode; maxWidth?: number }
+  {
+    title: string;
+    /** Deliberate line breaks. Falls back to letting `title` wrap. */
+    titleLines?: readonly string[];
+    subtitle?: string;
+    body: ReactNode;
+    maxWidth?: number;
+  }
 > = {
-  contact: { title: contactPage.panelTitle, body: <ContactContent />, maxWidth: 1120 },
+  contact: {
+    title: contactPage.panelTitle,
+    titleLines: contactPage.panelTitleLines,
+    body: <ContactContent />,
+    maxWidth: 1120,
+  },
   privacy: {
     title: privacyPolicy.title,
     subtitle: privacyPolicy.updated,
@@ -201,7 +213,13 @@ export function InfoOverlay({ panel, origin, onClose }: InfoOverlayProps) {
                   'opacity 0.4s ease 0.2s, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
               }}
             >
-              {content.title}
+              {content.titleLines
+                ? content.titleLines.map((line) => (
+                    <span key={line} style={{ display: 'block' }}>
+                      {line}
+                    </span>
+                  ))
+                : content.title}
             </h1>
 
             {content.subtitle ? (
