@@ -49,6 +49,9 @@ const WARM_VIDEOS = [
 /** Give up waiting on preloads after this and show the intro anyway. */
 const PRELOAD_TIMEOUT_MS = 4000;
 
+/** Hashes that open a panel over the page. */
+const OVERLAY_HASHES = new Set<OverlayKey>(['contact', 'careers', 'privacy', 'terms']);
+
 /**
  * Top-level orchestration.
  *
@@ -66,8 +69,12 @@ export function SiteRoot() {
   // the URL rather than from a callback threaded through half the tree — and
   // /contact, which the agent instructions point at, redirects here.
   const hash = useHash();
-  const hashOverlay: OverlayKey | null =
-    hash === 'contact' ? 'contact' : hash === 'careers' ? 'careers' : null;
+  // Every panel is reachable by hash, so the footer's links work from the
+  // pages that are not the home page — they simply arrive here with the panel
+  // named in the URL.
+  const hashOverlay: OverlayKey | null = OVERLAY_HASHES.has(hash as OverlayKey)
+    ? (hash as OverlayKey)
+    : null;
   const activeOverlay = overlay ?? hashOverlay;
   const [overlayOrigin, setOverlayOrigin] = useState<DOMRect | null>(null);
 

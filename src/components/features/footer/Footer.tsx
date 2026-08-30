@@ -149,7 +149,12 @@ function FooterLink({ label, href, onClick }: FooterLinkProps) {
 }
 
 interface FooterProps {
-  readonly onOpenOverlay: (key: OverlayKey) => void;
+  /**
+   * Opens a panel over the page. Omitted off the home page, where there is no
+   * page to open it over — those links become ordinary links to the hash, and
+   * the home page opens the panel on arrival.
+   */
+  readonly onOpenOverlay?: ((key: OverlayKey) => void) | undefined;
   readonly ref?: Ref<HTMLElement>;
 }
 
@@ -233,12 +238,14 @@ export function Footer({ onOpenOverlay, ref }: FooterProps) {
             <div>
               <p style={columnHeadingStyle}>Links</p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {/* On the home page these scroll; anywhere else they are
+                    ordinary links back to the section they name. */}
                 {footerLinks.links.map((link) => (
                   <FooterLink
                     key={link.targetId}
                     label={link.label}
-                    href={`#${link.targetId}`}
-                    onClick={() => scrollToSection(link.targetId)}
+                    href={onOpenOverlay ? `#${link.targetId}` : `/#${link.targetId}`}
+                    {...(onOpenOverlay ? { onClick: () => scrollToSection(link.targetId) } : {})}
                   />
                 ))}
               </div>
@@ -256,8 +263,10 @@ export function Footer({ onOpenOverlay, ref }: FooterProps) {
                     <FooterLink
                       key={link.label}
                       label={link.label}
-                      href={`#${link.overlay}`}
-                      onClick={() => onOpenOverlay(link.overlay)}
+                      href={onOpenOverlay ? `#${link.overlay}` : `/#${link.overlay}`}
+                      {...(onOpenOverlay
+                        ? { onClick: () => onOpenOverlay(link.overlay) }
+                        : {})}
                     />
                   ),
                 )}

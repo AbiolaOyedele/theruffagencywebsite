@@ -1,6 +1,8 @@
 import Link from 'next/link';
+import { Footer } from '@/components/features/footer/Footer';
+import { NoiseOverlay } from '@/components/features/overlays/NoiseOverlay';
 import { RuffLogo } from '@/components/ui/RuffLogo';
-import { color, font, primaryButton, radius, shape, weight } from '@/config/tokens';
+import { color, primaryButton, radius, shape } from '@/config/tokens';
 import { brand } from '@/content/site';
 
 interface PageChromeProps {
@@ -12,9 +14,13 @@ interface PageChromeProps {
  *
  * The home page's navigation is a client component tied to the intro handover
  * and the pinned Services section — none of which exists here. This is the
- * same pill, standing still: the mark on the left, the one call to action on
- * the right, and a closing strip at the foot. Server-rendered, so a crawler
- * reads the page without waiting for anything.
+ * same pill, standing still: the mark on the left and the one call to action
+ * on the right.
+ *
+ * Everything below it is the site's own furniture — the real footer, with the
+ * mark, the columns, the accounts and the email watermark, and the grain that
+ * runs over every other page. Without it these pages read as documents that
+ * happen to share a typeface.
  */
 export function PageChrome({ children }: PageChromeProps) {
   return (
@@ -64,53 +70,12 @@ export function PageChrome({ children }: PageChromeProps) {
 
       {children}
 
-      <footer
-        style={{
-          borderTop: shape.keyline,
-          background: color.paper,
-          padding: '28px 20px',
-        }}
-      >
-        <div
-          style={{
-            maxWidth: 1000,
-            margin: '0 auto',
-            display: 'flex',
-            flexWrap: 'wrap',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: 12,
-          }}
-        >
-          <p
-            style={{
-              fontFamily: font.body,
-              fontWeight: weight.light,
-              fontSize: 13,
-              color: color.muted,
-              margin: 0,
-            }}
-          >
-            {brand.copyright}
-          </p>
-          <Link
-            href="/"
-            style={{
-              fontFamily: font.sans,
-              fontWeight: weight.bold,
-              fontSize: 14,
-              color: color.ink,
-              textDecoration: 'underline',
-              textUnderlineOffset: 4,
-              display: 'inline-flex',
-              alignItems: 'center',
-              minHeight: 44,
-            }}
-          >
-            Back to the site
-          </Link>
-        </div>
-      </footer>
+      {/* The footer takes no callback here: there is no page to open a panel
+          over, so its panel links are ordinary links and the home page opens
+          the panel named in the hash when it arrives. */}
+      <Footer />
+
+      <NoiseOverlay />
     </div>
   );
 }
