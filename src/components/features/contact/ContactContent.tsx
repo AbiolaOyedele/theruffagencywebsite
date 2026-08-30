@@ -77,12 +77,31 @@ export function ContactContent() {
             </Detail>
 
             <Detail label="Based in">
-              <span style={{ ...linkStyle, textDecoration: 'none' }}>
+              {/* Two blocks rather than a <br>: the shared link style is
+                  inline-flex, and a line break does nothing inside a flex box. */}
+              <span
+                style={{
+                  fontFamily: font.sans,
+                  fontWeight: weight.bold,
+                  fontSize: 15,
+                  lineHeight: 1.5,
+                  color: color.ink,
+                  display: 'block',
+                }}
+              >
                 {brand.basedIn[0]}
-                <br />
-                <span style={{ fontWeight: weight.medium, color: color.muted }}>
-                  {brand.basedIn[1]}
-                </span>
+              </span>
+              <span
+                style={{
+                  fontFamily: font.body,
+                  fontWeight: weight.light,
+                  fontSize: 14,
+                  lineHeight: 1.5,
+                  color: color.muted,
+                  display: 'block',
+                }}
+              >
+                {brand.basedIn[1]}
               </span>
             </Detail>
           </section>
