@@ -197,11 +197,10 @@ export function HowItWorks() {
 
       const mark = finalMarkRef.current;
       if (mark) {
-        const size = Math.min(cardWidth, desktopMediaHeight) * 0.45;
-        mark.style.width = `${size}px`;
-        mark.style.height = `${size * 1.18}px`;
-        mark.style.transform = 'translate(-50%, -50%)';
-        // Fade the monogram out as the section scrolls past the pin.
+        // Width only — CloudScene derives height and the supersample scale from
+        // it, so the wordmark's aspect ratio stays in one place.
+        mark.style.setProperty('--mark-width', `${Math.min(cardWidth, desktopMediaHeight) * 0.45}px`);
+        // Fade the wordmark out as the section scrolls past the pin.
         mark.style.opacity = `${1 - clamp((scrolled - pinLength) / (viewportHeight * 0.5))}`;
       }
 

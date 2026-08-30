@@ -1,7 +1,13 @@
 'use client';
 
-import { useEffect, useRef, type RefObject } from 'react';
+import { useEffect, useRef, type CSSProperties, type RefObject } from 'react';
 import { LOGO_ASPECT, RuffLogo } from '@/components/ui/RuffLogo';
+
+/**
+ * How much larger than its on-screen size the mark is laid out, so it survives
+ * the pinned zoom without going soft. Matches the zoom's fill scale.
+ */
+const SUPERSAMPLE = 4;
 
 interface CloudSceneProps {
   readonly width: number;
@@ -70,17 +76,30 @@ export function CloudScene({
         justifyContent: 'center',
       }}
     >
+      {/*
+        Laid out SUPERSAMPLE times larger and scaled back down. The card this
+        sits in gets blown up ~4x by the pinned zoom, and the compositor
+        stretches whatever bitmap it already rasterised rather than redrawing
+        the vector — so the mark is rasterised at its final on-screen size up
+        front. No will-change here for the same reason: promoting it to its own
+        layer locks in the small raster.
+      */}
       <RuffLogo
         ref={markRef}
-        style={{
-          position: 'absolute',
-          left: '50%',
-          top: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: markSize,
-          height: markSize / LOGO_ASPECT.wordmark,
-          willChange: 'transform',
-        }}
+        style={
+          {
+            position: 'absolute',
+            left: '50%',
+            top: '50%',
+            '--mark-width': `${markSize}px`,
+            width: `calc(var(--mark-width) * ${SUPERSAMPLE})`,
+            height: `calc(var(--mark-width) * ${SUPERSAMPLE} / ${LOGO_ASPECT.wordmark})`,
+            // The supersampled box is wider than its parent on purpose; the
+            // global responsive `max-width: 100%` would clamp it back down.
+            maxWidth: 'none',
+            transform: `translate(-50%, -50%) scale(${1 / SUPERSAMPLE})`,
+          } as CSSProperties
+        }
       />
 
       {/* eslint-disable-next-line @next/next/no-img-element -- transform-animated decorative art */}
