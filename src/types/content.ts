@@ -116,7 +116,7 @@ export interface SocialLink {
 }
 
 /** Which overlay panel is open, if any. */
-export type OverlayKey = 'contact' | 'privacy' | 'terms';
+export type OverlayKey = 'contact' | 'careers' | 'privacy' | 'terms';
 
 /**
  * A footer link under "Company": either a route of its own, or one of the

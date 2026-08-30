@@ -20,7 +20,7 @@ export const brand = {
   shortName: 'Ruff',
   legalName: 'The Ruff Agency',
   email: 'hello@theruff.agency',
-  tagline: ['Brand & creative,', 'made to launch.'],
+  tagline: 'Creative Rebellion',
   copyright: '© 2026 The Ruff Agency. All rights reserved.',
   /**
    * The scheduling link. Only the contact page offers this directly — every
@@ -422,6 +422,7 @@ export const footerLinks = {
   ] satisfies readonly NavLink[],
   company: [
     { label: 'Contact', overlay: 'contact' },
+    { label: 'Careers', overlay: 'careers' },
     { label: 'Privacy Policy', overlay: 'privacy' },
     { label: 'Terms', overlay: 'terms' },
   ] satisfies readonly FooterCompanyLink[],
@@ -517,6 +518,65 @@ export const contactPage = {
     pasteNotice:
       'We filled your answers in from your assistant’s draft. Check them over, then send.',
   },
+} as const;
+
+/** The careers surface: the panel at #careers, and the /careers route. */
+export const careersPage = {
+  panelTitle: 'Work at Ruff',
+  eyebrow: 'Careers',
+  intro:
+    'We are a small studio that takes on work bigger than our size. When we hire, we hire from people who have already told us what they do.',
+
+  /** The openings notice. Replace when a role actually opens. */
+  openings: {
+    heading: 'No open roles right now',
+    body: 'Nothing is posted at the moment. The talent pool is how we find people when that changes — it is the first place we look, before anything goes public.',
+  },
+
+  cta: 'Join the talent pool',
+  ctaNote: 'Takes about two minutes.',
+
+  /** The application, one step at a time. */
+  steps: {
+    about: {
+      question: 'Tell us about you.',
+      label: 'About you',
+      nameLabel: 'Full name',
+      namePlaceholder: 'First and last name',
+      emailLabel: 'Email',
+      emailPlaceholder: 'you@email.com',
+      phoneLabel: 'Phone number',
+      phonePlaceholder: '+234 800 000 0000',
+      experienceLabel: 'Years of experience',
+      experiencePlaceholder: 'e.g. 4',
+      availabilityLabel: 'Availability',
+      rateLabel: 'Expected monthly rate or salary',
+      ratePlaceholder: 'A number or a range — whatever you are working to',
+      portfolioLabel: 'Portfolio or LinkedIn',
+      portfolioPlaceholder: 'https:// (optional)',
+    },
+    roles: {
+      question: 'Which roles fit you?',
+      label: 'Roles',
+      helper: 'Select as many as genuinely apply.',
+    },
+    note: {
+      question: 'Anything you want us to know?',
+      label: 'Note',
+      placeholder:
+        'Optional. What you are good at, what you want to be doing, or anything the fields above did not cover.',
+    },
+    review: {
+      question: 'That is everything. Look it over, then send it when you are ready.',
+      notAnswered: 'Not answered',
+      none: 'None selected',
+    },
+  },
+
+  submitLabel: 'Join the talent pool',
+  submitBusyLabel: 'Sending…',
+  successHeading: 'You are in',
+  emailLabel: 'Or email us directly',
 } as const;
 
 export const privacyPolicy = {

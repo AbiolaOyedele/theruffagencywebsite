@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, type Ref } from 'react';
-import { LOGO_ASPECT, RuffLogo } from '@/components/ui/RuffLogo';
+import { RuffLogo } from '@/components/ui/RuffLogo';
 import { CopyEmailWatermark } from '@/components/features/footer/CopyEmailWatermark';
 import {
   InstagramMark,
@@ -196,37 +196,26 @@ export function Footer({ onOpenOverlay, ref }: FooterProps) {
             overflow: 'hidden',
           }}
         >
+          {/* Sized to the card rather than a fixed height, so the mark carries
+              the panel the way it does in the brand's own layouts. */}
           <RuffLogo
             title={brand.name}
-            style={{ height: 46, width: 46 * LOGO_ASPECT.wordmark, display: 'block' }}
+            style={{ width: '100%', height: 'auto', display: 'block' }}
           />
 
-          <div>
-            <p
-              style={{
-                fontFamily: font.body,
-                fontWeight: 700,
-                fontSize: 18,
-                color: color.ink,
-                margin: 0,
-                lineHeight: 1.4,
-              }}
-            >
-              {brand.tagline[0]}
-            </p>
-            <p
-              style={{
-                fontFamily: font.body,
-                fontWeight: 300,
-                fontSize: 18,
-                color: color.muted,
-                margin: 0,
-                lineHeight: 1.4,
-              }}
-            >
-              {brand.tagline[1]}
-            </p>
-          </div>
+          <p
+            style={{
+              fontFamily: font.display,
+              fontWeight: 800,
+              fontSize: isMobile ? 22 : 26,
+              letterSpacing: '-0.02em',
+              color: color.ink,
+              margin: 0,
+              lineHeight: 1.2,
+            }}
+          >
+            {brand.tagline}
+          </p>
         </div>
 
         <div
@@ -246,26 +235,6 @@ export function Footer({ onOpenOverlay, ref }: FooterProps) {
             minHeight: isMobile ? 'auto' : 320,
           }}
         >
-          <div
-            aria-hidden="true"
-            style={{
-              position: 'absolute',
-              top: -12,
-              right: -12,
-              width: 96,
-              height: 96,
-              background: color.accentPink,
-              borderRadius: 22,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              transform: 'rotate(12deg)',
-              boxShadow: shape.hardShadowSmall,
-            }}
-          >
-            <RuffLogo style={{ width: 68, height: 68 / LOGO_ASPECT.wordmark }} />
-          </div>
-
           <div style={{ display: 'flex', flexDirection: 'row', gap: isMobile ? 40 : 64 }}>
             <div>
               <p style={columnHeadingStyle}>Links</p>

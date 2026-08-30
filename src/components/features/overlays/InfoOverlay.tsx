@@ -2,8 +2,9 @@
 
 import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import { color, font } from '@/config/tokens';
+import { CareersContent } from '@/components/features/careers/CareersContent';
 import { ContactContent } from '@/components/features/contact/ContactContent';
-import { contactPage, privacyPolicy, termsOfService } from '@/content/site';
+import { careersPage, contactPage, privacyPolicy, termsOfService } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { setScrollLocked } from '@/utils/scroll';
 import type { LegalSection, OverlayKey } from '@/types/content';
@@ -64,6 +65,11 @@ const PANELS: Record<
   contact: {
     title: contactPage.panelTitle,
     body: <ContactContent />,
+    maxWidth: 1120,
+  },
+  careers: {
+    title: careersPage.panelTitle,
+    body: <CareersContent />,
     maxWidth: 1120,
   },
   privacy: {

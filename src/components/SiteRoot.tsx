@@ -54,7 +54,8 @@ export function SiteRoot() {
   // the URL rather than from a callback threaded through half the tree — and
   // /contact, which the agent instructions point at, redirects here.
   const hash = useHash();
-  const hashOverlay: OverlayKey | null = hash === 'contact' ? 'contact' : null;
+  const hashOverlay: OverlayKey | null =
+    hash === 'contact' ? 'contact' : hash === 'careers' ? 'careers' : null;
   const activeOverlay = overlay ?? hashOverlay;
   const [overlayOrigin, setOverlayOrigin] = useState<DOMRect | null>(null);
 
