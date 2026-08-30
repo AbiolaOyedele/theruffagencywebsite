@@ -21,6 +21,32 @@ export const REFERRAL_SOURCES = [
   'Saw our work somewhere',
 ] as const;
 
+/**
+ * Where the work stands today. Every set ends with a way out — nobody should
+ * be stuck on a question they cannot honestly answer.
+ */
+export const PROJECT_STAGES = [
+  'Just an idea',
+  'Early concept',
+  'Building it now',
+  'Already launched',
+  'Needs a refresh',
+  'Not sure yet',
+] as const;
+
+/** Budget in Naira. Bands rather than a figure — easier to answer honestly. */
+export const BUDGET_BANDS = [
+  'Under ₦150,000',
+  '₦150,000 – ₦500,000',
+  '₦500,000 – ₦1.5m',
+  '₦1.5m – ₦5m',
+  '₦5m+',
+  'Not sure yet',
+] as const;
+
+export type ProjectStage = (typeof PROJECT_STAGES)[number];
+export type BudgetBand = (typeof BUDGET_BANDS)[number];
+
 export const LIMITS = {
   name: 120,
   email: 200,

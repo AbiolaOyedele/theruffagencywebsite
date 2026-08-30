@@ -428,48 +428,80 @@ export const cookieBanner = {
 /* Overlays: Contact / Privacy / Terms                                 */
 /* ------------------------------------------------------------------ */
 
-/** The contact page at /contact. */
+/** The contact surface: the panel at #contact, and the /contact route. */
 export const contactPage = {
   /** Heading on the panel that opens over the page. */
-  panelTitle: 'Tell us what you are building.',
+  panelTitle: 'Tell us about the work.',
   /** One entry per rendered line. The break is deliberate, not a wrap. */
-  panelTitleLines: ['Tell us what', 'you are building.'],
+  panelTitleLines: ['Tell us about', 'the work.'],
   eyebrow: 'Work with us',
-  headline: ['Tell us what', 'you are building.'],
-  headlineAccent: 'building.',
-  /** Sits under the heading on two lines — keep it under about 150 characters. */
   intro:
-    'Every project starts with a conversation about what you are making and who it is for. Send a brief over, or book a call and talk it through.',
-  formHeading: 'Send us a brief',
-  submitLabel: 'Send it over',
+    'Five short questions — about a minute. We will come back with the most useful next step, whether that is a quote or a conversation.',
+  emailLabel: 'Or email us directly',
+
+  /**
+   * The enquiry, one question per step. The review step reads the same copy to
+   * build its summary, so a question can never appear in one and not the other.
+   */
+  steps: {
+    project: {
+      question: 'What are you looking to build?',
+      label: 'What you are building',
+      placeholder:
+        'A brand identity, a campaign, a launch — and anything you already know about it.',
+    },
+    you: {
+      question: 'What should we call you, and where can we reach you?',
+      nameLabel: 'Name',
+      namePlaceholder: 'First and last name',
+      emailLabel: 'Email',
+      emailPlaceholder: 'you@company.com',
+    },
+    context: {
+      question: 'Does it have a name yet, and how did you find us?',
+      companyLabel: 'Company or project',
+      companyPlaceholder: 'What is it called? (optional)',
+      referralLabel: 'How you found us',
+      referralPlaceholder: 'A referral, a search, something you saw (optional)',
+    },
+    stage: {
+      question: 'Where does the work stand today?',
+      label: 'Current stage',
+    },
+    budget: {
+      question: 'What budget are you working with?',
+      label: 'Budget',
+      note: 'Projects start from ₦150,000. A rough band is enough — it only helps us shape the right scope.',
+    },
+    review: {
+      question: 'That is everything. Look it over, then send it when you are ready.',
+      skipped: 'Skipped',
+      notAnswered: 'Not answered',
+    },
+  },
+
+  /** Wizard chrome. */
+  back: 'Back',
+  skip: 'Skip',
+  continueLabel: 'Continue',
+  editLabel: 'Edit',
+  submitLabel: 'Send project enquiry',
   submitBusyLabel: 'Sending…',
   callHeading: 'Rather talk it through?',
   callBody: 'Book a call and we will match you with the right creative lead.',
   callLabel: 'Book a direct call',
-  successHeading: 'Message sent',
-  emailLabel: 'Or email us directly',
-  fields: {
-    name: { label: 'Your name', placeholder: 'First and last name' },
-    email: { label: 'Email', placeholder: 'you@company.com' },
-    company: { label: 'Company', placeholder: 'Optional' },
-    phone: { label: 'Phone', placeholder: 'Optional' },
-    referralSource: { label: 'How did you hear about us?', placeholder: 'Optional' },
-    projectDetails: {
-      label: 'About the project',
-      placeholder:
-        'What are you building, who is it for, and what do you need from us? A few sentences is plenty.',
-    },
-  },
+  successHeading: 'Enquiry sent',
+
   /** The paste-to-fill flow an AI agent can follow on the visitor's behalf. */
   agent: {
     heading: 'Working with an AI agent?',
-    body: 'Copy one prompt into Claude, ChatGPT, or any agent. It drafts the brief with you, then hands you a snippet to paste on this page — the form fills itself in, and you check it over before sending.',
+    body: 'Copy one prompt into Claude, ChatGPT, or any agent. It drafts the brief with you, then hands you a snippet to paste on this page — every answer fills itself in and you check it over before sending.',
     copyLabel: 'Copy prompt',
     copiedLabel: 'Copied',
     copyFailedLabel: 'Copy failed — open it instead',
     href: '/agent/prompt.md',
     pasteNotice:
-      'We filled the form in from your assistant’s draft. Check it over, then send it.',
+      'We filled your answers in from your assistant’s draft. Check them over, then send.',
   },
 } as const;
 

@@ -132,7 +132,7 @@ function PricingCard({ plan, visual }: PricingCardProps) {
             marginTop: 'auto',
           }}
         >
-          Book a call
+          {brand.ctaLabel}
         </span>
       </div>
     </a>

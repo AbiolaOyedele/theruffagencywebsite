@@ -11,7 +11,11 @@
  * inserted as markup, and the server revalidates every field on submit. This
  * parser is a convenience, not a trust boundary.
  */
-import { LIMITS } from '@/lib/schemas/form-constants';
+import {
+  BUDGET_BANDS,
+  LIMITS,
+  PROJECT_STAGES,
+} from '@/lib/schemas/form-constants';
 
 /** Present on the block's first line, and the stem of the instructions marker. */
 export const INQUIRY_MARKER = 'ruff-inquiry';
@@ -36,8 +40,15 @@ export interface ParsedInquiry {
   email?: string;
   company?: string;
   phone?: string;
+  stage?: string;
+  budget?: string;
   projectDetails?: string;
   referralSource?: string;
+}
+
+/** Returns the value only when it is one of the options we actually offer. */
+function oneOf(value: string | undefined, options: readonly string[]): string | undefined {
+  return value && options.includes(value) ? value : undefined;
 }
 
 function field(text: string, label: string): string | undefined {
@@ -82,6 +93,10 @@ export function parseInquiryBlock(text: string): ParsedInquiry | null {
   assign('phone', clamp(field(text, 'Phone'), LIMITS.phone));
   assign('projectDetails', clamp(projectDetails || undefined, LIMITS.projectDetails));
   assign('referralSource', clamp(field(text, 'Heard about'), LIMITS.referralSource));
+  // Closed sets: anything that is not one of ours is dropped rather than
+  // carried through to a field the server would reject anyway.
+  assign('stage', oneOf(field(text, 'Stage'), PROJECT_STAGES));
+  assign('budget', oneOf(field(text, 'Budget'), BUDGET_BANDS));
 
   return parsed;
 }

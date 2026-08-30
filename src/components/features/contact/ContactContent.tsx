@@ -1,7 +1,7 @@
 'use client';
 
 import { AgentPromptCard } from '@/components/features/contact/AgentPromptCard';
-import { ContactForm } from '@/components/features/contact/ContactForm';
+import { ContactWizard } from '@/components/features/contact/ContactWizard';
 import { color, font, shape, weight } from '@/config/tokens';
 import { brand, contactPage } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
@@ -44,7 +44,7 @@ export function ContactContent() {
           alignItems: 'start',
         }}
       >
-        <ContactForm />
+        <ContactWizard />
 
         <div
           style={{

@@ -45,6 +45,12 @@ should be able to state:
 - who it is for, and what they want those people to think or do
 - when they need it, and anything already fixed around it — a launch date, a
   funding round, an existing agency or in-house team
+- where the work stands today: just an idea, an early concept, being built now,
+  already launched, or in need of a refresh
+- roughly what budget they have. ${brand.shortName}'s projects start from
+  ₦150,000; the bands are Under ₦150,000, ₦150,000 – ₦500,000, ₦500,000 – ₦1.5m,
+  ₦1.5m – ₦5m, and ₦5m+. If they genuinely do not know, that is a fine answer —
+  say so rather than guessing a number on their behalf
 
 Do not reshape the brief to match what ${brand.shortName} sells. Get the honest
 version.
@@ -101,6 +107,8 @@ Output the approved submission as a single fenced block in exactly this shape:
 **Phone:** +234 800 000 0000
 **Website:** https://company.com
 **Heard about:** Where the user first came across ${brand.shortName}
+**Stage:** Early concept
+**Budget:** ₦500,000 – ₦1.5m
 
 ## Brief
 
@@ -110,19 +118,22 @@ The approved brief, as plain text.
 The comment line, the Name and Email lines, and the \`## Brief\` heading must
 match this exactly, character for character. The page matches on that literal
 text, so do not reword, reformat, or tidy those lines up even where it seems
-harmless. Company, Phone, Website and Heard about are optional — leave out any
-line you do not have rather than inventing a value.
+harmless. Company, Phone, Website, Heard about, Stage and Budget are optional —
+leave out any line you do not have rather than inventing a value. Stage and
+Budget must be copied exactly from the lists above, or left out; anything else
+is dropped.
 
 Never hand over the block on its own. Most people have not seen this flow
 before, so follow it with plain instructions:
 
 1. Copy the whole block, including the comment line at the top.
 2. Open ${siteUrl}/contact
-3. Click anywhere on that page and paste. The form fills itself in.
-4. Read it over, then press "Send it over".
+3. Click anywhere on that page and paste. Every answer fills itself in and
+   the enquiry jumps to its review step.
+4. Read it over, correct anything, then press "Send project enquiry".
 
-If the form does not fill itself in for any reason, the same details can be
-typed by hand. Nothing is lost either way.
+If it does not fill itself in for any reason, the same questions can be
+answered by hand. Nothing is lost either way.
 
 ## 8. Afterwards
 

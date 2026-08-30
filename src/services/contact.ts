@@ -113,6 +113,8 @@ export async function submitContact(body: Record<string, unknown>): Promise<void
       ['Email', data.email],
       ['Company', data.company || undefined],
       ['Phone', data.phone || undefined],
+      ['Stage', data.stage || undefined],
+      ['Budget', data.budget || undefined],
       ['Heard about us via', data.referralSource || undefined],
       ['Project', `\n${data.projectDetails}`],
     ]),
