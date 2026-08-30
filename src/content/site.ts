@@ -1,5 +1,6 @@
 import { color } from '@/config/tokens';
 import type {
+  BlogPost,
   FooterCompanyLink,
   CaseStudy,
   ClientLogo,
@@ -42,6 +43,7 @@ export const brand = {
 export const sectionLinks: readonly NavLink[] = [
   { label: 'Services', targetId: 'services' },
   { label: 'Work', targetId: 'work' },
+  { label: 'Writing', targetId: 'writing' },
   { label: 'Pricing', targetId: 'pricing' },
 ];
 
@@ -321,6 +323,127 @@ export const caseStudyChrome = {
 } as const;
 
 /* ------------------------------------------------------------------ */
+/* Writing                                                             */
+/* ------------------------------------------------------------------ */
+
+export const blogSection = {
+  eyebrow: 'Writing',
+  headline: ['How we', 'think about it.'],
+  /** The word set in the accent italic inside the headline. */
+  accentWord: 'think',
+  intro:
+    'Notes from the studio on brand, creative direction, and the parts of the work nobody puts in a case study.',
+  cardCta: 'Read',
+  allCta: 'Read everything',
+  /** Shown on /blog, where there is no section around the list. */
+  indexTitle: 'Writing',
+  indexIntro:
+    'Notes from the studio on brand, creative direction, and the parts of the work nobody puts in a case study. No newsletter, no gate — just the thinking.',
+  empty: 'Nothing published yet. Check back shortly.',
+} as const;
+
+/**
+ * Posts, newest first.
+ *
+ * Every one carries `draft: true` until Ruff has read it and signed it off —
+ * the panel says so on the post itself, so nothing goes out under the studio's
+ * name by accident.
+ */
+export const blogPosts: readonly BlogPost[] = [
+  {
+    slug: 'a-logo-is-not-a-brand',
+    title: 'A logo is not a brand, and the difference costs money',
+    excerpt:
+      'Most founders come to us asking for a logo. Almost none of them actually need one first.',
+    category: 'Brand strategy',
+    publishedAt: '2026-08-12',
+    author: { name: 'The Ruff Agency', role: 'Studio' },
+    accent: color.accentPink,
+    draft: true,
+    sections: [
+      {
+        heading: 'The request that is never the problem',
+        body: 'Nine times out of ten the first message says the same thing: we need a logo. Sometimes it is a rebrand, sometimes it is "just a refresh", but the shape is identical — a founder has decided the visual is what is holding them back. It rarely is. A logo is a signature. It is the mark you sign work with once you already know what the work says. Signing before you know what you are saying is how a business ends up with a beautiful mark it quietly stops using within a year.',
+      },
+      {
+        heading: 'What people actually mean',
+        body: 'Dig one question deeper and the real brief comes out. We look the same as everyone else. People do not remember us. We keep having to explain what we do. Our prices get questioned. None of those are drawing problems. They are positioning problems wearing a design costume. If customers cannot tell you apart from three competitors, a new typeface will not fix it, because the confusion is not visual — it is that nobody, including the founder, can say in one sentence why this business is the one to pick.',
+      },
+      {
+        heading: 'What we do instead',
+        body: 'We start with the market. Who else is in it, how they all sound, and where the space actually is. Then the audience: not a persona document, but the two or three things a real buyer is weighing at the moment they choose. Then the sentence — the one line the brand has to own. Only then does anything get drawn, and by that point the drawing is easy, because the mark has a job. Strategy is not the expensive preamble to design. It is what stops design being guesswork.',
+      },
+      {
+        heading: 'The cost of skipping it',
+        body: 'A brand built without that groundwork does not fail loudly. It fails by being forgettable — assets that never quite get used, a deck that gets rebuilt for every pitch, a founder who keeps tweaking the mark because something feels off and nobody can name what. That is not a design bill. It is the same bill, paid twice, plus the year of trading you did while nobody could remember your name.',
+      },
+    ],
+  },
+  {
+    slug: 'brief-that-gets-good-work',
+    title: 'How to write a brief that gets you good work',
+    excerpt:
+      'The best briefs we get are short, specific, and honest about what is not working. Here is the shape of one.',
+    category: 'Working together',
+    publishedAt: '2026-07-29',
+    author: { name: 'The Ruff Agency', role: 'Studio' },
+    accent: color.accentLime,
+    draft: true,
+    sections: [
+      {
+        heading: 'Long is not the same as clear',
+        body: 'We have had twenty-page briefs that told us nothing and three-paragraph emails that told us everything. Length is not the variable. What separates them is whether the brief describes the problem or prescribes the solution. A brief that opens with a list of deliverables has already made every interesting decision before anyone with craft has looked at it — and you are paying for that craft.',
+      },
+      {
+        heading: 'Lead with what is not working',
+        body: 'The single most useful line in any brief is the honest one: here is what is going wrong. Sales calls stall at the same objection. The deck gets a good reaction and no follow-up. The feed looks fine but nobody shares it. That sentence is worth more than a mood board, because it points at the actual gap. Studios can design to a taste, but they can only solve a problem you have named.',
+      },
+      {
+        heading: 'Say who it is for, specifically',
+        body: 'Not "SMEs in West Africa". A person: the operations lead at a fifty-seat logistics company who has been burned by two vendors already. The more specific the audience, the more decisive the work, because specificity gives everyone something to argue with. Broad audiences produce broad work, and broad work is the kind nobody remembers.',
+      },
+      {
+        heading: 'Bring the constraints early',
+        body: 'Budget, deadline, the three colours the parent company will never approve, the founder who hates serifs. None of that is an insult to the work — it is the shape of the box, and knowing it on day one is what lets a studio design something that actually ships. Constraints revealed in week six are the most expensive information in the project.',
+      },
+      {
+        heading: 'What good looks like',
+        body: 'End the brief by describing success in a sentence a non-designer could check. Not "modern and premium" — that means nothing and everyone agrees with it. Something closer to: a prospect can explain what we do to a colleague after one look. That gives the work a target, and it gives both sides a way to tell, at the end, whether it landed.',
+      },
+    ],
+  },
+  {
+    slug: 'why-we-work-inside-your-tools',
+    title: 'Why we work inside your tools, not around them',
+    excerpt:
+      'Most agency friction is not creative. It is the handoff. So we removed the handoff.',
+    category: 'How we work',
+    publishedAt: '2026-07-08',
+    author: { name: 'The Ruff Agency', role: 'Studio' },
+    accent: color.accentYellow,
+    draft: true,
+    sections: [
+      {
+        heading: 'The gap where projects die',
+        body: 'Ask anyone who has worked with an agency where it went wrong and they rarely say the work was bad. They say it went quiet. Feedback sat in an email thread. A file was the wrong version. Someone was waiting on someone who was waiting on them. Almost none of that is a creative failure — it is a logistics failure, and it happens in the gap between how the studio works and how the client does.',
+      },
+      {
+        heading: 'Two systems, one project',
+        body: 'The traditional setup gives every project two homes: the client’s tools and the agency’s. Everything has to be carried between them by hand, and everything carried by hand eventually gets dropped. Weekly status calls exist almost entirely to paper over that gap — an hour spent telling each other things a shared board would have shown at a glance.',
+      },
+      {
+        heading: 'What we do instead',
+        body: 'We work in your Slack, your Notion, your Figma, your board. Requests come in where your team already raises them. Work in progress is visible without asking. Feedback lands on the file rather than in a thread about the file. It is a small change on paper and it removes most of the friction, because the project stops needing a translator.',
+      },
+      {
+        heading: 'What it changes',
+        body: 'Turnarounds get shorter, but the bigger difference is quieter: nobody has to chase. The client can see where something is without sending a message, and we can see the context around a request without asking for it. That is most of what people mean when they say an agency felt like part of the team.',
+      },
+    ],
+  },
+];
+
+/* ------------------------------------------------------------------ */
 /* Pricing                                                             */
 /* ------------------------------------------------------------------ */
 
@@ -422,6 +545,7 @@ export const footerLinks = {
     { label: 'FAQ', targetId: 'faq' },
   ] satisfies readonly NavLink[],
   company: [
+    { label: 'Writing', href: '/blog' },
     { label: 'Contact', overlay: 'contact' },
     { label: 'Careers', overlay: 'careers' },
     { label: 'Privacy Policy', overlay: 'privacy' },

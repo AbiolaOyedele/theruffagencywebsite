@@ -7,7 +7,7 @@ import { color, font, primaryButton, shape, weight } from '@/config/tokens';
 import { brand, caseStudyChrome } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { clamp, setScrollLocked } from '@/utils/scroll';
-import type { CaseStudy } from '@/types/content';
+import type { Story } from '@/types/content';
 
 type Phase = 'enter' | 'open' | 'fadein' | 'exit';
 
@@ -19,8 +19,8 @@ const CARD_ROTATIONS = [3, -2.5, 2] as const;
 /** How long the exit animation runs before the panel unmounts. */
 const EXIT_MS = 400;
 
-interface CaseStudyPanelProps {
-  readonly study: CaseStudy;
+interface StoryPanelProps {
+  readonly story: Story;
   /**
    * Bounding box of the card that opened it, so the panel grows out of the
    * card rather than appearing from nowhere. Null when deep-linked, which
@@ -31,13 +31,17 @@ interface CaseStudyPanelProps {
 }
 
 /**
- * A client's story, as an overlay panel over the page rather than a route.
+ * A long read, as an overlay panel over the page rather than a route.
  *
  * Expands out of the card that opened it to a near-fullscreen sheet with its
  * own scroll: a parallaxed video hero, then a sticky contents rail beside the
  * narrative. Closes on Escape, the backdrop, or the close button.
+ *
+ * Client stories and blog posts both open here — they are different content
+ * with the same reading shape, so both are mapped onto `Story` rather than
+ * this learning about either of them.
  */
-export function CaseStudyPanel({ study, fromRect, onClose }: CaseStudyPanelProps) {
+export function StoryPanel({ story, fromRect, onClose }: StoryPanelProps) {
   const isMobile = useIsMobile();
   const [phase, setPhase] = useState<Phase>(fromRect ? 'enter' : 'fadein');
   const [scrollTop, setScrollTop] = useState(0);
@@ -126,10 +130,7 @@ export function CaseStudyPanel({ study, fromRect, onClose }: CaseStudyPanelProps
     fromRect ??
     new DOMRect(window.innerWidth / 2 - 140, window.innerHeight / 2 - 185, 280, 370);
 
-  const sections = study.sections ?? [];
-  const tickets = study.tickets ?? [];
-  const gallery = study.gallery ?? [];
-  const credits = study.credits ?? [];
+  const { sections, tickets, gallery, credits } = story;
 
   const railLabel = {
     fontFamily: font.sans,
@@ -161,7 +162,7 @@ export function CaseStudyPanel({ study, fromRect, onClose }: CaseStudyPanelProps
       <div
         role="dialog"
         aria-modal="true"
-        aria-label={`${study.client} story`}
+        aria-label={story.ariaLabel}
         style={{
           position: 'fixed',
           zIndex: 10_002,
@@ -209,9 +210,9 @@ export function CaseStudyPanel({ study, fromRect, onClose }: CaseStudyPanelProps
               overflow: 'hidden',
             }}
           >
-            {study.video ? (
+            {story.video ? (
               <AutoplayVideo
-                src={study.video}
+                src={story.video}
                 style={{
                   position: 'absolute',
                   inset: '-20% 0',
@@ -259,7 +260,7 @@ export function CaseStudyPanel({ study, fromRect, onClose }: CaseStudyPanelProps
                   margin: 0,
                 }}
               >
-                {study.collaboration ?? study.client}
+                {story.eyebrow}
               </p>
               <h1
                 style={{
@@ -273,9 +274,9 @@ export function CaseStudyPanel({ study, fromRect, onClose }: CaseStudyPanelProps
                   maxWidth: 700,
                 }}
               >
-                {study.title ?? study.client}
+                {story.title}
               </h1>
-              {study.placeholder ? (
+              {story.note ? (
                 <span
                   style={{
                     alignSelf: 'flex-start',
@@ -290,7 +291,7 @@ export function CaseStudyPanel({ study, fromRect, onClose }: CaseStudyPanelProps
                     padding: '7px 14px',
                   }}
                 >
-                  Placeholder copy — awaiting the real write-up
+                  {story.note}
                 </span>
               ) : null}
             </div>
@@ -363,7 +364,7 @@ export function CaseStudyPanel({ study, fromRect, onClose }: CaseStudyPanelProps
 
                 {credits.length ? (
                   <div>
-                    <p style={railLabel}>Team</p>
+                    <p style={railLabel}>{story.bylineHeading}</p>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
                       {credits.map((person) => (
                         <div
@@ -472,7 +473,7 @@ export function CaseStudyPanel({ study, fromRect, onClose }: CaseStudyPanelProps
                     {/* The gallery breaks the reading up after the third beat.
                         Each image carries the brief it came from, pinned to its
                         corner on a card that drifts as the panel scrolls. */}
-                    {index === 2 && gallery.length ? (
+                    {index === story.galleryAfterSection && gallery.length ? (
                       <div
                         style={{
                           display: 'flex',

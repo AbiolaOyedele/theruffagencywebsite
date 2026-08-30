@@ -234,6 +234,41 @@ image plus a caption.
 
 ---
 
+## 07b · Writing
+
+A section on the home page and a real page at `/blog`. A post opens in the
+same panel a client story does, with the same contents rail and narrative
+column.
+
+| Field | Copy |
+|---|---|
+| Eyebrow | Writing |
+| Heading | How we / *think* about it. |
+| Intro | Notes from the studio on brand, creative direction, and the parts of the work nobody puts in a case study. |
+| Card button | Read → |
+| `/blog` intro | …No newsletter, no gate — just the thinking. |
+
+### The three posts ✏️
+
+All three carry a **Draft — not signed off yet** pill until Ruff has read them.
+
+| Slug | Title | Category |
+|---|---|---|
+| `a-logo-is-not-a-brand` | A logo is not a brand, and the difference costs money | Brand strategy |
+| `brief-that-gets-good-work` | How to write a brief that gets you good work | Working together |
+| `why-we-work-inside-your-tools` | Why we work inside your tools, not around them | How we work |
+
+Each runs 250–350 words across four or five sections. Full text is in
+`src/content/site.ts` under `blogPosts`.
+
+❓ These are written in the studio's voice but nobody at Ruff has approved
+them. Read them before the `draft` flag comes off.
+
+❓ At 250–350 words they are short for anything meant to rank on search. If a
+post is meant to bring people in, 800–1,200 words is the working figure.
+
+---
+
 ## 08 · Pricing
 
 **Headline:** Simple, honest pricing.

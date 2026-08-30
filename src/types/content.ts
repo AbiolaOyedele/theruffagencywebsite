@@ -103,6 +103,132 @@ export function hasStory(study: CaseStudy): boolean {
   return (study.sections?.length ?? 0) > 0;
 }
 
+/* ------------------------------------------------------------------ */
+/* Writing                                                             */
+/* ------------------------------------------------------------------ */
+
+/**
+ * A blog post.
+ *
+ * Deliberately shaped like a case study: a post opens in the same panel, with
+ * the same contents rail, narrative column and gallery, so the site has one
+ * reading layout rather than two that drift apart.
+ */
+export interface BlogPost {
+  readonly slug: string;
+  readonly title: string;
+  /** One sentence for the card, the meta description and link previews. */
+  readonly excerpt: string;
+  /** Grouping shown on the card — "Brand strategy", "Creative direction". */
+  readonly category: string;
+  /** ISO date, so it can be published as-is in metadata and JSON-LD. */
+  readonly publishedAt: string;
+  readonly author: { readonly name: string; readonly role: string };
+  /** Card ground, taken from the accent palette. */
+  readonly accent: string;
+  /** Looping footage behind the panel's title, when the post has some. */
+  readonly video?: string;
+  readonly sections: readonly CaseStudySection[];
+  readonly gallery?: readonly CaseStudyGalleryItem[];
+  /** Marks the writing as a draft the studio has not signed off yet. */
+  readonly draft?: boolean;
+}
+
+/** Words a minute, for the reading estimate on a card. */
+const READING_SPEED = 220;
+
+/** Reading time for a post, to the nearest minute and never less than one. */
+export function readingMinutes(post: BlogPost): number {
+  const words = post.sections.reduce(
+    (total, section) => total + section.body.trim().split(/\s+/).length,
+    0,
+  );
+  return Math.max(1, Math.round(words / READING_SPEED));
+}
+
+/* ------------------------------------------------------------------ */
+/* The reading panel                                                   */
+/* ------------------------------------------------------------------ */
+
+/**
+ * What the expanding panel renders, whichever kind of thing opened it.
+ *
+ * Case studies and blog posts are different content with the same reading
+ * shape, so both are mapped onto this rather than the panel learning about
+ * either of them.
+ */
+export interface Story {
+  /** Identifies the open panel; also the hash the URL carries. */
+  readonly hash: string;
+  readonly eyebrow: string;
+  readonly title: string;
+  readonly ariaLabel: string;
+  readonly video?: string;
+  /** Shown as a pill under the title when the copy is not final. */
+  readonly note?: string;
+  /** Heading above the people listed in the rail. */
+  readonly bylineHeading: string;
+  readonly credits: readonly CaseStudyCredit[];
+  readonly sections: readonly CaseStudySection[];
+  readonly tickets: readonly CaseStudyTicket[];
+  readonly gallery: readonly CaseStudyGalleryItem[];
+  /** Where the gallery breaks the reading up, counted in sections. */
+  readonly galleryAfterSection: number;
+}
+
+const PLACEHOLDER_NOTE = 'Placeholder copy — awaiting the real write-up';
+const DRAFT_NOTE = 'Draft — not signed off yet';
+
+/** Maps a client engagement onto the reading panel. */
+export function storyFromCaseStudy(study: CaseStudy): Story {
+  return {
+    hash: study.slug,
+    eyebrow: study.collaboration ?? study.client,
+    title: study.title ?? study.client,
+    ariaLabel: `${study.client} story`,
+    ...(study.video ? { video: study.video } : {}),
+    ...(study.placeholder ? { note: PLACEHOLDER_NOTE } : {}),
+    bylineHeading: 'Team',
+    credits: study.credits ?? [],
+    sections: study.sections ?? [],
+    tickets: study.tickets ?? [],
+    gallery: study.gallery ?? [],
+    galleryAfterSection: 2,
+  };
+}
+
+/** The hash a post's panel opens on. Namespaced so it cannot clash with a client. */
+export function postHash(slug: string): string {
+  return `writing/${slug}`;
+}
+
+/** Maps a post onto the reading panel. */
+export function storyFromPost(post: BlogPost): Story {
+  return {
+    hash: postHash(post.slug),
+    eyebrow: `${post.category} · ${formatPostDate(post.publishedAt)}`,
+    title: post.title,
+    ariaLabel: post.title,
+    ...(post.video ? { video: post.video } : {}),
+    ...(post.draft ? { note: DRAFT_NOTE } : {}),
+    bylineHeading: 'Written by',
+    credits: [{ name: post.author.name, role: post.author.role }],
+    sections: post.sections,
+    tickets: [],
+    gallery: post.gallery ?? [],
+    galleryAfterSection: 1,
+  };
+}
+
+/** A post's date, written the way the rest of the site writes dates. */
+export function formatPostDate(iso: string): string {
+  return new Date(iso).toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+}
+
 export interface LegalSection {
   readonly heading: string;
   readonly body: string;

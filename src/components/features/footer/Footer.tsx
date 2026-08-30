@@ -247,14 +247,20 @@ export function Footer({ onOpenOverlay, ref }: FooterProps) {
             <div>
               <p style={columnHeadingStyle}>Company</p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                {footerLinks.company.map((link) => (
-                  <FooterLink
-                    key={link.label}
-                    label={link.label}
-                    href={`#${link.overlay}`}
-                    onClick={() => onOpenOverlay(link.overlay)}
-                  />
-                ))}
+                {/* A Company entry is either a real route or one of the
+                    panels that opens over the page — never both. */}
+                {footerLinks.company.map((link) =>
+                  'href' in link ? (
+                    <FooterLink key={link.label} label={link.label} href={link.href} />
+                  ) : (
+                    <FooterLink
+                      key={link.label}
+                      label={link.label}
+                      href={`#${link.overlay}`}
+                      onClick={() => onOpenOverlay(link.overlay)}
+                    />
+                  ),
+                )}
               </div>
             </div>
 

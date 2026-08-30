@@ -1,7 +1,8 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { CaseStudyPanel } from '@/components/features/case-study/CaseStudyPanel';
+import { Blog } from '@/components/features/blog/Blog';
+import { StoryPanel } from '@/components/features/story/StoryPanel';
 import { Work } from '@/components/features/work/Work';
 import { CookieBanner } from '@/components/features/overlays/CookieBanner';
 import { Faq } from '@/components/features/faq/Faq';
@@ -16,12 +17,13 @@ import { NoiseOverlay } from '@/components/features/overlays/NoiseOverlay';
 import { Pricing } from '@/components/features/pricing/Pricing';
 import { ScrollStatement } from '@/components/features/statement/ScrollStatement';
 import { color } from '@/config/tokens';
-import { caseStudies } from '@/content/site';
-import { useCaseStudyRoute } from '@/hooks/useCaseStudyRoute';
+import { blogPosts, caseStudies } from '@/content/site';
+import { useStoryRoute } from '@/hooks/useStoryRoute';
 import { refreshHash, useHash } from '@/hooks/useHash';
 import { useSmoothScroll } from '@/hooks/useSmoothScroll';
 import { clamp, setScrollLocked } from '@/utils/scroll';
-import type { OverlayKey } from '@/types/content';
+import { postHash, storyFromCaseStudy, storyFromPost } from '@/types/content';
+import type { OverlayKey, Story } from '@/types/content';
 
 /** Assets that must be decoded before the intro can start. */
 const CRITICAL_IMAGES = [
@@ -46,8 +48,8 @@ const PRELOAD_TIMEOUT_MS = 4000;
  * margin and slides off it on the last scroll.
  */
 export function SiteRoot() {
-  const caseStudyRoute = useCaseStudyRoute();
-  const caseStudySlug = caseStudyRoute.slug;
+  const storyRoute = useStoryRoute();
+  const caseStudySlug = storyRoute.slug;
   const [caseStudyOrigin, setCaseStudyOrigin] = useState<DOMRect | null>(null);
   const [overlay, setOverlay] = useState<OverlayKey | null>(null);
   // Every "Work with us" is a plain link to #contact, so the panel opens from
@@ -156,18 +158,18 @@ export function SiteRoot() {
 
   const handleNavReveal = useCallback(() => setNavRevealed(true), []);
 
-  const openCaseStudy = useCallback(
-    (slug: string, fromRect: DOMRect) => {
+  const openStory = useCallback(
+    (hash: string, fromRect: DOMRect) => {
       setCaseStudyOrigin(fromRect);
-      caseStudyRoute.open(slug);
+      storyRoute.open(hash);
     },
-    [caseStudyRoute],
+    [storyRoute],
   );
 
-  const closeCaseStudy = useCallback(() => {
-    caseStudyRoute.close();
+  const closeStory = useCallback(() => {
+    storyRoute.close();
     setCaseStudyOrigin(null);
-  }, [caseStudyRoute]);
+  }, [storyRoute]);
 
 
   const openOverlay = useCallback((key: OverlayKey) => {
@@ -185,7 +187,14 @@ export function SiteRoot() {
     }
   }, []);
 
-  const activeCaseStudy = caseStudies.find((study) => study.slug === caseStudySlug) ?? null;
+  // One panel, two kinds of thing in it: whichever the hash names.
+  const activeStory: Story | null = (() => {
+    if (caseStudySlug === null) return null;
+    const study = caseStudies.find((entry) => entry.slug === caseStudySlug);
+    if (study) return storyFromCaseStudy(study);
+    const post = blogPosts.find((entry) => postHash(entry.slug) === caseStudySlug);
+    return post ? storyFromPost(post) : null;
+  })();
 
   return (
     <div style={{ overflowX: 'clip', background: color.paperAlt }}>
@@ -212,7 +221,8 @@ export function SiteRoot() {
         <LogoStrip />
         <ScrollStatement />
         <Services />
-        <Work onOpenCaseStudy={openCaseStudy} activeSlug={caseStudySlug} />
+        <Work onOpenCaseStudy={openStory} activeSlug={caseStudySlug} />
+        <Blog onOpenPost={openStory} />
         <Pricing />
         <Faq />
       </div>
@@ -228,12 +238,8 @@ export function SiteRoot() {
         <InfoOverlay panel={activeOverlay} origin={overlayOrigin} onClose={closeOverlay} />
       ) : null}
 
-      {activeCaseStudy ? (
-        <CaseStudyPanel
-          study={activeCaseStudy}
-          fromRect={caseStudyOrigin}
-          onClose={closeCaseStudy}
-        />
+      {activeStory ? (
+        <StoryPanel story={activeStory} fromRect={caseStudyOrigin} onClose={closeStory} />
       ) : null}
     </div>
   );
