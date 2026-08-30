@@ -25,7 +25,8 @@ interface PostShelfProps {
  *
  * Each card is a real link to the post's own page, so a crawler can follow it
  * and a reader can copy it, but a click opens the post in the reading panel
- * instead — the same panel a client story opens in. Same writing either way.
+ * instead — growing out of the card pressed, the same as a client story, and
+ * coming back here when it closes. Same writing either way.
  */
 export function PostShelf({ posts }: PostShelfProps) {
   const roles = tileRoles(posts.length);
@@ -48,7 +49,12 @@ export function PostShelf({ posts }: PostShelfProps) {
               // a new tab, a saved link, a middle click.
               if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
               event.preventDefault();
-              openStory(postHash(post.slug));
+              openStory(postHash(post.slug), {
+                fromRect: event.currentTarget.getBoundingClientRect(),
+                // Closing the post comes back here rather than dropping to the
+                // page underneath — this is where the reader was.
+                returnTo: 'blog',
+              });
             }}
             data-tile={role}
             style={{

@@ -7,6 +7,15 @@ import { blogPosts, blogSection } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { pageCount, pageOfPosts } from '@/types/content';
 
+/**
+ * The page last read, kept outside the component.
+ *
+ * Opening a post closes this panel and reopening it mounts a fresh one — so
+ * without this, coming back from a post on page two lands on page one. It is
+ * deliberately not persisted: a new visit starts at the top.
+ */
+let lastPage = 1;
+
 const stepStyle = {
   display: 'inline-flex',
   alignItems: 'center',
@@ -35,7 +44,12 @@ const stepStyle = {
  */
 export function ArchivePanel() {
   const isMobile = useIsMobile();
-  const [page, setPage] = useState(1);
+  const [page, setPageState] = useState(lastPage);
+
+  const setPage = (next: number): void => {
+    lastPage = next;
+    setPageState(next);
+  };
 
   const total = pageCount(blogPosts.length);
   const posts = pageOfPosts(blogPosts, page);

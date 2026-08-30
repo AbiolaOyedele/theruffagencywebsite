@@ -18,7 +18,7 @@ import { Pricing } from '@/components/features/pricing/Pricing';
 import { ScrollStatement } from '@/components/features/statement/ScrollStatement';
 import { color } from '@/config/tokens';
 import { blogPosts, caseStudies } from '@/content/site';
-import { useStoryRoute } from '@/hooks/useStoryRoute';
+import { storyOrigin, useStoryRoute } from '@/hooks/useStoryRoute';
 import { refreshHash, useHash } from '@/hooks/useHash';
 import { markIntroSeen, useIntroSeen } from '@/hooks/useIntroSeen';
 import { useSmoothScroll } from '@/hooks/useSmoothScroll';
@@ -188,7 +188,7 @@ export function SiteRoot() {
   const openStory = useCallback(
     (hash: string, fromRect: DOMRect) => {
       setCaseStudyOrigin(fromRect);
-      storyRoute.open(hash);
+      storyRoute.open(hash, fromRect);
     },
     [storyRoute],
   );
@@ -268,8 +268,15 @@ export function SiteRoot() {
         <InfoOverlay panel={activeOverlay} origin={overlayOrigin} onClose={closeOverlay} />
       ) : null}
 
+      {/* A story opened from a card grows out of it. The card may be one on
+          the page, whose box is in state here, or one in the archive panel,
+          which leaves its box with the route on the way through. */}
       {activeStory ? (
-        <StoryPanel story={activeStory} fromRect={caseStudyOrigin} onClose={closeStory} />
+        <StoryPanel
+          story={activeStory}
+          fromRect={caseStudyOrigin ?? storyOrigin()}
+          onClose={closeStory}
+        />
       ) : null}
     </div>
   );
