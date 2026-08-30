@@ -35,7 +35,7 @@ export function Hero({ introActive }: HeroProps) {
   useLayoutEffect(() => {
     if (introActive || hasSeeded.current || !stageRef.current) return;
     stageRef.current.style.transition = 'none';
-    stageRef.current.style.transform = 'translateY(max(0px, calc(100vh - 1038px)))';
+    stageRef.current.style.transform = 'translateY(24px)';
     hasSeeded.current = true;
     isHandingOver.current = true;
   }, [introActive]);
@@ -85,7 +85,7 @@ export function Hero({ introActive }: HeroProps) {
       const drift = narrow ? scrolled * 0.1 : scrolled * 0.28;
       const tilt = narrow ? 0 : Math.min(7, scrolled * 0.018);
 
-      stage.style.transformOrigin = narrow ? '50% 100%' : '50% 40%';
+      stage.style.transformOrigin = narrow ? '50% 100%' : '50% 50%';
       stage.style.transform = `perspective(1100px) rotateX(${tilt}deg) translateY(${drift}px)`;
     };
 
@@ -103,26 +103,33 @@ export function Hero({ introActive }: HeroProps) {
         background: color.white,
         overflow: 'hidden',
         display: 'flex',
-        flexDirection: 'column',
+        // Split layout on desktop — copy left, phone right. Stacked and
+        // centred on mobile, where there is only room for one column.
+        flexDirection: isMobile ? 'column' : 'row',
         alignItems: 'center',
+        justifyContent: 'center',
+        gap: isMobile ? 0 : 24,
+        minHeight: isMobile ? undefined : '100vh',
         paddingTop: 120,
         paddingBottom: isMobile ? 0 : 42,
+        paddingLeft: isMobile ? 0 : 'clamp(24px, 5vw, 88px)',
       }}
     >
       <div
         style={{
-          textAlign: 'center',
-          padding: isMobile ? '24px 20px 0' : '40px 32px 0',
+          textAlign: isMobile ? 'center' : 'left',
+          padding: isMobile ? '24px 20px 0' : 0,
           maxWidth: isMobile ? 440 : 700,
+          flex: isMobile ? undefined : '1 1 auto',
         }}
       >
         <h1
           style={{
             fontFamily: font.display,
             fontWeight: 900,
-            fontSize: isMobile ? 36 : 72,
-            lineHeight: isMobile ? '44px' : '78px',
-            letterSpacing: isMobile ? '-0.72px' : '-1.44px',
+            fontSize: isMobile ? 36 : 'clamp(48px, 5.2vw, 72px)',
+            lineHeight: isMobile ? '44px' : 1.06,
+            letterSpacing: isMobile ? '-0.72px' : '-0.02em',
             color: color.inkHeading,
             margin: 0,
             WebkitFontSmoothing: 'antialiased',
@@ -138,12 +145,14 @@ export function Hero({ introActive }: HeroProps) {
           style={{
             fontFamily: font.sans,
             fontWeight: 700,
-            fontSize: isMobile ? 18 : 24,
+            fontSize: isMobile ? 18 : 22,
             lineHeight: isMobile ? '28px' : '32px',
             letterSpacing: '-0.24px',
             color: color.inkHeading,
-            margin: '16px 0 0',
-            whiteSpace: isMobile ? 'normal' : 'nowrap',
+            margin: '20px 0 0',
+            // The narrower column lets this wrap, so the one-line ceiling the
+            // centred layout imposed no longer applies.
+            maxWidth: isMobile ? undefined : 520,
           }}
         >
           {hero.subheadBefore}
@@ -152,14 +161,29 @@ export function Hero({ introActive }: HeroProps) {
         </p>
       </div>
 
-      <PhoneMockup
-        ref={stageRef}
+      <div
         style={{
-          marginTop: isMobile ? 'auto' : 40,
-          transformOrigin: isMobile ? '50% 100%' : '50% 40%',
-          willChange: 'transform',
+          flex: isMobile ? undefined : '0 0 auto',
+          marginTop: isMobile ? 'auto' : 0,
+          // The art board is 891px wide but the phone only occupies its middle
+          // third, so the column is a narrower window that crops the hands and
+          // centres the device. Without it the board starves the copy column
+          // and the headline wraps.
+          width: isMobile ? undefined : 'min(620px, 42vw)',
+          display: 'flex',
+          justifyContent: 'center',
+          overflow: isMobile ? 'visible' : 'hidden',
+          alignSelf: 'center',
         }}
-      />
+      >
+        <PhoneMockup
+          ref={stageRef}
+          style={{
+            transformOrigin: isMobile ? '50% 100%' : '50% 50%',
+            willChange: 'transform',
+          }}
+        />
+      </div>
     </section>
   );
 }

@@ -133,10 +133,15 @@ export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps)
         inset: 0,
         zIndex: 9999,
         display: 'flex',
-        flexDirection: 'column',
+        // Mirrors the hero's split layout exactly, so the phone hands over
+        // without jumping across the screen.
+        flexDirection: isMobile ? 'column' : 'row',
         alignItems: 'center',
+        justifyContent: 'center',
+        gap: isMobile ? 0 : 24,
         paddingTop: 120,
         paddingBottom: isMobile ? 0 : 42,
+        paddingLeft: isMobile ? 0 : 'clamp(24px, 5vw, 88px)',
         background: pulledBack ? color.white : color.paper,
         transition: pulledBack ? 'background 1.3s ease' : 'none',
         overflow: 'hidden',
@@ -144,18 +149,19 @@ export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps)
     >
       <div
         style={{
-          textAlign: 'center',
-          padding: isMobile ? '24px 20px 0' : '40px 32px 0',
+          textAlign: isMobile ? 'center' : 'left',
+          padding: isMobile ? '24px 20px 0' : 0,
           maxWidth: isMobile ? 440 : 700,
+          flex: isMobile ? undefined : '1 1 auto',
         }}
       >
         <h1
           style={{
             fontFamily: font.display,
             fontWeight: 900,
-            fontSize: isMobile ? 36 : 72,
-            lineHeight: isMobile ? '44px' : '78px',
-            letterSpacing: isMobile ? '-0.72px' : '-1.44px',
+            fontSize: isMobile ? 36 : 'clamp(48px, 5.2vw, 72px)',
+            lineHeight: isMobile ? '44px' : 1.06,
+            letterSpacing: isMobile ? '-0.72px' : '-0.02em',
             color: color.inkHeading,
             margin: 0,
             WebkitFontSmoothing: 'antialiased',
@@ -174,12 +180,12 @@ export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps)
           style={{
             fontFamily: font.sans,
             fontWeight: 700,
-            fontSize: isMobile ? 18 : 24,
+            fontSize: isMobile ? 18 : 22,
             lineHeight: isMobile ? '28px' : '32px',
             letterSpacing: '-0.24px',
             color: color.inkHeading,
-            margin: '16px 0 0',
-            whiteSpace: isMobile ? 'normal' : 'nowrap',
+            margin: '20px 0 0',
+            maxWidth: isMobile ? undefined : 520,
             opacity: subheadIn ? 1 : 0,
             transform: subheadIn ? 'translateY(0)' : 'translateY(16px)',
             transition: 'opacity 0.6s ease, transform 0.6s ease',
@@ -197,9 +203,13 @@ export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps)
 
       <div
         style={{
-          display: isMobile ? 'contents' : 'block',
+          display: isMobile ? 'contents' : 'flex',
+          flex: isMobile ? undefined : '0 0 auto',
           flexShrink: 0,
-          transform: isMobile ? 'none' : 'translateY(max(0px, calc(100vh - 1038px)))',
+          // Same crop window as the hero, so the phone hands over in place.
+          width: isMobile ? undefined : 'min(620px, 42vw)',
+          justifyContent: 'center',
+          overflow: isMobile ? 'visible' : 'hidden',
         }}
       >
         <PhoneMockup
@@ -215,7 +225,7 @@ export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps)
               : 'opacity 0.45s ease, transform 0.45s ease'
           }
           style={{
-            marginTop: isMobile ? 'auto' : 40,
+            marginTop: isMobile ? 'auto' : 0,
             transform: pulledBack ? 'scale(1)' : `scale(${zoomScale})`,
             transformOrigin: ZOOM_ORIGIN,
             transition: pulledBack
