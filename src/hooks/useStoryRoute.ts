@@ -106,6 +106,11 @@ export function storyOrigin(): DOMRect | null {
   return pendingOrigin;
 }
 
+/** The panel the open story was opened from, if it was opened from one. */
+export function storyReturn(): string | null {
+  return pendingReturn;
+}
+
 interface StoryRoute {
   /** Hash of the open story, or null when the marketing page is showing. */
   readonly slug: string | null;

@@ -1,13 +1,14 @@
 'use client';
 
 import { useCallback, useEffect, useState, type ReactNode } from 'react';
+import { ScrollPrompt } from '@/components/ui/ScrollPrompt';
 import { color, font } from '@/config/tokens';
 import { ArchivePanel } from '@/components/features/blog/ArchivePanel';
 import { CareersContent } from '@/components/features/careers/CareersContent';
 import { ContactContent } from '@/components/features/contact/ContactContent';
 import { blogSection, careersPage, contactPage, privacyPolicy, termsOfService } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
-import { setScrollLocked } from '@/utils/scroll';
+import { claimOverlayChrome } from '@/utils/overlayChrome';
 import type { LegalSection, OverlayKey } from '@/types/content';
 
 type Phase = 'enter' | 'open' | 'exit';
@@ -106,6 +107,8 @@ interface InfoOverlayProps {
 export function InfoOverlay({ panel, origin, onClose }: InfoOverlayProps) {
   const isMobile = useIsMobile();
   const [phase, setPhase] = useState<Phase>('enter');
+  // Held in state rather than a ref so the prompt re-runs when it arrives.
+  const [scroller, setScroller] = useState<HTMLDivElement | null>(null);
   const content = PANELS[panel];
 
   const beginClose = useCallback(() => {
@@ -114,30 +117,23 @@ export function InfoOverlay({ panel, origin, onClose }: InfoOverlayProps) {
   }, [onClose]);
 
   useEffect(() => {
-    setScrollLocked(true);
-    const nav = document.querySelector<HTMLElement>('[data-main-nav]');
-    if (nav) {
-      nav.style.visibility = 'hidden';
-      nav.style.pointerEvents = 'none';
-    }
+    const chrome = claimOverlayChrome();
 
     // Two frames: mount at the origin rect, then animate to the open size.
     const raf = requestAnimationFrame(() => {
       requestAnimationFrame(() => setPhase('open'));
     });
 
+    // Escape belongs to whatever is on top — a post opened over this one
+    // answers first, and this panel stays where it is.
     const handleKey = (event: KeyboardEvent): void => {
-      if (event.key === 'Escape') beginClose();
+      if (event.key === 'Escape' && chrome.isTop()) beginClose();
     };
     window.addEventListener('keydown', handleKey);
 
     return () => {
       cancelAnimationFrame(raf);
-      setScrollLocked(false);
-      if (nav) {
-        nav.style.visibility = '';
-        nav.style.pointerEvents = '';
-      }
+      chrome.release();
       window.removeEventListener('keydown', handleKey);
     };
   }, [beginClose]);
@@ -194,7 +190,9 @@ export function InfoOverlay({ panel, origin, onClose }: InfoOverlayProps) {
         }}
       >
         <div
+          ref={setScroller}
           data-lenis-prevent
+          className="quiet-scroll"
           style={{
             width: '100%',
             height: '100%',
@@ -253,6 +251,8 @@ export function InfoOverlay({ panel, origin, onClose }: InfoOverlayProps) {
             </div>
           </div>
         </div>
+
+        <ScrollPrompt scroller={scroller} />
 
         <button
           type="button"

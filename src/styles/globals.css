@@ -309,6 +309,25 @@ body[data-scroll-locked="true"] {
 /* Form fields                                                         */
 /* ------------------------------------------------------------------ */
 
+/*
+ * The panels scroll without showing a bar.
+ *
+ * A panel is a sheet laid over the page, and a native scrollbar down its edge
+ * reads as a browser chrome rather than as part of it. The arrow in the corner
+ * is what says there is more below. Scrolling itself is untouched — wheel,
+ * trackpad, touch, and keyboard all behave exactly as before.
+ */
+.quiet-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.quiet-scroll::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
 /* ------------------------------------------------------------------ */
 /* The writing shelf                                                    */
 /* ------------------------------------------------------------------ */

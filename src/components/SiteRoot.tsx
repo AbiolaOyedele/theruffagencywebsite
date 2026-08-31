@@ -18,7 +18,7 @@ import { Pricing } from '@/components/features/pricing/Pricing';
 import { ScrollStatement } from '@/components/features/statement/ScrollStatement';
 import { color } from '@/config/tokens';
 import { blogPosts, caseStudies } from '@/content/site';
-import { storyOrigin, useStoryRoute } from '@/hooks/useStoryRoute';
+import { storyOrigin, storyReturn, useStoryRoute } from '@/hooks/useStoryRoute';
 import { refreshHash, useHash } from '@/hooks/useHash';
 import { markIntroSeen, useIntroSeen } from '@/hooks/useIntroSeen';
 import { useSmoothScroll } from '@/hooks/useSmoothScroll';
@@ -80,7 +80,14 @@ export function SiteRoot() {
   const hashOverlay: OverlayKey | null = OVERLAY_HASHES.has(hash as OverlayKey)
     ? (hash as OverlayKey)
     : null;
-  const activeOverlay = overlay ?? hashOverlay;
+  // A story opened from a panel leaves that panel standing underneath it, so
+  // closing the story reveals what was already there rather than rebuilding
+  // it — otherwise the page flashes past and the panel animates back in.
+  const underlay = storyReturn();
+  const activeOverlay =
+    overlay ??
+    hashOverlay ??
+    (storyRoute.slug !== null && underlay !== null ? (underlay as OverlayKey) : null);
   const [overlayOrigin, setOverlayOrigin] = useState<DOMRect | null>(null);
 
   const [assetsReady, setAssetsReady] = useState(false);

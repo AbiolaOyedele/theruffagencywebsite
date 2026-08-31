@@ -3,12 +3,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { AutoplayVideo } from '@/components/ui/AutoplayVideo';
+import { ScrollPrompt } from '@/components/ui/ScrollPrompt';
 import { color, font, primaryButton, shape, weight } from '@/config/tokens';
 import { brand, caseStudyChrome } from '@/content/site';
 import { useIsCompact } from '@/hooks/useIsCompact';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { imageUrl } from '@/lib/images';
-import { clamp, setScrollLocked } from '@/utils/scroll';
+import { claimOverlayChrome } from '@/utils/overlayChrome';
+import { clamp } from '@/utils/scroll';
 import type { Story } from '@/types/content';
 
 type Phase = 'enter' | 'open' | 'fadein' | 'exit';
@@ -52,6 +54,8 @@ export function StoryPanel({ story, fromRect, onClose }: StoryPanelProps) {
   const [phase, setPhase] = useState<Phase>(fromRect ? 'enter' : 'fadein');
   const [scrollTop, setScrollTop] = useState(0);
   const scrollerRef = useRef<HTMLDivElement | null>(null);
+  // Also held in state, so the prompt re-runs once the element exists.
+  const [scroller, setScroller] = useState<HTMLDivElement | null>(null);
 
   const beginClose = useCallback(() => {
     setPhase('exit');
@@ -59,12 +63,7 @@ export function StoryPanel({ story, fromRect, onClose }: StoryPanelProps) {
   }, [onClose]);
 
   useEffect(() => {
-    setScrollLocked(true);
-    const nav = document.querySelector<HTMLElement>('[data-main-nav]');
-    if (nav) {
-      nav.style.visibility = 'hidden';
-      nav.style.pointerEvents = 'none';
-    }
+    const chrome = claimOverlayChrome();
 
     // Two frames: mount at the card's rect, then animate out to full size.
     const raf = requestAnimationFrame(() => {
@@ -72,17 +71,13 @@ export function StoryPanel({ story, fromRect, onClose }: StoryPanelProps) {
     });
 
     const onKey = (event: KeyboardEvent): void => {
-      if (event.key === 'Escape') beginClose();
+      if (event.key === 'Escape' && chrome.isTop()) beginClose();
     };
     window.addEventListener('keydown', onKey);
 
     return () => {
       cancelAnimationFrame(raf);
-      setScrollLocked(false);
-      if (nav) {
-        nav.style.visibility = '';
-        nav.style.pointerEvents = '';
-      }
+      chrome.release();
       window.removeEventListener('keydown', onKey);
     };
   }, [beginClose]);
@@ -192,8 +187,12 @@ export function StoryPanel({ story, fromRect, onClose }: StoryPanelProps) {
         }}
       >
         <div
-          ref={scrollerRef}
+          ref={(node) => {
+            scrollerRef.current = node;
+            setScroller(node);
+          }}
           data-lenis-prevent
+          className="quiet-scroll"
           onScroll={() => setScrollTop(scrollerRef.current?.scrollTop ?? 0)}
           style={{
             width: '100%',
@@ -623,6 +622,8 @@ export function StoryPanel({ story, fromRect, onClose }: StoryPanelProps) {
             </div>
           </div>
         </div>
+
+        <ScrollPrompt scroller={scroller} />
 
         <button
           type="button"

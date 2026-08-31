@@ -8,6 +8,7 @@ import { caseStudies, storyCardLayouts, work } from '@/content/site';
 import { useCountUp } from '@/hooks/useCountUp';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { hasStory } from '@/types/content';
+import { hideNavForHandover } from '@/utils/overlayChrome';
 import { clamp } from '@/utils/scroll';
 
 /** How far the stage flies into the clicked card before the panel takes over. */
@@ -56,16 +57,6 @@ export function Work({ onOpenCaseStudy, activeSlug }: WorkProps) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isMobile]);
 
-  // The panel has closed: hand the navigation back.
-  useEffect(() => {
-    if (activeSlug !== null) return;
-    const nav = document.querySelector<HTMLElement>('[data-main-nav]');
-    if (nav) {
-      nav.style.visibility = '';
-      nav.style.pointerEvents = '';
-    }
-  }, [activeSlug]);
-
   /**
    * Flies the whole stage into the card that was clicked, so the panel that
    * opens on top of it reads as the card itself expanding rather than as a
@@ -73,11 +64,11 @@ export function Work({ onOpenCaseStudy, activeSlug }: WorkProps) {
    */
   const openStudy = useCallback(
     (slug: string, fromRect: DOMRect) => {
-      const nav = document.querySelector<HTMLElement>('[data-main-nav]');
-      if (nav) {
-        nav.style.visibility = 'hidden';
-        nav.style.pointerEvents = 'none';
-      }
+      // Hidden for the half-second the stage is flying into the card, before
+      // the panel exists to claim the chrome itself. Handing it back is the
+      // panel's job — `claimOverlayChrome` counts the panels stacked up, and
+      // restoring it here would uncover the nav under a panel still open.
+      hideNavForHandover();
 
       const stage = stageRef.current;
       if (stage) {
