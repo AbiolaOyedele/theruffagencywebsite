@@ -552,14 +552,20 @@ export function ContactWizard() {
 
           {step === 'review' ? (
             <>
-              <a
-                href={brand.bookACallUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={quietButton}
-              >
-                {contactPage.callLabel}
-              </a>
+              {/* An empty address means there is no calendar to offer, the same
+                  way an empty social URL hides its icon. Rendering href="" would
+                  link the button at the page it is already on, which reads as a
+                  broken booking rather than an absent one. */}
+              {brand.bookACallUrl ? (
+                <a
+                  href={brand.bookACallUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={quietButton}
+                >
+                  {contactPage.callLabel}
+                </a>
+              ) : null}
               <button
                 type="submit"
                 disabled={busy}
