@@ -37,6 +37,35 @@ export const brand = {
 } as const;
 
 /* ------------------------------------------------------------------ */
+/* Search and link previews                                            */
+/* ------------------------------------------------------------------ */
+
+/**
+ * What a search result and a shared link say.
+ *
+ * Here rather than in `app/layout.tsx` so it is editable in the panel with the
+ * rest of the copy. The image itself is regenerated from `scripts/og-image.mjs`.
+ */
+export const seo = {
+  title: 'The Ruff Agency | Brand Strategy & Creative Studio, Lagos',
+  description:
+    'A remote creative studio in Lagos building brand strategy, identity, motion, and social content for startups and growing brands worldwide.',
+  /** Shorter, punchier variant for link previews. */
+  shareDescription:
+    'Brand strategy, creative direction, motion, and social content, built remotely from Lagos for startups and growing brands worldwide.',
+  keywords: [
+    'brand strategy agency Lagos',
+    'creative director Lagos',
+    'brand identity Nigeria',
+    'remote creative studio',
+    'brand strategist for startups',
+    'creative studio for startups',
+    'motion design studio',
+    'social media content strategy',
+  ],
+} as const;
+
+/* ------------------------------------------------------------------ */
 /* Navigation                                                          */
 /* ------------------------------------------------------------------ */
 
@@ -350,6 +379,108 @@ export const blogSection = {
  * name by accident.
  */
 export const blogPosts: readonly BlogPost[] = [
+  {
+    slug: 'why-we-turn-down-projects',
+    title: "Why we turn down projects we'd be good at",
+    excerpt:
+      'Ruff qualifies every lead before Discovery starts, because a wrong yes costs a future client the attention they deserve.',
+    category: 'How we work',
+    publishedAt: '2026-09-01',
+    author: { name: 'The Ruff Agency', role: 'Studio' },
+    draft: true,
+    video: 'ruff-agency/website/video/card1-designer',
+    gallery: [
+      {
+        src: 'ruff-agency/website/placeholder/writing-3',
+        caption: 'A qualification call in progress, notes open beside the laptop.',
+      },
+      {
+        src: 'ruff-agency/website/placeholder/writing-4',
+        caption: 'A completed qualification scorecard, ready for review.',
+      },
+    ],
+    pullQuotes: [
+      {
+        title: 'Say no early',
+        request:
+          "Every hour spent scoping a project that should never have gone ahead is an hour taken from a client who deserved that focus, which is the real cost of a yes we shouldn't have given.",
+      },
+      {
+        title: 'A score, not a feeling',
+        request:
+          'Scoring qualification removes the discomfort of a maybe, and the risk that whether we take a project depends on whoever happened to answer the call that day.',
+      },
+    ],
+    sections: [
+      {
+        heading: 'The cost of saying yes',
+        body: "Every hour a strategist spends scoping a project that should never have gone ahead is an hour taken from a client who deserved that focus. That's why qualification runs as its own stage, before Discovery, on a short call where we ask about budget, decision-making, and the actual problem, out loud, before any unpaid time goes into a proposal. Skip this and a studio either scopes on guesswork or treats every enquiry the same way. Neither produces work either side is proud of.",
+      },
+      {
+        heading: 'What a good fit looks like',
+        body: "The clients we do our best work for share a shape: founder-led or a small leadership team, with enough budget and data behind them that decisions move fast rather than through six layers of approval. They can describe a business problem, even loosely, growth has stalled, a rebrand feels overdue, a product needs its first real design pass, rather than only naming a deliverable. And they're looking for a strategic partner, rather than a pair of hands to execute a decision they've already made. Size and industry matter far less than whether the relationship can actually work.",
+      },
+      {
+        heading: 'The patterns that predict trouble',
+        body: "A few signals reliably predict a difficult project, regardless of how nice everyone is on the call. A client who can't describe the problem beyond \"we need a new logo\" usually isn't ready for Discovery yet. Multiple stakeholders with no clear final decision maker means revision rounds expand indefinitely as approval bounces between people who were never in the same room. A client who has already decided on the solution before any discovery wants execution, not thinking, which suits some studios and isn't the one we're built around. None of these alone rules a client out. Several together are reason enough to pause and talk it through.",
+      },
+      {
+        heading: 'How we score a lead',
+        body: 'Every qualification call ends with a scorecard, not a gut call. Problem clarity, budget fit, decision-making clarity, category fit, timeline, and openness to strategic input each carry a weight, and the total lands in one of three bands: proceed straight to Discovery, proceed with the weak spots flagged to the creative director, or decline. Scoring it removes the discomfort of a maybe and the risk that qualification depends on whoever happened to take the call that day. A studio that qualifies on vibes eventually takes on a client it should have declined, then wonders, months in, why the project feels wrong.',
+      },
+    ],
+  },
+  {
+    slug: 'why-we-never-show-one-idea',
+    title: 'Why we never show you just one idea',
+    excerpt:
+      'Ruff presents two or three genuinely distinct creative territories, each traceable to a line in the brief, before any direction is chosen.',
+    category: 'Creative direction',
+    publishedAt: '2026-09-01',
+    author: { name: 'The Ruff Agency', role: 'Studio' },
+    draft: true,
+    video: 'ruff-agency/website/video/notif',
+    gallery: [
+      {
+        src: 'ruff-agency/website/placeholder/writing-5',
+        caption: 'Three creative territories pinned up, ready for internal review.',
+      },
+      {
+        src: 'ruff-agency/website/placeholder/writing-6',
+        caption: 'A written rationale document sitting beside the presentation deck.',
+      },
+    ],
+    pullQuotes: [
+      {
+        title: 'Theatre, not a choice',
+        request:
+          'When only one direction was ever seriously considered, three territories on the wall is theatre dressed up as a client decision, and clients tend to notice eventually.',
+      },
+      {
+        title: 'Reasoning before reaction',
+        request:
+          'We restate the brief before showing a single visual, and ask whether a direction solves the agreed problem before we ask which one people like.',
+      },
+    ],
+    sections: [
+      {
+        heading: 'Three boards, one idea',
+        body: "When only one direction was ever seriously considered, three territories on the wall is theatre dressed up as a client decision. We've seen the trick: one strong direction paired with two deliberately weak options, built to steer the room toward whatever we already preferred. It can work, in the sense that the client picks the favourite. It fails everywhere else, because the client never had three genuine ideas to weigh, and clients tend to notice eventually. Every territory we present gets equal production time and equal presentation weight, or it doesn't reach the client at all.",
+      },
+      {
+        heading: 'Every territory earns its place',
+        body: "Each territory starts from the same brief and has to answer a specific line in it, an objective, an audience insight, a piece of positioning, rather than just a different colour palette on the same idea. We build reference libraries that pull from outside the client's own category on purpose, because reference drawn only from direct competitors just reproduces what the category already looks like. From there, two or three moodboards become two or three visual territories, each applied to the same set of touchpoints so the comparison is fair. If we can't say which line of the brief a territory is betting on, it doesn't go up on the wall.",
+      },
+      {
+        heading: 'Reasoning before reaction',
+        body: "Before any client sees a territory, we write the argument for it: which objective it answers, which insight it's built on, and the objection we expect first. That rationale gets written before the deck, not after, so the presentation leads with reasoning instead of hoping the work explains itself. In the room, we restate the brief before showing a single visual, and we ask whether a direction solves the agreed problem before we ask which one people like. A taste-based reaction, decided in the first five minutes, is the outcome we're actively designing the session to avoid.",
+      },
+      {
+        heading: 'One direction, locked in writing',
+        body: "Once a direction is chosen, we score it against the brief's actual success criteria, not a straight preference vote, and put the choice in writing before full-fidelity design starts. A verbal \"we like direction two\" has a way of resurfacing as a disagreement three weeks later, once real budget has gone into building it out. Any hybrid a client requests between two territories gets scoped and confirmed in writing too, rather than assumed. Locking the direction this way protects the timeline and the client's own budget from a decision that quietly keeps moving.",
+      },
+    ],
+  },
   {
     slug: 'a-logo-is-not-a-brand',
     title: 'A logo is not a brand, and the difference costs money',

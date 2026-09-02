@@ -6,6 +6,12 @@ Every piece of user-facing text on the site, in the order a visitor meets it.
 carried across to that file to reach the site. A handful of strings live in
 components instead; those are marked **(in code)** with their file.
 
+**Editing without a deploy.** Everything below is also editable at `/admin`,
+which stores changes as overrides laid over that file rather than replacing it.
+The repo stays the fallback, and any section can be put back to it in one
+click — so this deck still describes what the site says with nothing overridden.
+See `docs/admin-panel.md`.
+
 **Status key**
 
 | | |
@@ -248,7 +254,7 @@ column.
 | Card button | Read → |
 | `/blog` intro | …No newsletter, no gate — just the thinking. |
 
-### The ten posts ✏️
+### The twelve posts ✏️
 
 The home page carries the three newest; `/blog` is the archive.
 
@@ -283,6 +289,8 @@ the card above it on a phone. Checked at every page size: no clashes.
 
 | Slug | Title | Category |
 |---|---|---|
+| `why-we-turn-down-projects` | Why we turn down projects we'd be good at | How we work |
+| `why-we-never-show-one-idea` | Why we never show you just one idea | Creative direction |
 | `a-logo-is-not-a-brand` | A logo is not a brand, and the difference costs money | Brand strategy |
 | `brief-that-gets-good-work` | How to write a brief that gets you good work | Working together |
 | `why-we-work-inside-your-tools` | Why we work inside your tools, not around them | How we work |
@@ -294,18 +302,37 @@ the card above it on a phone. Checked at every page size: no clashes.
 | `brief-the-designer-first` | Stop briefing your designer last | Working together |
 | `the-market-stall-test` | The market stall test | Brand strategy |
 
-Each runs three or four sections. Full text is in `src/content/site.ts` under
+Each runs three, four or five sections. Full text is in `src/content/site.ts` under
 `blogPosts`. Nothing on the page marks them as drafts — the `draft` flag is a
 note to the studio, not a badge on the post.
+
+**Art still to shoot.** The two newest arrived with their captions written and
+the pictures not yet taken, so both point at placeholder files. Unlike the
+older posts, the captions do not say "placeholder" — they describe the frame
+that was asked for, and they are also the alt text, so they only become true
+once the art lands. What each one should show, as the writer specified it:
+
+| Post | | What the frame should show |
+|---|---|---|
+| `why-we-turn-down-projects` | 1 | Two people at a table, one taking notes on a scorecard, laptop open, natural light, no client branding visible. |
+| | 2 | Close-up of a scorecard with weighted criteria filled in and a circled total, pen resting on top. |
+| `why-we-never-show-one-idea` | 1 | Three visibly distinct moodboard or territory boards side by side on a wall or table, no client-identifying detail. |
+| | 2 | A rationale page next to a laptop open to the presentation deck, suggesting the writing came first. |
 
 ❓ These are written in the studio's voice but nobody at Ruff has approved
 them. Read them before the `draft` flag comes off.
 
-❓ At 250–350 words they are short for anything meant to rank on search. If a
-post is meant to bring people in, 800–1,200 words is the working figure.
+❓ The original ten run 250–350 words, which is short for anything meant to
+rank on search. The two newest are nearer 390 and read as two minutes. If a
+post is meant to bring people in, 800–1,200 words is still the working figure.
 
-❓ Ten is more than the studio needs on day one. Cut the ones whose angle is
+❓ Twelve is more than the studio needs on day one. Cut the ones whose angle is
 wrong rather than keeping them because they exist.
+
+❓ The two newest are written in a looser register than the other ten —
+contractions in the prose, and an excerpt that names Ruff in the third person
+rather than saying "we". Left exactly as delivered. Worth deciding whether the
+house voice is moving, or whether these two get brought back into line.
 
 ---
 
@@ -596,7 +623,7 @@ version already reviewed, so it is summarised rather than repeated here.
 | 5 | Confirm Nigeria governing law | Ruff / legal |
 | 6 | Update both legal dates on publication | Ruff |
 | 7 | Send a test enquiry and a test application, to confirm both land | Ruff |
-| 8 | Read and approve the three posts before they go out | Ruff |
+| 8 | Read and approve the twelve posts before they go out | Ruff |
 | 9 | Cloudinary cloud name, so images can move off `public/` | Ruff |
 
 ### Flagged for a decision
