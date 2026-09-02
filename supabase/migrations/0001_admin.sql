@@ -224,11 +224,24 @@ drop policy if exists admin_profiles_self on agency_admin_profiles;
 create policy admin_profiles_self on agency_admin_profiles
   for select to authenticated using (id = auth.uid() or agency_is_admin());
 
+-- Security-definer for the same reason `agency_is_admin` is. A policy on this
+-- table whose USING clause selects from this table recurses, and Postgres
+-- refuses the read outright — which locks every admin out rather than letting
+-- the wrong one in.
+create or replace function agency_is_owner() returns boolean
+  language sql stable security definer set search_path = public
+as $fn$
+  select exists (
+    select 1 from agency_admin_profiles
+    where id = auth.uid() and role = 'owner'
+  )
+$fn$;
+
 drop policy if exists admin_profiles_owner on agency_admin_profiles;
 create policy admin_profiles_owner on agency_admin_profiles
   for all to authenticated
-  using (exists (select 1 from agency_admin_profiles p where p.id = auth.uid() and p.role = 'owner'))
-  with check (exists (select 1 from agency_admin_profiles p where p.id = auth.uid() and p.role = 'owner'));
+  using (agency_is_owner())
+  with check (agency_is_owner());
 
 do $policies$
 declare t text;

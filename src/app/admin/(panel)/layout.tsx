@@ -2,7 +2,8 @@ import { redirect } from 'next/navigation';
 import type { ReactNode } from 'react';
 import { AdminSidebar } from '@/components/features/admin/AdminSidebar';
 import { Notice } from '@/components/features/admin/ui';
-import { currentAdmin } from '@/services/admin/auth';
+import { adminState } from '@/services/admin/auth';
+import { NotAnAdmin } from '@/components/features/admin/NotAnAdmin';
 import { configured } from '@/config/env';
 
 /**
@@ -21,8 +22,15 @@ import { configured } from '@/config/env';
 export const dynamic = 'force-dynamic';
 
 export default async function PanelLayout({ children }: { readonly children: ReactNode }) {
-  const session = await currentAdmin();
-  if (!session) redirect('/admin/login');
+  const state = await adminState();
+
+  // Only a genuine absence of session goes back to sign-in. An account that is
+  // simply not on the roster is told so — sending it to a sign-in page that the
+  // proxy immediately redirects back is the loop this used to be.
+  if (state.kind === 'anonymous') redirect('/admin/login');
+  if (state.kind === 'not-admin') return <NotAnAdmin email={state.email} />;
+
+  const session = state.session;
 
   return (
     <div className="lg:flex">
