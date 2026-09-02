@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { RuffLogo } from '@/components/ui/RuffLogo';
 import { color, font, primaryButton, radius, shape, weight } from '@/config/tokens';
-import { brand } from '@/content/site';
+import { getContent } from '@/lib/content/resolve';
 
 interface PageChromeProps {
   readonly children: React.ReactNode;
@@ -16,7 +16,8 @@ interface PageChromeProps {
  * the right, and a closing strip at the foot. Server-rendered, so a crawler
  * reads the page without waiting for anything.
  */
-export function PageChrome({ children }: PageChromeProps) {
+export async function PageChrome({ children }: PageChromeProps) {
+  const { brand } = await getContent();
   return (
     <div style={{ background: color.paperAlt, minHeight: '100vh' }}>
       <header

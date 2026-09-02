@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import { PostShelf } from '@/components/features/blog/PostShelf';
 import { color, font, shape, weight } from '@/config/tokens';
-import { blogPosts, blogSection } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { pageCount, pageOfPosts } from '@/types/content';
+import { useContent } from '@/components/providers/ContentProvider';
 
 /**
  * The page last read, kept outside the component.
@@ -43,6 +43,7 @@ const stepStyle = {
  * search; this is how the site itself reads.
  */
 export function ArchivePanel() {
+  const { blogPosts, blogSection } = useContent();
   const isMobile = useIsMobile();
   const [page, setPageState] = useState(lastPage);
 

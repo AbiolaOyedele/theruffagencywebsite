@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { PageChrome } from '@/components/ui/PageChrome';
 import { cardAccent, color, font, primaryButton, shape, weight } from '@/config/tokens';
 import { imageUrl } from '@/lib/images';
-import { brand, blogSection } from '@/content/site';
+import { getContent } from '@/lib/content/resolve';
 import { formatPostDate, readingMinutes, postHash, type BlogPost } from '@/types/content';
 
 interface ArticleReaderProps {
@@ -22,7 +22,8 @@ const GALLERY_AFTER_SECTION = 1;
  * or an AI crawler gets the writing without running any JavaScript — which the
  * panel, being opened by a hash, can never give them.
  */
-export function ArticleReader({ post, index }: ArticleReaderProps) {
+export async function ArticleReader({ post, index }: ArticleReaderProps) {
+  const { brand, blogSection } = await getContent();
   return (
     <PageChrome>
       <article>

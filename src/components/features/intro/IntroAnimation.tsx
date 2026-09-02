@@ -14,8 +14,8 @@ import {
   heroStage,
   heroSubheadStyle,
 } from '@/config/heroLayout';
-import { hero } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
+import { useContent } from '@/components/providers/ContentProvider';
 
 /**
  * Two free-floating notifications land first, one after the other, before the
@@ -72,6 +72,7 @@ interface IntroAnimationProps {
  * pulls back into the hero composition and hands the page over.
  */
 export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps) {
+  const { hero } = useContent();
   const isMobile = useIsMobile();
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
@@ -116,7 +117,7 @@ export function IntroAnimation({ onNavReveal, onComplete }: IntroAnimationProps)
       }, WORD_FADE_MS);
     }, WORD_HOLD_MS);
     return () => clearInterval(timer);
-  }, [subheadIn]);
+  }, [subheadIn, hero.rotatingWords.length]);
 
   const pulledBack = stage >= 2;
   const cardVisible = stage >= 1;

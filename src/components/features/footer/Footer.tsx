@@ -11,10 +11,10 @@ import {
   XMark,
 } from '@/components/ui/SocialMarks';
 import { color, font, primaryButton, shape } from '@/config/tokens';
-import { brand, footerLinks, socialLinks } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { scrollToSection } from '@/utils/scroll';
 import type { OverlayKey } from '@/types/content';
+import { useContent } from '@/components/providers/ContentProvider';
 
 /** Heading above each footer column. */
 const columnHeadingStyle = {
@@ -34,6 +34,7 @@ const columnHeadingStyle = {
  * until there is something to link to — no dead icons in the meantime.
  */
 function SocialColumn() {
+  const { socialLinks } = useContent();
   const isMobile = useIsMobile();
   const live = socialLinks.filter((link) => link.url.length > 0);
   if (live.length === 0) return null;
@@ -160,6 +161,7 @@ interface FooterProps {
  * the ink FAQ panel up and off it — the reveal is coordinated by <SiteRoot />.
  */
 export function Footer({ onOpenOverlay, ref }: FooterProps) {
+  const { brand, footerLinks } = useContent();
   const isMobile = useIsMobile();
 
   return (

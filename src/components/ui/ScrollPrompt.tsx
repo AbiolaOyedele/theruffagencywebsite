@@ -1,17 +1,29 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { color } from '@/config/tokens';
+import { resolvedToken } from '@/lib/design/client';
 
 /** Lottie stores colour as 0–1 RGB, so a hex has to be converted. */
 function hexToLottieRgb(hex: string): readonly number[] {
-  const clean = hex.replace('#', '');
+  const clean = hex.replace('#', '').trim();
+  // Three-digit hex is expanded; anything else — a named colour, an rgb() the
+  // panel should not have accepted — leaves the mark its own red rather than
+  // painting it black on a bad parse.
+  const full =
+    clean.length === 3
+      ? clean.split('').map((c) => c + c).join('')
+      : clean;
+  if (!/^[0-9a-fA-F]{6}$/.test(full)) return BRAND_FALLBACK_RGB;
+
   return [
-    parseInt(clean.slice(0, 2), 16) / 255,
-    parseInt(clean.slice(2, 4), 16) / 255,
-    parseInt(clean.slice(4, 6), 16) / 255,
+    parseInt(full.slice(0, 2), 16) / 255,
+    parseInt(full.slice(2, 4), 16) / 255,
+    parseInt(full.slice(4, 6), 16) / 255,
   ];
 }
+
+/** The repo's brand red, pre-converted, for when a value cannot be read. */
+const BRAND_FALLBACK_RGB = [0xe9 / 255, 0x20 / 255, 0x38 / 255] as const;
 
 function isWhite(value: unknown): value is number[] {
   return Array.isArray(value) && value.length === 3 && value.every((part) => part === 1);
@@ -109,7 +121,7 @@ export function ScrollPrompt({ scroller }: ScrollPromptProps) {
         renderer: 'svg',
         loop: true,
         autoplay: true,
-        animationData: recolour(data, hexToLottieRgb(color.brand)) as object,
+        animationData: recolour(data, hexToLottieRgb(resolvedToken('color.brand', '#e92038'))) as object,
       });
     })();
 

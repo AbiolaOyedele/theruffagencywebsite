@@ -2,21 +2,23 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { ArticleReader } from '@/components/features/blog/ArticleReader';
 import { publicEnv } from '@/config/env';
-import { blogPosts, brand } from '@/content/site';
+import { getContent } from '@/lib/content/resolve';
 import type { BlogPost } from '@/types/content';
 
 /** Every post is known at build time, so every post is a static file. */
-export function generateStaticParams(): { slug: string }[] {
+export async function generateStaticParams(): Promise<{ slug: string }[]> {
+  const { blogPosts } = await getContent();
   return blogPosts.map((post) => ({ slug: post.slug }));
 }
 
-function findPost(slug: string): BlogPost | undefined {
+async function findPost(slug: string): Promise<BlogPost | undefined> {
+  const { blogPosts } = await getContent();
   return blogPosts.find((post) => post.slug === slug);
 }
 
 export async function generateMetadata({ params }: PageProps<'/blog/[slug]'>): Promise<Metadata> {
   const { slug } = await params;
-  const post = findPost(slug);
+  const [post, { brand }] = await Promise.all([findPost(slug), getContent()]);
   if (!post) return {};
 
   const url = `/blog/${post.slug}`;
@@ -40,6 +42,7 @@ export async function generateMetadata({ params }: PageProps<'/blog/[slug]'>): P
 
 export default async function BlogPostPage({ params }: PageProps<'/blog/[slug]'>) {
   const { slug } = await params;
+  const { blogPosts, brand } = await getContent();
   const index = blogPosts.findIndex((entry) => entry.slug === slug);
   const post = blogPosts[index];
   if (!post) notFound();

@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react';
 import { LOGO_ASPECT, RuffLogo } from '@/components/ui/RuffLogo';
 import { color, font, shape, weight } from '@/config/tokens';
-import { hero } from '@/content/site';
+import { useContent } from '@/components/providers/ContentProvider';
 
 interface NotificationHeaderProps {
   /** Multiplies every dimension, so one set of proportions serves any size. */
@@ -15,6 +15,7 @@ interface NotificationHeaderProps {
  * intro deals out before it, so the two can never drift apart.
  */
 export function NotificationHeader({ scale = 1 }: NotificationHeaderProps) {
+  const { hero } = useContent();
   return (
     <div
       style={{

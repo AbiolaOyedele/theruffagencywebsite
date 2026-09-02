@@ -1,7 +1,8 @@
 'use client';
 
 import { useCallback, useSyncExternalStore } from 'react';
-import { blogPosts, caseStudies } from '@/content/site';
+import { blogPosts as defaultPosts, caseStudies as defaultStudies } from '@/content/site';
+import type { BlogPost, CaseStudy } from '@/types/content';
 import { refreshHash } from '@/hooks/useHash';
 import { postHash } from '@/types/content';
 
@@ -16,10 +17,27 @@ const listeners = new Set<Listener>();
  * and posts are namespaced under `writing/`, so a client and a post can never
  * collide on a name.
  */
+let registry: {
+  studies: readonly CaseStudy[];
+  posts: readonly BlogPost[];
+} = { studies: defaultStudies, posts: defaultPosts };
+
+/**
+ * Tells the router what the panel can currently open.
+ *
+ * Called by the content provider during render. The hash store lives outside
+ * React — it is a `useSyncExternalStore` source read on hashchange — so it
+ * cannot take the content from context, and a story the studio added in the
+ * panel would otherwise not be a URL this recognised.
+ */
+export function setPanelContent(studies: readonly CaseStudy[], posts: readonly BlogPost[]): void {
+  registry = { studies, posts };
+}
+
 function panelHashes(): ReadonlySet<string> {
   return new Set([
-    ...caseStudies.map((study) => study.slug),
-    ...blogPosts.map((post) => postHash(post.slug)),
+    ...registry.studies.map((study) => study.slug),
+    ...registry.posts.map((post) => postHash(post.slug)),
   ]);
 }
 

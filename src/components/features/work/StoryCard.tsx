@@ -4,9 +4,9 @@ import { useState } from 'react';
 import { AutoplayVideo } from '@/components/ui/AutoplayVideo';
 import { imageUrl } from '@/lib/images';
 import { color, font, primaryButton, shape, weight } from '@/config/tokens';
-import { work } from '@/content/site';
 import type { CaseStudy } from '@/types/content';
 import { clamp, easeOutCubic } from '@/utils/scroll';
+import { useContent } from '@/components/providers/ContentProvider';
 
 /** Position and entrance timing for one fanned card. */
 export interface StoryCardLayout {
@@ -36,6 +36,7 @@ interface StoryCardProps {
  * client whose numbers have not come back yet simply shows none.
  */
 export function StoryCard({ study, layout, progress, stackIndex, onOpen }: StoryCardProps) {
+  const { work } = useContent();
   const [hovered, setHovered] = useState(false);
 
   const dealt = clamp((progress - layout.enterAt) / 0.18);

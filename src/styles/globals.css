@@ -200,12 +200,22 @@
 /* Base                                                                */
 /* ------------------------------------------------------------------ */
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+/* Layered, and that matters more than it looks.
+ *
+ * Unlayered CSS beats anything inside an @layer, so while this reset sat
+ * outside one it quietly overrode every Tailwind padding and margin utility —
+ * `px-6` resolved, then lost. Nothing on the public site noticed, because it
+ * styles itself inline from the tokens and uses no spacing utilities at all.
+ * The admin panel does, so the reset now sits in @layer base where Tailwind's
+ * own preflight lives, and utilities win again. */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 }
 
 html {

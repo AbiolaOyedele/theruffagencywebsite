@@ -1,7 +1,7 @@
 'use client';
 
 import { LOGO_ASPECT, RuffLogo } from '@/components/ui/RuffLogo';
-import { brand } from '@/content/site';
+import { useContent } from '@/components/providers/ContentProvider';
 
 interface LogoProps {
   /** Rendered height of the wordmark in pixels. */
@@ -16,6 +16,7 @@ interface LogoProps {
  * page; otherwise it renders as a labelled image.
  */
 export function Logo({ height = 32, onClick }: LogoProps) {
+  const { brand } = useContent();
   const style = { height, width: height * LOGO_ASPECT.wordmark, display: 'block' } as const;
 
   if (!onClick) {

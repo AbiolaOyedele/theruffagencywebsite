@@ -6,9 +6,9 @@ import { DotGrid } from '@/components/features/services/DotGrid';
 import { FeatureCard } from '@/components/features/services/FeatureCard';
 import { ToolStack } from '@/components/features/services/ToolStack';
 import { color } from '@/config/tokens';
-import { services } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { clamp } from '@/utils/scroll';
+import { useContent } from '@/components/providers/ContentProvider';
 
 /** Gap between cards in the horizontal track. */
 const CARD_GAP = 33;
@@ -57,6 +57,7 @@ function useViewport(): { width: number; height: number } {
  * swipes inside the pinned area are translated into scroll.
  */
 export function Services() {
+  const { services } = useContent();
   const isMobile = useIsMobile();
   const viewport = useViewport();
 
@@ -238,7 +239,7 @@ export function Services() {
 
     frame = requestAnimationFrame(render);
     return () => cancelAnimationFrame(frame);
-  }, [isMobile, cardWidth, railPadding, desktopMediaHeight]);
+  }, [isMobile, cardWidth, railPadding, desktopMediaHeight, services.items.length]);
 
   // Translate horizontal swipes inside the pin into vertical scroll.
   useEffect(() => {
@@ -289,7 +290,7 @@ export function Services() {
       track.removeEventListener('touchstart', onTouchStart);
       track.removeEventListener('touchmove', onTouchMove);
     };
-  }, [isMobile]);
+  }, [isMobile, services.items.length]);
 
   const renderIllustration = (index: number) => {
     if (index === 2) return <DotGrid width={cardWidth} height={mediaHeight} />;

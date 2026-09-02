@@ -2,8 +2,8 @@
 
 import { useEffect } from 'react';
 import { color, font, primaryButton } from '@/config/tokens';
-import { brand, sectionLinks } from '@/content/site';
 import { scrollToSection, setScrollLocked } from '@/utils/scroll';
+import { useContent } from '@/components/providers/ContentProvider';
 
 interface MobileMenuProps {
   readonly open: boolean;
@@ -12,6 +12,7 @@ interface MobileMenuProps {
 
 /** Full-screen navigation overlay shown below the `md` breakpoint. */
 export function MobileMenu({ open, onClose }: MobileMenuProps) {
+  const { brand, sectionLinks } = useContent();
   useEffect(() => {
     if (!open) return;
 

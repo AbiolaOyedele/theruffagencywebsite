@@ -4,10 +4,10 @@ import { useState, type ReactNode } from 'react';
 import { AccentWord } from '@/components/ui/AccentWord';
 import { PhoneMockup } from '@/components/ui/PhoneMockup';
 import { color, font, primaryButton, primaryButtonPressed, shape } from '@/config/tokens';
-import { brand, pricing } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { useRevealOnScroll } from '@/hooks/useRevealOnScroll';
 import type { PricingPlan } from '@/types/content';
+import { useContent } from '@/components/providers/ContentProvider';
 
 interface PricingCardProps {
   readonly plan: PricingPlan;
@@ -19,6 +19,7 @@ interface PricingCardProps {
  * full colour and the price picks up the brand red.
  */
 function PricingCard({ plan, visual }: PricingCardProps) {
+  const { brand } = useContent();
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -141,6 +142,7 @@ function PricingCard({ plan, visual }: PricingCardProps) {
 
 /** Two-plan pricing block on the dark background. */
 export function Pricing() {
+  const { pricing } = useContent();
   const isMobile = useIsMobile();
   const { ref, style } = useRevealOnScroll<HTMLDivElement>();
   const bannerHeight = isMobile ? 220 : 300;

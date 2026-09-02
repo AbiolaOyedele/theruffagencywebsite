@@ -10,6 +10,9 @@ import { publicEnv } from '@/config/env';
 import { AppError } from '@/lib/errors';
 import { sendNotification } from '@/lib/resend';
 import { contactSchema, HONEYPOT_FIELD } from '@/lib/schemas/forms';
+import { hasSupabase } from '@/config/env';
+import { insertEnquiry } from '@/repositories/enquiries';
+import { captureContact } from '@/repositories/contacts';
 
 /**
  * Rejects cross-origin posts. The form is same-origin only — no wildcard CORS,
@@ -120,4 +123,41 @@ export async function submitContact(body: Record<string, unknown>): Promise<void
       ['Project', `\n${data.projectDetails}`],
     ]),
   });
+
+  await recordEnquiry(data);
+}
+
+/**
+ * Files the enquiry in the panel and adds the sender to the audience.
+ *
+ * Deliberately after the mail and deliberately unable to fail the request: the
+ * enquiry has already reached the studio, and a database that is down or not
+ * configured must not turn a delivered message into an error for the person
+ * who sent it. The contact is written with `ignoreDuplicates`, so an enquiry
+ * from someone who previously unsubscribed does not quietly resubscribe them.
+ */
+async function recordEnquiry(data: z.infer<typeof contactSchema>): Promise<void> {
+  if (!hasSupabase()) return;
+
+  try {
+    await Promise.all([
+      insertEnquiry({
+        kind: 'contact',
+        name: data.name,
+        email: data.email,
+        company: data.company || null,
+        payload: { ...data },
+      }),
+      captureContact({
+        email: data.email,
+        name: data.name,
+        company: data.company || null,
+        source: 'contact_form',
+        consent: 'legitimate_interest',
+        consentNote: 'Sent an enquiry through the site contact form.',
+      }),
+    ]);
+  } catch (error) {
+    console.error('Enquiry not filed:', error);
+  }
 }

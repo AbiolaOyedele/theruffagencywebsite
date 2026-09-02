@@ -1,11 +1,13 @@
+import { Suspense } from 'react';
 import type { Metadata, Viewport } from 'next';
-import { faq } from '@/content/site';
+import { ContentProvider } from '@/components/providers/ContentProvider';
+import { TrafficBeacon } from '@/components/providers/TrafficBeacon';
+import { getContent, getContentOverrides } from '@/lib/content/resolve';
+import { buildTokenCss, getDesignTokens } from '@/lib/design/resolve';
+import { publicEnv } from '@/config/env';
 import '@/styles/globals.css';
 
-const SITE_URL = 'https://theruff.agency';
-const TITLE = 'The Ruff Agency | Brand Strategy & Creative Studio, Lagos';
-const DESCRIPTION =
-  'A remote creative studio in Lagos building brand strategy, identity, motion, and social content for startups and growing brands worldwide.';
+const SITE_URL = publicEnv.NEXT_PUBLIC_SITE_URL;
 
 /**
  * The link-preview card. 1200×630, the size every platform crops to.
@@ -18,85 +20,91 @@ const SHARE_IMAGE = {
   alt: 'The Ruff Agency — brand strategy and creative direction',
 } as const;
 
-/** Shorter, punchier variant for link previews. */
-const SHARE_DESCRIPTION =
-  'Brand strategy, creative direction, motion, and social content, built remotely from Lagos for startups and growing brands worldwide.';
+export async function generateMetadata(): Promise<Metadata> {
+  const { seo, brand } = await getContent();
 
-export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
-  title: TITLE,
-  description: DESCRIPTION,
-  keywords: [
-    'brand strategy agency Lagos',
-    'creative director Lagos',
-    'brand identity Nigeria',
-    'remote creative studio',
-    'brand strategist for startups',
-    'creative studio for startups',
-    'motion design studio',
-    'social media content strategy',
-  ],
-  authors: [{ name: 'The Ruff Agency' }],
-  alternates: { canonical: '/' },
-  robots: { index: true, follow: true },
-  openGraph: {
-    type: 'website',
+  return {
+    metadataBase: new URL(SITE_URL),
+    title: seo.title,
+    description: seo.description,
+    keywords: [...seo.keywords],
+    authors: [{ name: brand.name }],
+    alternates: { canonical: '/' },
+    robots: { index: true, follow: true },
+    openGraph: {
+      type: 'website',
+      url: SITE_URL,
+      title: seo.title,
+      description: seo.shareDescription,
+      siteName: brand.name,
+      locale: 'en_US',
+      images: [SHARE_IMAGE],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: seo.title,
+      description: seo.shareDescription,
+      images: [SHARE_IMAGE.url],
+    },
+    icons: {
+      icon: [
+        { url: '/favicon.png', sizes: '32x32', type: 'image/png' },
+        { url: '/icon.png', sizes: '512x512', type: 'image/png' },
+      ],
+      apple: '/apple-touch-icon.png',
+    },
+  };
+}
+
+/** The browser chrome takes the page's own paper colour, override included. */
+export async function generateViewport(): Promise<Viewport> {
+  const tokens = await getDesignTokens();
+  return {
+    width: 'device-width',
+    initialScale: 1,
+    themeColor: tokens['color.paper'] ?? '#f0e9e5',
+  };
+}
+
+export default async function RootLayout({ children }: LayoutProps<'/'>) {
+  // Read once here and hand down, rather than each consumer resolving its own:
+  // both are cached and tagged, so a save in the panel invalidates them
+  // together and the page and its metadata cannot disagree.
+  const [overrides, tokens, content] = await Promise.all([
+    getContentOverrides(),
+    getDesignTokens(),
+    getContent(),
+  ]);
+
+  const tokenCss = buildTokenCss(tokens);
+
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'ProfessionalService',
+    name: content.brand.name,
     url: SITE_URL,
-    title: TITLE,
-    description: SHARE_DESCRIPTION,
-    siteName: 'The Ruff Agency',
-    locale: 'en_US',
-    images: [SHARE_IMAGE],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: TITLE,
-    description: SHARE_DESCRIPTION,
-    images: [SHARE_IMAGE.url],
-  },
-  icons: {
-    icon: [
-      { url: '/favicon.png', sizes: '32x32', type: 'image/png' },
-      { url: '/icon.png', sizes: '512x512', type: 'image/png' },
-    ],
-    apple: '/apple-touch-icon.png',
-  },
-};
+    description: content.seo.description,
+    serviceType: 'Brand Strategy and Creative Direction',
+    areaServed: 'Worldwide',
+    address: { '@type': 'PostalAddress', addressLocality: 'Lagos', addressCountry: 'NG' },
+    priceRange: 'From ₦150,000',
+  };
 
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  themeColor: '#f0e9e5',
-};
+  /**
+   * The FAQ, marked up so a search engine can answer the question in the result
+   * rather than only linking to it. The answers are already on the page — this
+   * says which text answers which question.
+   */
+  const faqStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: content.faq.items.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: { '@type': 'Answer', text: item.answer },
+    })),
+  };
 
-const STRUCTURED_DATA = {
-  '@context': 'https://schema.org',
-  '@type': 'ProfessionalService',
-  name: 'The Ruff Agency',
-  url: SITE_URL,
-  description: DESCRIPTION,
-  serviceType: 'Brand Strategy and Creative Direction',
-  areaServed: 'Worldwide',
-  address: { '@type': 'PostalAddress', addressLocality: 'Lagos', addressCountry: 'NG' },
-  priceRange: 'From ₦150,000',
-};
-
-/**
- * The FAQ, marked up so a search engine can answer the question in the result
- * rather than only linking to it. The answers are already on the page — this
- * says which text answers which question.
- */
-const FAQ_STRUCTURED_DATA = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: faq.items.map((item) => ({
-    '@type': 'Question',
-    name: item.question,
-    acceptedAnswer: { '@type': 'Answer', text: item.answer },
-  })),
-};
-
-export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html lang="en">
       <head>
@@ -127,17 +135,26 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
           type="image/webp"
           href="/assets/105e7cd3a106296d90d081af3766923516632143.webp"
         />
+        {/* Only the tokens the studio has changed. Empty until one is. */}
+        {tokenCss ? <style dangerouslySetInnerHTML={{ __html: tokenCss }} /> : null}
         <script
           type="application/ld+json"
           // Static, author-controlled JSON-LD — no user input reaches this string.
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(STRUCTURED_DATA) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_STRUCTURED_DATA) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }}
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <ContentProvider overrides={overrides}>{children}</ContentProvider>
+        {/* Reads search params, so it is suspended rather than opting the
+            whole tree into dynamic rendering. */}
+        <Suspense fallback={null}>
+          <TrafficBeacon />
+        </Suspense>
+      </body>
     </html>
   );
 }

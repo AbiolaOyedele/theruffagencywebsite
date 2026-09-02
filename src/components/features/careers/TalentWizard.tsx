@@ -2,13 +2,13 @@
 
 import { useId, useState, type ReactNode } from 'react';
 import { color, font, primaryButton, radius, shape, weight } from '@/config/tokens';
-import { careersPage } from '@/content/site';
 import { HONEYPOT_FIELD } from '@/lib/schemas/form-constants';
 import {
   AVAILABILITY_OPTIONS,
   ROLE_CATEGORIES,
 } from '@/lib/schemas/talent-constants';
 import { useIsMobile } from '@/hooks/useIsMobile';
+import { useContent } from '@/components/providers/ContentProvider';
 
 /** The questions, in order. The last one is the review. */
 const STEPS = ['about', 'roles', 'note', 'review'] as const;
@@ -59,6 +59,7 @@ interface TalentApiResponse {
  * the pool.
  */
 export function TalentWizard() {
+  const { careersPage } = useContent();
   const isMobile = useIsMobile();
   const [index, setIndex] = useState(0);
   const [values, setValues] = useState<Values>(EMPTY);

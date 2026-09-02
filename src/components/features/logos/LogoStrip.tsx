@@ -1,11 +1,11 @@
 'use client';
 
 import { color, font, weight } from '@/config/tokens';
-import { logoStrip } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { useRevealOnScroll } from '@/hooks/useRevealOnScroll';
 import type { ClientLogo } from '@/types/content';
+import { useContent } from '@/components/providers/ContentProvider';
 
 /** Seconds one full pass of the list takes. Longer list, proportionally longer. */
 const SECONDS_PER_NAME = 3.2;
@@ -23,6 +23,7 @@ const SECONDS_PER_NAME = 3.2;
  * for reduced motion — see `.marquee-track` in globals.css.
  */
 export function LogoStrip() {
+  const { logoStrip } = useContent();
   const isMobile = useIsMobile();
   const still = usePrefersReducedMotion();
   const { ref, style } = useRevealOnScroll<HTMLDivElement>();

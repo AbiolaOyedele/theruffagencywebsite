@@ -1,6 +1,14 @@
 import type { CSSProperties, Ref } from 'react';
 import { LOGO_MARK_VIEWBOX, LOGO_PATHS, LOGO_VIEWBOX } from '@/content/logo';
-import { brand } from '@/content/site';
+
+/**
+ * Fallback accessible name.
+ *
+ * This component renders in both the server and the client tree, so it cannot
+ * read the content context. Callers that hold resolved content pass `title`;
+ * this is what is left when nobody does.
+ */
+const DEFAULT_TITLE = 'The Ruff Agency';
 
 type LogoVariant = 'wordmark' | 'mark';
 
@@ -41,7 +49,7 @@ export function RuffLogo({
       aria-label={labelled ? title : undefined}
       aria-hidden={labelled ? undefined : true}
     >
-      {labelled ? <title>{title ?? brand.name}</title> : null}
+      {labelled ? <title>{title ?? DEFAULT_TITLE}</title> : null}
       {LOGO_PATHS.map((path) => (
         <path key={path.d.slice(0, 32)} d={path.d} fill={path.fill} fillRule="evenodd" />
       ))}

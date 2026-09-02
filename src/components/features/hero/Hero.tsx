@@ -13,8 +13,8 @@ import {
   heroStage,
   heroSubheadStyle,
 } from '@/config/heroLayout';
-import { hero } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
+import { useContent } from '@/components/providers/ContentProvider';
 
 /** Scroll distance over which the hero tucks in its corners. */
 const CORNER_SCROLL_RANGE = 150;
@@ -30,6 +30,7 @@ const CORNER_SCROLL_RANGE = 150;
  * simply retires and this is already underneath it.
  */
 export function Hero() {
+  const { hero } = useContent();
   const isMobile = useIsMobile();
   const sectionRef = useRef<HTMLElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);

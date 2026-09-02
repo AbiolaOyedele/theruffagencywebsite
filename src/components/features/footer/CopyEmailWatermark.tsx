@@ -2,8 +2,8 @@
 
 import { useRef, useState } from 'react';
 import { color, font } from '@/config/tokens';
-import { brand } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
+import { useContent } from '@/components/providers/ContentProvider';
 
 /** How long the "Copied!" confirmation stays up. */
 const CONFIRM_MS = 2000;
@@ -15,6 +15,7 @@ const CONFIRM_MS = 2000;
  * approach from; clicking copies the address and flips the pill to a tick.
  */
 export function CopyEmailWatermark() {
+  const { brand } = useContent();
   const isMobile = useIsMobile();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [copied, setCopied] = useState(false);

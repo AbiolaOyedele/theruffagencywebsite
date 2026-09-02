@@ -1,3 +1,5 @@
+import { cssVar } from '@/config/designTokens';
+
 /**
  * Design tokens — Ruff brand system.
  *
@@ -6,22 +8,24 @@
  * reveal). Those values cannot live in class names, so they are applied as
  * inline styles that read from this single typed source of truth. Static
  * layout still uses Tailwind utilities.
+ *
+ * Every value below resolves through a CSS custom property with the repo's own
+ * value written in behind it, so the studio can change a colour or a typeface
+ * in the panel without a deploy, and a site with no database — or a stylesheet
+ * that failed to load — still renders exactly what ships here. What may be
+ * changed, and what it is called, lives in `config/designTokens.ts`.
+ *
+ * Two consequences worth knowing. A token is now a `var(...)` string, not a
+ * hex or a number, so anything that needs to *compute* with one — parsing it
+ * to RGB, appending an alpha suffix — has to resolve it first; `resolveToken`
+ * in `lib/design/resolve.ts` does that. And a length carries its unit.
  */
 
-/**
- * Three-tier type system, per the brand guidelines.
- *
- * `display` is the heavy geometric sans that carries the big claims;
- * `accent` is the Didone italic used for a single word inside a headline;
- * `body` is Noir Pro for reading copy. `sans` is the UI cut — Milligram —
- * used for labels, buttons and anything that needs weight, because Noir Pro
- * ships in Light only and faking a bold smears it.
- */
 export const font = {
-  display: `'Milligram', system-ui, -apple-system, sans-serif`,
-  accent: `'Awesome Serif', Georgia, 'Times New Roman', serif`,
-  body: `'Noir Pro', 'Milligram', system-ui, -apple-system, sans-serif`,
-  sans: `'Milligram', system-ui, -apple-system, sans-serif`,
+  display: cssVar('font.display', `'Milligram', system-ui, -apple-system, sans-serif`),
+  accent: cssVar('font.accent', `'Awesome Serif', Georgia, 'Times New Roman', serif`),
+  body: cssVar('font.body', `'Noir Pro', 'Milligram', system-ui, -apple-system, sans-serif`),
+  sans: cssVar('font.sans', `'Milligram', system-ui, -apple-system, sans-serif`),
 } as const;
 
 /**
@@ -34,51 +38,46 @@ export const font = {
  */
 export const weight = {
   /** Body copy and long-form paragraphs (Noir Pro Light). */
-  light: 300,
+  light: cssVar('weight.light', '300'),
   /** UI labels, nav links, captions. */
-  medium: 500,
+  medium: cssVar('weight.medium', '500'),
   /** Buttons, emphasis, card titles. */
-  bold: 700,
+  bold: cssVar('weight.bold', '700'),
   /** Section headings. */
-  extrabold: 800,
+  extrabold: cssVar('weight.extrabold', '800'),
   /** The biggest display moments and stat numbers. */
-  black: 900,
+  black: cssVar('weight.black', '900'),
 } as const;
 
 export const color = {
   /* Brand red — reserved for buttons and interactive states, never a ground. */
-  brand: '#e92038',
-  brandDeep: '#c81a2f',
-  ink: '#250200',
-  inkNavy: '#250200',
-  inkHeading: '#250200',
-  inkSoft: '#3a0d0a',
+  brand: cssVar('color.brand', '#e92038'),
+  brandDeep: cssVar('color.brandDeep', '#c81a2f'),
+  ink: cssVar('color.ink', '#250200'),
+  inkNavy: cssVar('color.ink', '#250200'),
+  inkHeading: cssVar('color.ink', '#250200'),
+  inkSoft: cssVar('color.inkSoft', '#3a0d0a'),
 
   /* Rotating accents */
-  accentYellow: '#ffd741',
-  accentOrange: '#fd7b33',
-  accentGreen: '#2dc05e',
-  accentLime: '#c3fb50',
-  accentPink: '#feb3d2',
-  accentPurple: '#7c65fe',
+  accentYellow: cssVar('color.accentYellow', '#ffd741'),
+  accentOrange: cssVar('color.accentOrange', '#fd7b33'),
+  accentGreen: cssVar('color.accentGreen', '#2dc05e'),
+  accentLime: cssVar('color.accentLime', '#c3fb50'),
+  accentPink: cssVar('color.accentPink', '#feb3d2'),
+  accentPurple: cssVar('color.accentPurple', '#7c65fe'),
 
   /* Surfaces */
-  surfaceDark: '#3a1512',
-  paper: '#f0e9e5',
-  paperAlt: '#f6f1ee',
-  cream: '#efe6e0',
-  tan: '#d3c2bb',
-  navPill: '#f4efec',
-  muted: '#6b5a55',
-  border: 'rgba(37, 2, 0, 0.12)',
-  white: '#ffffff',
+  surfaceDark: cssVar('color.surfaceDark', '#3a1512'),
+  paper: cssVar('color.paper', '#f0e9e5'),
+  paperAlt: cssVar('color.paperAlt', '#f6f1ee'),
+  cream: cssVar('color.cream', '#efe6e0'),
+  tan: cssVar('color.tan', '#d3c2bb'),
+  navPill: cssVar('color.navPill', '#f4efec'),
+  muted: cssVar('color.muted', '#6b5a55'),
+  border: cssVar('color.border', 'rgba(37, 2, 0, 0.12)'),
+  white: cssVar('color.white', '#ffffff'),
 } as const;
 
-
-/**
- * Comic-book shape language: a hard keyline with a solid offset shadow that
- * collapses on press, instead of a soft blur.
- */
 /**
  * The card grounds, in rotation order.
  *
@@ -100,26 +99,40 @@ export function cardAccent(index: number): string {
   return CARD_ACCENTS[index % CARD_ACCENTS.length] as string;
 }
 
+/**
+ * Comic-book shape language: a hard keyline with a solid offset shadow that
+ * collapses on press, instead of a soft blur.
+ */
+const KEYLINE_WIDTH = cssVar('shape.keylineWidth', '2.5px');
+const SHADOW_OFFSET = cssVar('shape.shadowOffset', '6px');
+
 export const shape = {
-  keyline: `2.5px solid ${color.ink}`,
-  hardShadow: `6px 6px 0 ${color.ink}`,
+  keyline: `${KEYLINE_WIDTH} solid ${color.ink}`,
+  hardShadow: `${SHADOW_OFFSET} ${SHADOW_OFFSET} 0 ${color.ink}`,
   hardShadowSmall: `4px 4px 0 ${color.ink}`,
   hardShadowPressed: `2px 2px 0 ${color.ink}`,
   softShadow: '0 8px 24px rgba(37, 2, 0, 0.14)',
 } as const;
 
 export const radius = {
-  nav: 55,
-  cta: 999,
-  pill: 999,
-  card: 28,
-  section: 40,
-  media: 28,
-  panel: 20,
-  chip: 16,
-  sm: 12,
-  xs: 8,
+  nav: cssVar('radius.nav', '55px'),
+  cta: '999px',
+  pill: '999px',
+  card: cssVar('radius.card', '28px'),
+  section: cssVar('radius.section', '40px'),
+  media: cssVar('radius.media', '28px'),
+  panel: cssVar('radius.panel', '20px'),
+  chip: cssVar('radius.chip', '16px'),
+  sm: cssVar('radius.sm', '12px'),
+  xs: cssVar('radius.xs', '8px'),
 } as const;
+
+/**
+ * Layout constants, not design tokens.
+ *
+ * These are read in JavaScript — media query strings, a loop bound — so they
+ * stay real numbers and are not editable in the panel.
+ */
 
 /** Single source of truth for the mobile breakpoint (matches Tailwind `md`). */
 export const MOBILE_MAX_WIDTH = 768;

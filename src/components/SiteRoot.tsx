@@ -17,7 +17,6 @@ import { NoiseOverlay } from '@/components/features/overlays/NoiseOverlay';
 import { Pricing } from '@/components/features/pricing/Pricing';
 import { ScrollStatement } from '@/components/features/statement/ScrollStatement';
 import { color } from '@/config/tokens';
-import { blogPosts, caseStudies } from '@/content/site';
 import { storyOrigin, storyReturn, useStoryRoute } from '@/hooks/useStoryRoute';
 import { refreshHash, useHash } from '@/hooks/useHash';
 import { markIntroSeen, useIntroSeen } from '@/hooks/useIntroSeen';
@@ -26,6 +25,7 @@ import { videoUrl } from '@/lib/images';
 import { clamp, setScrollLocked } from '@/utils/scroll';
 import { postHash, storyFromCaseStudy, storyFromPost } from '@/types/content';
 import type { OverlayKey, Story } from '@/types/content';
+import { useContent } from '@/components/providers/ContentProvider';
 
 /** Assets that must be decoded before the intro can start. */
 const CRITICAL_IMAGES = [
@@ -67,6 +67,7 @@ const PRELOAD_TIMEOUT_MS = 4000;
  * scroll.
  */
 export function SiteRoot() {
+  const { blogPosts, caseStudies } = useContent();
   const storyRoute = useStoryRoute();
   const caseStudySlug = storyRoute.slug;
   const [caseStudyOrigin, setCaseStudyOrigin] = useState<DOMRect | null>(null);

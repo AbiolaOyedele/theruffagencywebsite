@@ -1,9 +1,12 @@
 import type { Metadata } from 'next';
 import { ContactContent } from '@/components/features/contact/ContactContent';
 import { StandalonePage } from '@/components/features/overlays/StandalonePage';
-import { brand, contactPage } from '@/content/site';
+import { getContent } from '@/lib/content/resolve';
 
-export const metadata: Metadata = {
+export async function generateMetadata(): Promise<Metadata> {
+  const { brand, contactPage } = await getContent();
+
+  return {
   title: `Contact | ${brand.name}`,
   description: contactPage.intro,
   alternates: { canonical: '/contact' },
@@ -12,9 +15,10 @@ export const metadata: Metadata = {
     url: '/contact',
     title: `Contact | ${brand.name}`,
     description: contactPage.intro,
-    siteName: brand.name,
-  },
-};
+      siteName: brand.name,
+    },
+  };
+}
 
 /**
  * `/contact` — the enquiry as a page rather than a panel.
@@ -23,7 +27,9 @@ export const metadata: Metadata = {
  * the address a search result, an AI assistant or a business card can point
  * at. Both render `ContactContent`, so the two cannot drift.
  */
-export default function ContactPage() {
+export default async function ContactPage() {
+  const { contactPage } = await getContent();
+
   return (
     <StandalonePage eyebrow={contactPage.eyebrow} title={contactPage.panelTitle}>
       <ContactContent />

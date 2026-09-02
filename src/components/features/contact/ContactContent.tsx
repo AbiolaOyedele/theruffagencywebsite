@@ -3,9 +3,9 @@
 import { AgentPromptCard } from '@/components/features/contact/AgentPromptCard';
 import { ContactWizard } from '@/components/features/contact/ContactWizard';
 import { color, font, shape, weight } from '@/config/tokens';
-import { brand, contactPage } from '@/content/site';
 import { useIsCompact } from '@/hooks/useIsCompact';
 import { useIsMobile } from '@/hooks/useIsMobile';
+import { useContent } from '@/components/providers/ContentProvider';
 
 /**
  * Everything on the contact surface: the intro, the agent route in, the form,
@@ -16,6 +16,7 @@ import { useIsMobile } from '@/hooks/useIsMobile';
  * and the two must not drift.
  */
 export function ContactContent() {
+  const { brand, contactPage } = useContent();
   const isMobile = useIsMobile();
   const isCompact = useIsCompact();
 

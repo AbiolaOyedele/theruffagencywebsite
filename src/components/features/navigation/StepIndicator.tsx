@@ -34,7 +34,10 @@ export function StepIndicator({ activeIndex, compact = false }: StepIndicatorPro
             flexShrink: 0,
             width: index === activeIndex ? activeWidth : size,
             borderRadius: 4,
-            background: index === activeIndex ? color.inkNavy : `${color.inkNavy}40`,
+            background:
+              index === activeIndex
+                ? color.inkNavy
+                : `color-mix(in srgb, ${color.inkNavy} 25%, transparent)`,
             transition: 'width 0.45s cubic-bezier(0.4,0,0.2,1), background 0.3s ease',
           }}
         />

@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import { cardAccent, color, font, shape, weight } from '@/config/tokens';
-import { blogSection } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { formatPostDate, readingMinutes, type BlogPost } from '@/types/content';
+import { useContent } from '@/components/providers/ContentProvider';
 
 interface BlogCardProps {
   readonly post: BlogPost;
@@ -22,6 +22,7 @@ interface BlogCardProps {
  * as something you press.
  */
 export function BlogCard({ post, index, onOpen }: BlogCardProps) {
+  const { blogSection } = useContent();
   const isMobile = useIsMobile();
   const [raised, setRaised] = useState(false);
 

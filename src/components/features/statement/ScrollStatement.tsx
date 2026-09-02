@@ -2,9 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { color, font } from '@/config/tokens';
-import { statementWords } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { clamp } from '@/utils/scroll';
+import { useContent } from '@/components/providers/ContentProvider';
 
 /** Colour of a word that has not been revealed yet — a warm ghost of the ink. */
 const DIM = color.cream;
@@ -17,6 +17,7 @@ const DIM = color.cream;
  * scrolling back up un-reveals them.
  */
 export function ScrollStatement() {
+  const { statementWords } = useContent();
   const isMobile = useIsMobile();
   const trackRef = useRef<HTMLDivElement | null>(null);
   const [progress, setProgress] = useState(0);

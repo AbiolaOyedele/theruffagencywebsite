@@ -6,10 +6,11 @@ import { color, font } from '@/config/tokens';
 import { ArchivePanel } from '@/components/features/blog/ArchivePanel';
 import { CareersContent } from '@/components/features/careers/CareersContent';
 import { ContactContent } from '@/components/features/contact/ContactContent';
-import { blogSection, careersPage, contactPage, privacyPolicy, termsOfService } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { claimOverlayChrome } from '@/utils/overlayChrome';
 import type { LegalSection, OverlayKey } from '@/types/content';
+import { useContent } from '@/components/providers/ContentProvider';
+import type { SiteContent } from '@/lib/content/resolve';
 
 type Phase = 'enter' | 'open' | 'exit';
 
@@ -53,7 +54,7 @@ function LegalBody({ sections }: { readonly sections: readonly LegalSection[] })
   );
 }
 
-const PANELS: Record<
+function panelsFor(content: SiteContent): Record<
   OverlayKey,
   {
     title: string;
@@ -63,33 +64,37 @@ const PANELS: Record<
     body: ReactNode;
     maxWidth?: number;
   }
-> = {
-  contact: {
-    title: contactPage.panelTitle,
-    body: <ContactContent />,
-    maxWidth: 1120,
-  },
-  careers: {
-    title: careersPage.panelTitle,
-    body: <CareersContent />,
-    maxWidth: 1120,
-  },
-  blog: {
-    title: blogSection.indexTitle,
-    body: <ArchivePanel />,
-    maxWidth: 1120,
-  },
-  privacy: {
-    title: privacyPolicy.title,
-    subtitle: privacyPolicy.updated,
-    body: <LegalBody sections={privacyPolicy.sections} />,
-  },
-  terms: {
-    title: termsOfService.title,
-    subtitle: termsOfService.updated,
-    body: <LegalBody sections={termsOfService.sections} />,
-  },
-};
+> {
+  const { blogSection, careersPage, contactPage, privacyPolicy, termsOfService } = content;
+
+  return {
+    contact: {
+      title: contactPage.panelTitle,
+      body: <ContactContent />,
+      maxWidth: 1120,
+    },
+    careers: {
+      title: careersPage.panelTitle,
+      body: <CareersContent />,
+      maxWidth: 1120,
+    },
+    blog: {
+      title: blogSection.indexTitle,
+      body: <ArchivePanel />,
+      maxWidth: 1120,
+    },
+    privacy: {
+      title: privacyPolicy.title,
+      subtitle: privacyPolicy.updated,
+      body: <LegalBody sections={privacyPolicy.sections} />,
+    },
+    terms: {
+      title: termsOfService.title,
+      subtitle: termsOfService.updated,
+      body: <LegalBody sections={termsOfService.sections} />,
+    },
+  };
+}
 
 interface InfoOverlayProps {
   readonly panel: OverlayKey;
@@ -105,6 +110,7 @@ interface InfoOverlayProps {
  * blurred backdrop. Closes on the button, the backdrop, or Escape.
  */
 export function InfoOverlay({ panel, origin, onClose }: InfoOverlayProps) {
+  const PANELS = panelsFor(useContent());
   const isMobile = useIsMobile();
   const [phase, setPhase] = useState<Phase>('enter');
   // Held in state rather than a ref so the prompt re-runs when it arrives.

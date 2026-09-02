@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { color, font } from '@/config/tokens';
-import { cookieBanner } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
+import { useContent } from '@/components/providers/ContentProvider';
 
 const STORAGE_KEY = 'cookie-consent';
 /** Let visitors settle into the page before asking. */
@@ -16,6 +16,7 @@ const APPEAR_DELAY_MS = 8000;
  * localStorage. Analytics must not load until this returns "accepted".
  */
 export function CookieBanner() {
+  const { cookieBanner } = useContent();
   const isMobile = useIsMobile();
   const [mounted, setMounted] = useState(false);
   const [shown, setShown] = useState(false);

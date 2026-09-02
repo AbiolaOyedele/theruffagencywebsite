@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useId, useRef, useState, type ReactNode } from 'react';
 import { color, font, primaryButton, radius, shape, weight } from '@/config/tokens';
-import { brand, contactPage } from '@/content/site';
 import { INQUIRY_MARKER, parseInquiryBlock } from '@/lib/agent-inquiry';
 import {
   BUDGET_BANDS,
@@ -11,6 +10,7 @@ import {
   TIMELINES,
 } from '@/lib/schemas/form-constants';
 import { useIsMobile } from '@/hooks/useIsMobile';
+import { useContent } from '@/components/providers/ContentProvider';
 
 /** The questions, in order. The last one is the review. */
 const STEPS = ['service', 'project', 'you', 'context', 'scope', 'review'] as const;
@@ -67,6 +67,7 @@ interface ContactApiResponse {
  * regardless of how the answers got there.
  */
 export function ContactWizard() {
+  const { brand, contactPage } = useContent();
   const isMobile = useIsMobile();
   const [index, setIndex] = useState(0);
   const [values, setValues] = useState<Values>(EMPTY);
@@ -105,7 +106,7 @@ export function ContactWizard() {
 
     document.addEventListener('paste', onPaste);
     return () => document.removeEventListener('paste', onPaste);
-  }, []);
+  }, [contactPage.agent.pasteNotice]);
 
   /** What is missing on this step, if anything. Server-side rules still apply. */
   function blockedReason(target: StepId): string | null {
@@ -637,6 +638,7 @@ interface TrailRowProps {
 
 /** One answered question: what was asked, what was said, and a way to change it. */
 function TrailRow({ label, value, editLabel, onEdit, compact = false, error }: TrailRowProps) {
+  const { contactPage } = useContent();
   return (
     <div
       style={{

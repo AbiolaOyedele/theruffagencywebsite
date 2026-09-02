@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { CARD_ACCENTS, color, font, shape, weight } from '@/config/tokens';
-import { blogSection } from '@/content/site';
 import { openStory } from '@/hooks/useStoryRoute';
 import {
   formatPostDate,
@@ -12,6 +11,7 @@ import {
   tileRoles,
   type BlogPost,
 } from '@/types/content';
+import { useContent } from '@/components/providers/ContentProvider';
 
 interface PostShelfProps {
   readonly posts: readonly BlogPost[];
@@ -29,6 +29,7 @@ interface PostShelfProps {
  * coming back here when it closes. Same writing either way.
  */
 export function PostShelf({ posts }: PostShelfProps) {
+  const { blogSection } = useContent();
   const roles = tileRoles(posts.length);
   const accents = shelfAccents(roles, CARD_ACCENTS.length);
 

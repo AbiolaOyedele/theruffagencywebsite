@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { publicEnv } from '@/config/env';
-import { blogPosts } from '@/content/site';
+import { getContent } from '@/lib/content/resolve';
 
 /**
  * Every address worth indexing.
@@ -11,7 +11,8 @@ import { blogPosts } from '@/content/site';
  * is left out for the same reason. Individual posts are real pages and each
  * one is here.
  */
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const { blogPosts } = await getContent();
   const site = publicEnv.NEXT_PUBLIC_SITE_URL;
   return [
     { url: site, changeFrequency: 'monthly', priority: 1 },

@@ -5,13 +5,13 @@ import { createPortal } from 'react-dom';
 import { AutoplayVideo } from '@/components/ui/AutoplayVideo';
 import { ScrollPrompt } from '@/components/ui/ScrollPrompt';
 import { color, font, primaryButton, shape, weight } from '@/config/tokens';
-import { brand, caseStudyChrome } from '@/content/site';
 import { useIsCompact } from '@/hooks/useIsCompact';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { imageUrl } from '@/lib/images';
 import { claimOverlayChrome } from '@/utils/overlayChrome';
 import { clamp } from '@/utils/scroll';
 import type { Story } from '@/types/content';
+import { useContent } from '@/components/providers/ContentProvider';
 
 type Phase = 'enter' | 'open' | 'fadein' | 'exit';
 
@@ -46,6 +46,7 @@ interface StoryPanelProps {
  * this learning about either of them.
  */
 export function StoryPanel({ story, fromRect, onClose }: StoryPanelProps) {
+  const { brand, caseStudyChrome } = useContent();
   const isMobile = useIsMobile();
   // The pinned cards hang off the gallery art, so they need the narrative
   // column to be wider than they are. Below this the column is around 340px

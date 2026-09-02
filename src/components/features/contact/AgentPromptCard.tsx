@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { ClaudeMark, OpenAiMark } from '@/components/ui/AiMarks';
 import { color, font, radius, shape, weight } from '@/config/tokens';
-import { contactPage } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
+import { useContent } from '@/components/providers/ContentProvider';
 
 /** How long the button holds its "Copied" state before reverting. */
 const COPIED_MS = 2200;
@@ -20,6 +20,7 @@ type CopyState = 'idle' | 'copied' | 'failed';
  * form in.
  */
 export function AgentPromptCard() {
+  const { contactPage } = useContent();
   const isMobile = useIsMobile();
   const [copyState, setCopyState] = useState<CopyState>('idle');
 

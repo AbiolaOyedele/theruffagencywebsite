@@ -2,9 +2,9 @@
 
 import { useId, useState } from 'react';
 import { color, font } from '@/config/tokens';
-import { faq } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import type { FaqItem } from '@/types/content';
+import { useContent } from '@/components/providers/ContentProvider';
 
 interface AccordionRowProps {
   readonly item: FaqItem;
@@ -144,6 +144,7 @@ function AccordionRow({ item, isOpen, onToggle }: AccordionRowProps) {
  * bottom corners are animated by the footer reveal as the page scrolls past.
  */
 export function Faq() {
+  const { faq } = useContent();
   const isMobile = useIsMobile();
   const [openIndex, setOpenIndex] = useState(0);
 

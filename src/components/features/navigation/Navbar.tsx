@@ -5,10 +5,10 @@ import { Logo } from '@/components/ui/Logo';
 import { MobileMenu } from '@/components/features/navigation/MobileMenu';
 import { StepIndicator } from '@/components/features/navigation/StepIndicator';
 import { color, font, primaryButton, radius, shape, weight } from '@/config/tokens';
-import { brand, sectionLinks } from '@/content/site';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { clamp, scrollToSection } from '@/utils/scroll';
 import { SERVICE_STEPS } from '@/config/tokens';
+import { useContent } from '@/components/providers/ContentProvider';
 
 /** Fraction of the pinned section's scroll length used for horizontal travel. */
 const HORIZONTAL_TRAVEL_RATIO = 4 / 5;
@@ -33,6 +33,7 @@ interface NavbarProps {
  * Below `md` it collapses to a logo and a hamburger.
  */
 export function Navbar({ revealed, aboveOverlay }: NavbarProps) {
+  const { brand, sectionLinks } = useContent();
   const isMobile = useIsMobile();
 
   const [contentVisible, setContentVisible] = useState(true);

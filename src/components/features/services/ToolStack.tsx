@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, type RefObject } from 'react';
 import { color } from '@/config/tokens';
-import { toolStackLogos } from '@/content/site';
+import { useContent } from '@/components/providers/ContentProvider';
 
 /** How much of a bounce a chip keeps after hitting a wall. */
 const RESTITUTION = 0.42;
@@ -53,6 +53,7 @@ function roundedRect(
  * gravity, wall bounces and chip-to-chip collisions, nudged by scroll velocity.
  */
 export function ToolStack({ width, height, velocityRef }: ToolStackProps) {
+  const { toolStackLogos } = useContent();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -178,7 +179,7 @@ export function ToolStack({ width, height, velocityRef }: ToolStackProps) {
 
     frame = requestAnimationFrame(render);
     return () => cancelAnimationFrame(frame);
-  }, [width, height, velocityRef]);
+  }, [width, height, velocityRef, toolStackLogos]);
 
   return (
     <canvas

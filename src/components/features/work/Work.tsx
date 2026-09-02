@@ -4,12 +4,12 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { StoryCard, type StoryCardLayout } from '@/components/features/work/StoryCard';
 import { AccentWord } from '@/components/ui/AccentWord';
 import { color, font, shape, weight } from '@/config/tokens';
-import { caseStudies, storyCardLayouts, work } from '@/content/site';
 import { useCountUp } from '@/hooks/useCountUp';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { hasStory } from '@/types/content';
 import { hideNavForHandover } from '@/utils/overlayChrome';
 import { clamp } from '@/utils/scroll';
+import { useContent } from '@/components/providers/ContentProvider';
 
 /** How far the stage flies into the clicked card before the panel takes over. */
 const ZOOM_SCALE = 12;
@@ -33,6 +33,7 @@ interface WorkProps {
  * replaced by a readable vertical list.
  */
 export function Work({ onOpenCaseStudy, activeSlug }: WorkProps) {
+  const { caseStudies, storyCardLayouts, work } = useContent();
   const isMobile = useIsMobile();
   const trackRef = useRef<HTMLElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);

@@ -15,13 +15,16 @@
  */
 import { publicEnv } from '@/config/env';
 import { INQUIRY_MARKER } from '@/lib/agent-inquiry';
-import { brand } from '@/content/site';
+import { getContent } from '@/lib/content/resolve';
 
 export const dynamic = 'force-static';
 
+type Brand = Awaited<ReturnType<typeof getContent>>['brand'];
+
 const siteUrl = publicEnv.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '');
 
-const DOCUMENT = `<!-- ${INQUIRY_MARKER}-instructions v1 -->
+function document(brand: Brand): string {
+  return `<!-- ${INQUIRY_MARKER}-instructions v1 -->
 
 # Send a project enquiry to ${brand.name}
 
@@ -147,9 +150,12 @@ Tell your user that ${brand.shortName} replies to every enquiry, usually within
 one working day. Anyone who would rather talk it through can book a call from
 the same page, and anything urgent in the meantime can go to ${brand.email}.
 `;
+}
 
-export function GET(): Response {
-  return new Response(DOCUMENT, {
+export async function GET(): Promise<Response> {
+  const { brand } = await getContent();
+
+  return new Response(document(brand), {
     headers: {
       'Content-Type': 'text/markdown; charset=utf-8',
       'Cache-Control': 'public, max-age=3600',

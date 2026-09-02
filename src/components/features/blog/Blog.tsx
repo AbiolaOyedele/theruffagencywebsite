@@ -3,10 +3,10 @@
 import { BlogCard } from '@/components/features/blog/BlogCard';
 import { AccentWord } from '@/components/ui/AccentWord';
 import { color, font, shape, weight } from '@/config/tokens';
-import { blogPosts, blogSection } from '@/content/site';
 import { useIsCompact } from '@/hooks/useIsCompact';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { postHash } from '@/types/content';
+import { useContent } from '@/components/providers/ContentProvider';
 
 /**
  * How many posts the home page carries.
@@ -30,6 +30,7 @@ interface BlogProps {
  * client story does.
  */
 export function Blog({ onOpenPost }: BlogProps) {
+  const { blogPosts, blogSection } = useContent();
   const isMobile = useIsMobile();
   const isCompact = useIsCompact();
 

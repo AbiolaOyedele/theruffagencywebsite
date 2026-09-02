@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import { TalentWizard } from '@/components/features/careers/TalentWizard';
 import { color, font, primaryButton, shape, weight } from '@/config/tokens';
-import { brand, careersPage } from '@/content/site';
 import { useIsCompact } from '@/hooks/useIsCompact';
 import { useIsMobile } from '@/hooks/useIsMobile';
+import { useContent } from '@/components/providers/ContentProvider';
 
 /**
  * The careers surface.
@@ -16,6 +16,7 @@ import { useIsMobile } from '@/hooks/useIsMobile';
  * opens as a short answer rather than a wall of fields.
  */
 export function CareersContent() {
+  const { brand, careersPage } = useContent();
   const isMobile = useIsMobile();
   const isCompact = useIsCompact();
   const [applying, setApplying] = useState(false);
